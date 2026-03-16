@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FORENSICS PROJECT
 ### Advanced Malware Detection & Analysis Framework
 
@@ -77,3 +78,7 @@ Once analysis starts, the tool relies on four core engines working in parallel:
     3.  Select its accompanying `.sig` (Signature) file.
     4.  **Verification**: The tool re-calculates the cryptographic hash (HMAC-SHA256) of the PDF.
     5.  **Verdict**: It confirms if the report is **AUTHENTIC** or **TAMPERED**, ensuring evidence hasn't been altered.
+=======
+# LIVE-MEMORY-FORENSISCS-TOOLKIT
+It finds out the memory malware 
+>>>>>>> e5a4e46e672cf0fe3b7a7cc55d79437fdaf4b1f6
