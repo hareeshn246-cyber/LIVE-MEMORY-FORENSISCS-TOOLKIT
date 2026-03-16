@@ -1,0 +1,349 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_184703\\browser_assistant.exe_16312.raw",
+    "dump_sha256": "697bb1d550b015982dde6919343df4054c339e9e75ed6e13a7f71804fcf4abf1",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 10,
+            "offsets": [
+              6226946,
+              6227717,
+              6227928,
+              6265874,
+              6266645,
+              6266856,
+              6920754,
+              6921525,
+              6921736,
+              8637312
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              8636352
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 13,
+            "offsets": [
+              4682232,
+              8862026,
+              10311054,
+              10467780,
+              23538692,
+              25737280,
+              27427872,
+              38659624,
+              41005286,
+              53921836
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T13:35:24.481387Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.686,
+      "malware": 0.314
+    },
+    "is_malicious": true,
+    "risk_score": 85.0,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match detected (Score Boosted).",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 10.99
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_184703\\browser_assistant.exe_16312.raw",
+      "dump_size_mb": 63.25
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 444,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 4,
+          "SetWindowsHookEx": 12,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 22,
+          "CryptDecrypt": 23,
+          "InternetReadFile": 8,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 57,
+          "CreateProcess": 114,
+          "AdjustTokenPrivileges": 13,
+          "OpenProcess": 112,
+          "NtMapViewOfSection": 12,
+          "NtUnmapViewOfSection": 11,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 10,
+          "RtlCreateUserThread": 2
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 309,
+        "patterns": {
+          "http://": 115,
+          "https://": 69,
+          "POST": 21,
+          "GET": 86,
+          "User-Agent:": 3,
+          "Content-Type:": 9,
+          "Cookie:": 6
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://autoupdate.opera.com/",
+        "https://redir.opera.com/www.opera.com/gx/firstrun/?utm_campaign=operagx&utm_id=BjYV7wRQe8QIiszLvyquLi8zf8dasAdmPfiPo0gqUJvPF3w6HNr8rGISX9j9EqxWpp13Zg2Hs1vlucM&utm_medium=apb&utm_source=ais&http_referrer=&query=/opera_gx/stable/edition/std-2",
+        "http://An",
+        "http://);",
+        "http://interpreted",
+        "http://s;text-align:centerfont-weight:",
+        "http://www.C//DTD",
+        "https://crashpad.chromium.org/",
+        "http://www.bing.com/bingbot.htm)",
+        "http://interested",
+        "http://test.com",
+        "http://www.text-decoration:underthe",
+        "http://link",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://addEventListenerresponsible",
+        "http://www.wencodeURIComponent(",
+        "http://www",
+        "https://go.microsoft.com/fwlink/p/?LinkId=619797&pc=UE01&ocid=UE01DHP",
+        "http://www.css",
+        "https://go.microsoft.com/fwlink/?LinkId=129222&rptmode=-1&url1=",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "http://schemas.microsoft.com/Search/2013/ApplicationContent",
+        "http://www./div",
+        "https://go.microsoft.com/fwlink/?LinkId=129218",
+        "https://help.opera.com/latest/",
+        "https://go.microsoft.com/fwlink/?LinkId=129219",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue",
+        "https://iecvlist.microsoft.com/edge/phone/1499812172/edgecompatviewlist.xml",
+        "https://iecvlist.microsoft.com/edge/desktop/1499812172/edgecompatviewlist.xml",
+        "http://i",
+        "http://www.language=",
+        "https://go.microsoft.com/fwlink/p/?LinkId=620947",
+        "https://www.recent",
+        "http://style=",
+        "https://go.microsoft.com/fwlink/?LinkId=129220&url=",
+        "http://mathematicsmargin-top:eventually",
+        "https://go.microsoft.com/fwlink/?LinkId=392206",
+        "https://go.microsoft.com/fwlink/?LinkID=129216&verbose=1&uri=",
+        "http://www-//W3C//DTD",
+        "http://In",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "http://appmap.trafficmanager.net/api/v1/parse?url=",
+        "https://go.microsoft.com/fwlink/?LinkId=129217&profile=css3&warning=2&uri=",
+        "http://cacerts.digitalcertvalidation.com/TrustProviderBVTLSRSACAG1.crt0",
+        "https://ieonline.microsoft.com/iedomainsuggestions/ie11/suggestions.",
+        "https://www.bing.com/widget/insights/lookup",
+        "http://dictionaryperceptionrevolutionfoundationpx;height:successfulsupportersmillenniumhis",
+        "https://c.urs.microsoft.com/",
+        "http://crl.microsoft.com/pki/crl/products/MicrosoftCodeVerifRoot.crl0",
+        "http://cript"
+      ],
+      "ip_addresses": [
+        "1.3.132.0",
+        "2.5.29.5",
+        "2.5.4.44",
+        "2.5.4.45",
+        "4.1.311.67",
+        "1.3.133.16",
+        "1.311.2.1",
+        "2.5.29.16",
+        "2.5.29.17",
+        "1.12.1.2",
+        "4.1.311.2",
+        "2.5.4.35",
+        "4.1.311.13",
+        "2.5.4.72",
+        "4.1.311.61",
+        "1.3.6.1",
+        "4.1.311.21",
+        "2.23.43.1",
+        "2.5.29.27",
+        "2.5.4.52",
+        "1.3.14.7",
+        "1.7.1.1",
+        "107.167.125.189",
+        "2.5.29.35",
+        "5.1.0.0",
+        "2.5.4.28",
+        "2.5.4.23",
+        "1.12.1.3",
+        "4.1.311.42",
+        "4.1.311.64",
+        "1.3.132.1",
+        "5.5.7.6",
+        "2.5.29.19",
+        "2.5.29.2",
+        "2.5.4.4",
+        "2.5.29.4",
+        "2.5.29.30",
+        "101.3.4.1",
+        "4.1.311.65",
+        "2.5.4.26",
+        "1.2.3.2",
+        "2.23.133.8",
+        "1.12.5.1",
+        "2.5.4.65",
+        "2.5.4.6",
+        "5.5.8.2",
+        "1.12.1.6",
+        "1.9.25.4",
+        "4.1.311.17",
+        "2.5.4.46"
+      ],
+      "file_paths": [
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Opera GX",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\",
+        "C:\\Users\\Admin\\OneDrive",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "C:\\Users\\Admin",
+        "C:\\Users\\Admin\\.dotnet\\to",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Opera GX\\opera.exe",
+        "t:\\windows\\system32",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Opera GX\\assistant\\browser_assistant.exe",
+        "s:\\windows\\system32",
+        "C:\\Users\\Admin\\AppDa",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\MinGW\\bin",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Tempp",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Public",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Windows\\system32",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files\\WindowsPowerShell\\Modules",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Program Files",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Ollama",
+        "C:\\Users\\Admin\\AppD",
+        "C:\\Users\\Admin\\.dotnet\\tools",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "c:\\crypt32\\",
+        "C:\\Program Files\\qemu",
+        "C:\\Use",
+        "C:\\Users\\Admin\\AppData\\Local\\Python\\bin",
+        "c:\\ [",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files (x86)\\Nmap",
+        "C:\\ProgramData",
+        "C:\\Program Files (x86)\\Minimal ADB and Fastboot",
+        "C:\\Users\\Admin\\Downloads\\zst"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.4676,
+      "null_byte_ratio": 0.1983,
+      "printable_ratio": 0.3169,
+      "unique_bytes": 256,
+      "total_size": 66326528
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T13:35:35.048373Z",
+    "process_name": "browser",
+    "pid": 16312,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

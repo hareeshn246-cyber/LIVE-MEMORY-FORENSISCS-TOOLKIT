@@ -1,0 +1,298 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\SearchHost.exe_11360.raw",
+    "dump_sha256": "5b4478cacb1af1d44635c3814499073e5b8d9e8d24ed8134e6c423455c5152db",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              63937696
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              63938344
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 20,
+            "offsets": [
+              97580940,
+              228900750,
+              289978654,
+              315856406,
+              404156986,
+              407261202,
+              425219535,
+              428036108,
+              430924054,
+              431418806
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T12:02:47.035427Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7747,
+      "malware": 0.2253
+    },
+    "is_malicious": true,
+    "risk_score": 22.9,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 7.8855
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\SearchHost.exe_11360.raw",
+      "dump_size_mb": 458.07
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 607,
+        "api_details": {
+          "VirtualAllocEx": 13,
+          "WriteProcessMemory": 7,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 20,
+          "GetAsyncKeyState": 20,
+          "CryptEncrypt": 20,
+          "CryptDecrypt": 21,
+          "InternetReadFile": 8,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 67,
+          "CreateProcess": 113,
+          "AdjustTokenPrivileges": 20,
+          "OpenProcess": 235,
+          "NtMapViewOfSection": 11,
+          "NtUnmapViewOfSection": 9,
+          "QueueUserAPC": 9,
+          "SetThreadContext": 13,
+          "RtlCreateUserThread": 2
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 439,
+        "patterns": {
+          "http://": 111,
+          "https://": 71,
+          "POST": 11,
+          "GET": 245,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://login.microsoft.com",
+        "http://www.w3.org/2000/svg",
+        "https://ejlh.fa.em1.ukg.oraclecloud.com/fscmUI.",
+        "https://www.bing.com",
+        "https://www.hasleo.com/https://www.hasleo.com/-",
+        "https://www.bing.com/WS/Init",
+        "http://dmd-ca-beta2/CertEnroll/dmd-ca-beta2_Microsoft",
+        "https://gitforwindows.org/faqhttps://gitforwindows.org/faq-",
+        "http://buildweb.nvidia.com/CertEnroll/buildweb.nvidia.com_NVIDIACorp.crt0V",
+        "https://go.microsoft.com/fwlink/?linkid=2286319",
+        "https://www.revouninstaller.com/https://www.revouninstaller.com/-"
+      ],
+      "ip_addresses": [
+        "12.0.3.0",
+        "4.1.311.67",
+        "65.0.4.0",
+        "10.0.0.0",
+        "2.5.29.14",
+        "2.5.4.11",
+        "5.5.7.1",
+        "2.2.5.0",
+        "5.0.96.3",
+        "2.5.29.32",
+        "2.5.4.10",
+        "2.5.29.15",
+        "7.0.3.01",
+        "2.5.4.7",
+        "2.5.29.35",
+        "1.3.132.0",
+        "1.1.2.1",
+        "5.3.0.433",
+        "1.9.16.1",
+        "4.1.311.64",
+        "2.5.29.31",
+        "8.0.0.0",
+        "4.1.311.76",
+        "1.78.26.0",
+        "2.5.29.37",
+        "6.0.0.0",
+        "1.3.6.1",
+        "4.1.311.80",
+        "1.3.14.3",
+        "2.3.18.0",
+        "127.0.0.1",
+        "2.5.29.19",
+        "2.5.4.8",
+        "7.0.0.0",
+        "12.2.00.00",
+        "17.0.8.101",
+        "3.2.8.1",
+        "5.5.7.3",
+        "9.0.0.01",
+        "2.5.4.3",
+        "2.23.43.1",
+        "1.9.16.2",
+        "12.7.9.0",
+        "1.3.36.3",
+        "4.1.311.10",
+        "4.1.311.92",
+        "2.5.4.6",
+        "64.0.4.0",
+        "2.0.1.2"
+      ],
+      "file_paths": [
+        "C:\\SMYSoft\\SMemo\\SMemo.exe",
+        "C:\\__w\\1\\s\\Output\\Packages\\Microsoft.Windows.Wil.Internal.0.3.40\\inc\\wil\\Resource.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\CommandLineQuery.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Feedback\\EtwLogManager.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\WindowsStoreResultProvider.cpp",
+        "C:\\Gaomon Tablet\\Gaomon Tablet.exe",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\SearchHelper.cpp",
+        "C:\\Users\\Admin\\Desktop\\open_gapps-x86_64-11.0-pico-20220503.zipC",
+        "C:\\VirtualTerminalBridge\\Bat\\Restart Bridge Service.bat",
+        "D:\\Program Files\\Foxmail 7.2\\Foxmail.exe(",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python314\\python.exeC",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\DesktopTelematico\\DesktopTelematico\\DesktopTelematico.exe",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\Search\\SearchUx.SearchApi.UdkSettingItem.cpp",
+        "C:\\Windows10Upgrade\\Windows10UpgraderApp.exe-",
+        "C:\\Users\\Public",
+        "D:\\Enlisted\\launcher.exe0",
+        "D:\\VRLClient\\Upload",
+        "C:\\ProgramData\\Grupo Tress\\Programas\\64Bits\\TRESS.exe1",
+        "C:\\intelFPGA_lite\\21.1\\quartus\\bin64\\quartus.exe1",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\PerWebViewProjectedCortanaAPI.cpp",
+        "C:\\Program Files",
+        "C:\\Wemade\\Mir4Global\\Mir4Launcher\\Mir4Launcher.exe(",
+        "C:\\__w\\1\\s\\Output\\Packages\\Microsoft.Windows.Wil.Internal.0.3.40\\inc\\wil\\opensource\\wil\\token_helpers.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\Search\\SearchUx.SearchApi.FileProviderQueryHelpers.cpp",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\Tor Browser\\Browser\\firefox.exeC",
+        "C:\\QuiterWeb\\QuiterWeb.exe",
+        "C:\\SProV8i SS6\\STAAD\\Staadpro.exe1iH",
+        "C:\\\\__w\\\\1\\\\s\\\\Src\\\\Components\\\\Search\\\\SearchApi\\\\Search\\\\OleDbHelpers.cpp(199)\\\\SearchUx.InternalWebApi.dll",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\Model\\SearchAppearance\\LaunchUriGleamInvokeAction.cpp",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\Common\\Inc\\winrt\\SearchUx.DeviceSearchHelpers.h",
+        "D:\\Dict\\YoudaoDict.exe-",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Feedback\\ScreenshotManager.cpp",
+        "C:\\ProgramData\\CatalogoValeo\\CallCatalogoExpresso.exe1",
+        "D:\\Program Files\\Nox\\bin\\Nox.exe",
+        "C:\\laragon\\laragon.exe(",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchCore\\Settings\\SettingsHelper.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\DeviceSearchCacheManager.Internal.cpp",
+        "C:\\DEXIS\\xpat.exe.",
+        "C:\\Huion Tablet\\Huion Tablet.exe",
+        "C:\\User",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\OleDbDeviceItem.cpp",
+        "C:\\ProgramData\\Ableton\\Live 11 Intro\\Program\\Ableton Live 11 Intro.exe1",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\Jumplist\\SearchUx.SearchApi.UdkJumpListItemVerb.cpp",
+        "C:\\ProgramData\\CatalogoSampelESamkit\\CallCatalogoExpresso.exe",
+        "C:\\ShanaEncoder\\ShanaEncoder.exe0y",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchUI\\Views\\RichSearchBoxControl.xaml.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchUIWinRT\\TaskbarExtension\\SearchButtonBase.cpp",
+        "C:\\ProgramData\\CatalogoDeAplicacaoAutomotivaSKF\\CallCatalogoExpresso.exe-"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.9916,
+      "null_byte_ratio": 0.2818,
+      "printable_ratio": 0.2857,
+      "unique_bytes": 256,
+      "total_size": 480317440
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T12:03:14.345425Z",
+    "process_name": "SearchHost.exe",
+    "pid": 11360,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

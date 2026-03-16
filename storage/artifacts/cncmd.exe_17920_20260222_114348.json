@@ -1,0 +1,244 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\cncmd.exe_17920.raw",
+    "dump_sha256": "2cfe519285e869d7dae60590ff88fb9a3218b55270121ba657b3ddb39ff37df6",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              9788136
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              9787664
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 9,
+            "offsets": [
+              10145224,
+              11572864,
+              18512232,
+              19143052,
+              22640710,
+              29972018,
+              34273678,
+              43413504,
+              43445586
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:43:39.366449Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.4491,
+      "malware": 0.5509
+    },
+    "is_malicious": true,
+    "risk_score": 34.3,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 19.281499999999998
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\cncmd.exe_17920.raw",
+      "dump_size_mb": 43.91
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 286,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 4,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 10,
+          "GetAsyncKeyState": 6,
+          "CryptEncrypt": 10,
+          "CryptDecrypt": 10,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 34,
+          "CreateProcess": 83,
+          "AdjustTokenPrivileges": 9,
+          "OpenProcess": 59,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 9,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 16,
+        "patterns": {
+          "http://": 4,
+          "GET": 12
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://www.w3.org/XML/1998/namespace",
+        "http://www.w3.org/2000/xmlns/",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings"
+      ],
+      "ip_addresses": [
+        "6.0.0.0",
+        "17.0.8.101",
+        "1.3.6.1",
+        "5.1.0.0",
+        "127.0.0.1",
+        "1.3.5.7",
+        "4.1.311.10"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files\\WindowsApps\\AdvancedMicroDevicesInc-2.AMDRadeonSoftware_10.24.10035.0_x64__0a9344xs7nr4m\\radeonsoftware\\cncmd.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "c:\\constructicon\\builds\\gfx\\six\\24.10\\apps\\cn\\cn\\Source\\CNCmd\\build\\wNow64a\\B_rel\\cncmd.pdb",
+        "C:\\temp\\qt-common",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\temp\\qt-user",
+        "C:\\Users\\Public",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "C:\\jdk-24_windows-x64_bin\\jdk-24.0.2\\bin",
+        "D:\\a\\_work\\1\\s\\binaries\\amd64ret\\bin\\amd64\\\\vcruntime140.amd64.pdb",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "C:\\Users\\Admin",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Windows",
+        "C:\\Program Files (x86)",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Module",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "C:\\ProgramData",
+        "C:\\Users\\Admin\\Downloads\\zsteg-master\\zsteg-master\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Allu\\Qt6.5.2_Src\\qtbase\\bin\\Qt6Core.pdb",
+        "D:\\a\\_work\\1\\s\\binaries\\amd64ret\\bin\\amd64\\\\msvcp140.amd64.pdb",
+        "C:\\MinGW\\bin",
+        "C:\\Users\\Admin\\",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\Users\\Admin\\OneDrive",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "c:\\ [",
+        "D:\\a\\_work\\1\\s\\binaries\\amd64ret\\bin\\amd64\\\\msvcp140_1.amd64.pdb",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Ollama",
+        "C:\\Program Files (x86)\\Nmap",
+        "C:\\Windows\\system32",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+        "C:\\Users\\Admin\\.dotnet\\tools"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.245,
+      "null_byte_ratio": 0.2131,
+      "printable_ratio": 0.3395,
+      "unique_bytes": 256,
+      "total_size": 46043136
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:43:48.364778Z",
+    "process_name": "cncmd.exe",
+    "pid": 17920,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

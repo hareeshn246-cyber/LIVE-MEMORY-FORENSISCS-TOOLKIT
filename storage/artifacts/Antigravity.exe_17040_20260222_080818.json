@@ -1,0 +1,308 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\Antigravity.exe_17040.raw",
+    "dump_sha256": "1fe6721747fb1dcb5efd65f55c64c8242c86c4bbbafd265a1cfd8aef3adb839b",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "AsyncRAT_Client",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects AsyncRAT Client",
+          "severity": "high",
+          "author": "Community"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 13,
+            "offsets": [
+              297046269,
+              298787703,
+              304215859,
+              306023013,
+              309922277,
+              309923059,
+              319477739,
+              326072837,
+              326072909,
+              326072963
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 1,
+            "offsets": [
+              124049916
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 6,
+            "offsets": [
+              63540244,
+              63582563,
+              64574660,
+              64575148,
+              64575825,
+              64617327
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:07:54.831821Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "High Severity YARA Match (+40)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 40.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\Antigravity.exe_17040.raw",
+      "dump_size_mb": 327.56
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "AsyncRAT_Client",
+          "severity": "high",
+          "description": "Detects AsyncRAT Client"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 327,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 12,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 12,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 12,
+          "CryptDecrypt": 14,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 34,
+          "CreateProcess": 89,
+          "AdjustTokenPrivileges": 12,
+          "OpenProcess": 74,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 11,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 2479,
+        "patterns": {
+          "http://": 689,
+          "https://": 1368,
+          "ftp://": 1,
+          "POST": 73,
+          "GET": 336,
+          "Content-Type:": 11,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://github.com/jonschlinkert/is-extglob",
+        "https://ultcombo.js.org)",
+        "https://github.com/parcel-bundler/watcher.",
+        "https://github.com/jonschlinkert/is-number",
+        "https://code.visualstudio.com/docs/setup/enterprise#_configure-allowed-extensions)",
+        "https://code.visualstudio.com/docs/copilot/security)",
+        "https://github.com/nodejs/node/issues",
+        "https://aka.ms/vscode-workspace-trust).",
+        "https://private-user-images.githubusercontent.com",
+        "https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)",
+        "https://github.com/jonschlinkert/fill-range",
+        "https://aka.ms/vscode-hot-exit)",
+        "https://github.com/micromatch/micromatch/issues",
+        "https://antigravity.google/changelog",
+        "https://antigravity.google/docs/mcp",
+        "https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax",
+        "https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace)",
+        "http://twitter.com/jonschlinkert)",
+        "https://github.com/microsoft/vscode-js-debug-companion",
+        "http://badassjs.com)",
+        "https://main.vscode-cdn.net/extensions/chat.jsonM",
+        "https://github.com/sponsors/nvaccess",
+        "http://'",
+        "https://*.google.com",
+        "https://twitter.com/doowb)",
+        "https://github.com/micromatch/braces",
+        "https://github.com/micromatch/braces/issues",
+        "http://127.0.0.1:33418,",
+        "https://github.com/jonschlinkert/is-extglob/issues",
+        "https://bit.ly/3UZlQDm",
+        "https://github.com/TrySound)",
+        "https://accounts.google.com",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/core/vs/platform/files/node/watcher/watcherMain.js.map",
+        "https://nodejs.org/api/permissions.html#file-system-permissions",
+        "https://raw.githubusercontent.com",
+        "https://github.com/drpizza)",
+        "https://aka.ms/vscode-windows-unc.",
+        "https://w3c.github.io/aria/#widget_roles",
+        "http://h3manth.com)",
+        "https://*.microsoft.com",
+        "https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options)",
+        "https://code.visualstudio.com/api/extension-guides/task-provider#when-clause)",
+        "https://aka.ms/vscode-when-clause)",
+        "https://antigravity.google/docs/rules",
+        "https://github.com/wtgtybhertgeghgtwtg)",
+        "https://github.com/eush77)",
+        "https://github.com/parcel-bundler/watcher.git",
+        "https://open-vsx.org",
+        "http://rumkin.com)",
+        "https://code.visualstudio.com/docs/copilot/customization/mcp-servers)"
+      ],
+      "ip_addresses": [
+        "192.168.0.1",
+        "1.3.14.3",
+        "1.2.3.4",
+        "0.0.0.0",
+        "10.10.10.10",
+        "14.2.231.21",
+        "127.0.0.1",
+        "109.94.209.70",
+        "17.0.8.101"
+      ],
+      "file_paths": [
+        "c:\\Users\\Admin\\.conda",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\User\\mcp.json",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT\\\\storage\\\\snapshots\\\\System_Snapshot_20260222_132938\\\\explorer.exe_4960.raw",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fill-range",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT (excludes",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT\\\\storage\\\\snapshots\\\\System_Snapshot_20260222_132938\\\\AMDRSSrcExt.exe_14600.raw",
+        "c:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "c:\\Users\\Admin\\AppData\\node_modules",
+        "c:\\Windows\\system32\\capauthz.dll",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\out",
+        "c:\\windows\\prefetch",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\braces\\index.js",
+        "c:\\windows\\system32\\wermgr.exe",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\picomatch\\lib\\parse.js",
+        "c:\\\\Windows\\\\system32\\\\coreglobconfig.dll",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\storage\\snapshots\\system_snapshot_20260222_132938\\msedgewebview2.exe_14520.rawU",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\User\\snippets ",
+        "c:\\Windows\\System32\\Wbem\\wbemdisp.tlb",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\braces\\lib\\constants.jsU",
+        "c:\\\\Windows\\\\system32\\\\nlmproxy.dll",
+        "c:\\Program Files (x86)\\Minimal ADB and Fastboot",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "c:\\windows\\system32\\mtf.dll",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\node_modulesU",
+        "c:\\windows\\system32\\virtdisk.dllU",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain",
+        "c:\\Windows\\System32\\WindowsPowerShell",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\storage\\snapshots\\system_snapshot_20260222_132938\\explorer.exe_4960.raw",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\locales\\en-US.pak",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fill-range.json",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\forensic_tool.log",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fill-range\\package.json",
+        "c:\\\\Windows\\\\system32\\\\FrameServerClient.dll",
+        "c:\\\\Users\\\\Admin\\\\AppData\\\\Roaming\\\\Antigravity\\\\User\\\\settings.json.vsctmp",
+        "c:\\program files\\cmake\\bin",
+        "c:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages",
+        "c:\\Windows\\system32\\Windows.Internal.Graphics.Display.DisplayEnhancementManagement.dll",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fill-range\\node_modulesU",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\micromatch\\index.js",
+        "c:\\windows\\system32\\devenum.dll",
+        "c:\\windows\\bootstat.dat",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "c:\\windows\\system32\\backgroundtransferhost.exe",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\storage\\snapshots\\system_snapshot_20260222_132938\\audiodg.exe_4620.rawU",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\storage\\snapshots\\System_Snapshot_20260222_132938\\RadeonSoftware.exe_18728.raw",
+        "c:\\Windows\\system32\\wscinterop.dll",
+        "c:\\Users\\Admin\\AppData\\Local\\Python\\bin (excludes",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\picomatch\\lib\\",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\storage\\snapshots\\system_snapshot_20260222_132938\\shellhost.exe_5516.raw"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.9442,
+      "null_byte_ratio": 0.283,
+      "printable_ratio": 0.3191,
+      "unique_bytes": 256,
+      "total_size": 343470080
+    },
+    "risk_assessment": {
+      "risk_score": 60.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 40.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "High Severity YARA Match (+40)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:08:18.346801Z",
+    "process_name": "Antigravity.exe",
+    "pid": 17040,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

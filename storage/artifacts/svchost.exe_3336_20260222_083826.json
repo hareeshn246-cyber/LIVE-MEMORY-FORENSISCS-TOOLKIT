@@ -1,0 +1,275 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\svchost.exe_3336.raw",
+    "dump_sha256": "841686cfc4eff5c041292a82da72919847426c5f25f488aa96f0c3a909f97293",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 14,
+            "offsets": [
+              2438494,
+              2438854,
+              2440078,
+              2441302,
+              2442966,
+              2443750,
+              2444974,
+              2446198,
+              2447422,
+              10960155
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 13,
+            "offsets": [
+              2438208,
+              2439792,
+              2441016,
+              2442680,
+              2443464,
+              2444688,
+              2445912,
+              2447136,
+              10959869,
+              10978573
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 7,
+            "offsets": [
+              20638888,
+              21438482,
+              22945668,
+              26450280,
+              27081100,
+              39553094,
+              43035022
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:38:18.206493Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\svchost.exe_3336.raw",
+      "dump_size_mb": 43.51
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 221,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 3,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 8,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 7,
+          "CryptDecrypt": 7,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 10,
+          "CreateProcess": 67,
+          "AdjustTokenPrivileges": 7,
+          "OpenProcess": 50,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 9,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 272,
+        "patterns": {
+          "http://": 265,
+          "GET": 7
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://www.w3.org/2001/04/xmlenc#Element",
+        "http://schemas.xmlsoap.org/ws/2005/02/trust/Issue",
+        "http://www.w3.org/2001/04/xmlenc#",
+        "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256",
+        "http://www.w3.org/2001/10/xml-exc-c14n#",
+        "http://schemas.microsoft.com/windows/2010/12/DeviceMetadata/MobileBroadBandInfo",
+        "http://www.w3.org/2000/09/xmldsig#",
+        "http://docs.oasis-open.org/wss/2004/XX/oasis-2004XX-wss-saml-token-profile-1.0#SAMLAssertionID",
+        "http://Passport.NET/purpose::PURPOSE_GETKEYDATA_ANAHEIM&telemetry=MATS&mkt=en-GB&api-version=2.0&x-client-xtra-sku=MSAL.xplat.Win32",
+        "http://Passport.NET/purpose::PURPOSE_GETKEYDATA_ANAHEIM&amp;telemetry=MATS&amp;mkt=en-GB&amp;api-version=2.0&amp;x-client-xtra-sku=MSAL.xplat.Win32",
+        "http://www.w3.org/2001/04/xmlenc#sha256",
+        "http://Passport.NET/tb",
+        "http://www.w3.org/2001/04/xmlenc#tripledes-cbc",
+        "http://Passport.NET/STS",
+        "http://www.w3.org/2001/04/xmlenc#aes256-cbc"
+      ],
+      "ip_addresses": [
+        "1.3.6.1",
+        "0.0.0.0",
+        "5.1.0.0",
+        "4.1.311.10",
+        "17.0.8.101",
+        "10.0.0.0"
+      ],
+      "file_paths": [
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.eaf2e734-c984-41b0-8c63-960b22b27fdb.tmp.xml",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_VirtualBox.exe_7969b18796ca95b076f46f8974c6936412352cc5_8f9be56a_cab_6479dcd9-98d6-4554-b3df-284ab69d70bf\\minidump.mdmp",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Kernel_1a8_a486abfb483998f15d1451bf2da6cf76f6fb1279_00000000_cab_4c5a62cd-c9b9-4e9f-894d-a0cfb57b58e0\\WPR_initiated_DiagTrackMiniLogger_WPR System Collector_inject.etl",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_VirtualBox.exe_7969b18796ca95b076f46f8974c6936412352cc5_8f9be56a_cab_6479dcd9-98d6-4554-b3df-284ab69d70bf\\triagedump.3f04.hxmu.dmp",
+        "C:\\Windows\\WinSxs\\poqexec.log",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.7b5012fa-caab-46e1-a117-fde9203b7998.tmp.etl",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_10.0.26100.7295__f4e8636a1ff969ee0f877957b7915bccbc8edd4_00000000_cab_4b3a94fe-a677-49fb-b488-161710dae864\\WPR_initiated_DiagTrackMiniLogger_WPR System Collector_inject.etl",
+        "C:\\Windows\\SystemTemp\\WER.a9328038-a478-4e67-8a7e-cf3b779c2561.tmp.WERDataCollectionStatus.txt",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_chrome.exe_59297b29c97947c3ca478dcff65d04d239253ee_cdb52747_cab_7aca4dd3-0bb5-42c0-ae90-740a7cb1384e\\memory.hdmp",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.09bbbef4-8c0c-41e3-84f9-2909ca69c453.tmp.txt",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\AppCrash_crs-video.exe_4b28dfd6f122ccb8beee1bb95437f317a185d5e3_d23685d6_cab_a1a802bd-e2a9-464b-ba93-98e71a17c1df\\memory.hdmp",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_VirtualBox.exe_7969b18796ca95b076f46f8974c6936412352cc5_8f9be56a_cab_6479dcd9-98d6-4554-b3df-284ab69d70bf\\WPR_initiated_DiagTrackMiniLogger_WPR System Collector_inject.etl",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.8700d790-0b0a-4436-a4bb-527f459f85a3.tmp.etl",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp\\WER.6a5e7e33-8c3a-47eb-8fb7-fdb4aab5662b.tmp.xml",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.9bea3c9a-8ca4-469c-8cd0-f3e32f58d6f3.tmp.csv",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.c3a74ae4-bc32-4309-9eee-78654cfd6d24.tmp.txt",
+        "C:\\ProgramData\\Microsoft\\Windows\\AppRepository\\Families\\ApplicationData\\Microsoft.GamingApp_8wekyb3d8bbwe",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.0752d363-bbd3-4338-b5fa-73c13faf44b7.tmp.xml",
+        "C:\\ProgramData\\Microsoft\\Windows\\AppRepository\\Families\\ApplicationData\\Microsoft.WindowsCamera_8wekyb3d8bbwe",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp\\WER.76bcae5e-22e0-4b16-aa53-b14479d0791c.tmp.appcompat.txt",
+        "C:\\Windows\\servicing\\Sessions\\Sessions.xml",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp\\WER.9eeecc8f-2ff4-4cb0-a80d-4efa55a354b6.tmp.xml",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_chrome.exe_8f47b8471c568275c980533cc242f0b8a748c957_f0fa29dc_cab_06ab685c-e303-4077-be9d-9e2483777596\\WPR_initiated_DiagTrackMiniLogger_OneTrace_User_Logger_20251023_1_EC_0_inject.etl",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.b390e01c-9694-41a0-bd83-8d07cff3037c.tmp.etl",
+        "C:\\ProgramData\\Microsoft\\Windows\\AppRepository\\Families\\ApplicationData\\Microsoft.RawImageExtension_8wekyb3d8bbwe",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.44b15f3b-d59f-47ce-866d-703c88aa2f22.tmp.csv",
+        "C:\\Windows\\Logs\\CBS\\container.etl",
+        "C:\\ProgramData\\Microsoft\\Windows\\AppRepository\\Families\\ApplicationData\\Microsoft.Office.OneNote_8wekyb3d8bbwe",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.781c5916-53ac-469c-8dd1-baf2b659e6dd.tmp.etl",
+        "C:\\ProgramData\\Microsoft\\Windows\\AppRepository\\Families\\ApplicationData\\Microsoft.ZuneMusic_8wekyb3d8bbwe",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.65841dc9-f4a6-4b9e-a1a4-2560314a4b0b.tmp.etl",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.a65acf28-ded2-485c-8306-4a7bc594f23e.tmp.csv",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.8cac4e1b-8cc1-4813-bcf9-d6e2d0efb3ed.tmp.csv",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.65a98496-fd16-42e1-80ae-09117f3efa22.tmp.xml",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.51d11767-22f1-4071-8a0d-fec5672f9efb.tmp.mdmp",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.2e8f57a3-dfdd-47d8-974c-ba1889f0b753.tmp.WERInternalMetadata.xml",
+        "C:\\Windows\\SystemTemp\\WER-14146734-1.sysdata.xml",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.628356d5-7fa8-468e-90f7-3937bd9ca8e0.tmp.txt",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_mmc.exe_4264fad0973d9630d0cc9c55632e107a80ce6b0_c3d25d2a_cab_004551be-6a7d-4822-8ec4-36dbb7a459dd\\minidump.mdmp",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.2a0eb9be-b87c-4124-a2de-fd16f07a6be6.tmp.txt",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_VirtualBox.exe_7969b18796ca95b076f46f8974c6936412352cc5_8f9be56a_cab_6479dcd9-98d6-4554-b3df-284ab69d70bf\\memory.hdmp",
+        "C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportQueue\\Critical_chrome.exe_8f47b8471c568275c980533cc242f0b8a748c957_f0fa29dc_cab_06ab685c-e303-4077-be9d-9e2483777596\\minidump.mdmp",
+        "C:\\Windows\\Logs\\CBS\\CbsPersist_20260207151254.cab",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.1968,
+      "null_byte_ratio": 0.4047,
+      "printable_ratio": 0.2643,
+      "unique_bytes": 256,
+      "total_size": 45625344
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:38:26.662648Z",
+    "process_name": "svchost.exe",
+    "pid": 3336,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

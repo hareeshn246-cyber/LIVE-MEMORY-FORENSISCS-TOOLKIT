@@ -1,0 +1,447 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_184703\\Antigravity.exe_18816.raw",
+    "dump_sha256": "7e70534c7977c10dd403f8b3a4edcc6b6e1848d2138a8ec40115169f4bd88357",
+    "total_matches": 3,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 10,
+            "offsets": [
+              208653528,
+              208654820,
+              228019132,
+              228020424,
+              248986740,
+              248988032,
+              249005786,
+              249007309,
+              249334792,
+              249336060
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 27,
+            "offsets": [
+              208654463,
+              208654717,
+              208656140,
+              228020067,
+              228020321,
+              228021744,
+              248987675,
+              248987929,
+              248989352,
+              249006885
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "AsyncRAT_Client",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects AsyncRAT Client",
+          "severity": "high",
+          "author": "Community"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 15,
+            "offsets": [
+              514988001,
+              515576061,
+              517260151,
+              518600407,
+              523241267,
+              525097573,
+              534800869,
+              534801651,
+              541108311,
+              542300677
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 5,
+            "offsets": [
+              47027154,
+              47027240,
+              47027715,
+              47027834,
+              334932476
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 2,
+            "offsets": [
+              144362068,
+              144366298
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "Conti_Ransomware",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects Conti Ransomware artifacts",
+          "severity": "critical",
+          "author": "Research"
+        },
+        "strings": [
+          {
+            "identifier": "$s2",
+            "instances": 4,
+            "offsets": [
+              462499840,
+              462499856,
+              462500448,
+              483869072
+            ]
+          },
+          {
+            "identifier": "$ext",
+            "instances": 32,
+            "offsets": [
+              184553398,
+              184643158,
+              190101692,
+              190101848,
+              190102098,
+              190102594,
+              190194888,
+              190203092,
+              208886818,
+              208889072
+            ]
+          },
+          {
+            "identifier": "$note",
+            "instances": 2,
+            "offsets": [
+              145098398,
+              150595393
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T13:30:54.609199Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.6867,
+      "malware": 0.3133
+    },
+    "is_malicious": true,
+    "risk_score": 85.0,
+    "decision_rationale": [
+      "Score reduced from 26.0 (Trusted Process)",
+      "Forensic Override: Critical YARA match detected (Score Boosted).",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 10.9655
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_184703\\Antigravity.exe_18816.raw",
+      "dump_size_mb": 535.8
+    },
+    "signature_indicators": {
+      "total_detections": 3,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        },
+        {
+          "name": "AsyncRAT_Client",
+          "severity": "high",
+          "description": "Detects AsyncRAT Client"
+        },
+        {
+          "name": "Conti_Ransomware",
+          "severity": "critical",
+          "description": "Detects Conti Ransomware artifacts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 386,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 12,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 12,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 12,
+          "CryptDecrypt": 14,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 35,
+          "CreateProcess": 88,
+          "AdjustTokenPrivileges": 27,
+          "OpenProcess": 119,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 6629,
+        "patterns": {
+          "http://": 1331,
+          "https://": 3665,
+          "ftp://": 1,
+          "POST": 583,
+          "GET": 1026,
+          "User-Agent:": 7,
+          "Content-Type:": 15,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://github.com/features/codespaces)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.mcpToolDefinitions.d.ts",
+        "https://gh.io",
+        "https://github.com/nodejs/undici/issues/3895",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.tokenInformation.d.tsU",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#name-max-stale",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.fileSearchProvider.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.taskProblemMatcherStatus.d.tsU",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#name-age",
+        "https://github.com/sqs/goreturns.",
+        "https://github.com/markedjs/marked.",
+        "https://github.com/Microsoft/vscode-java-test/issues",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/smart-buffer/build/smartbuffer.js.map",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalShellEnv.d.tsU",
+        "https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf",
+        "https://www.rfc-editor.org/rfc/rfc6265#section-4.1.1",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalExecuteCommandEvent.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribMenuBarHome.d.ts",
+        "https://www.typescriptlang.org/tsconfig#strictFunctionTypes)",
+        "https://raw.githubusercontent.com/composer/composer/master/res/composer-schema.json",
+        "https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.fsChunks.d.ts",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/vscode-regexpp/index.js.map",
+        "https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.woff",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityCommandPopup.d.ts",
+        "https://www.python.org/downloads).",
+        "https://github.com/microsoft/vscode-gradle/",
+        "https://github.com/Microsoft/vscode-references-view",
+        "https://pkg.go.dev/cmd/cgo)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityFiles.d.tsU",
+        "https://github.com/microsoft/vscode-js-debug",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.scmProviderOptions.d.ts",
+        "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
+        "https://code.visualstudio.com/docs/getstarted/userinterface#_preview-mode",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/extensions/antigravity-dev-containers/dist/extension.js.map",
+        "https://github.com/microsoft/vscode-python/discussions/categories/q-a",
+        "https://golang.org/pkg/builtin/#len",
+        "https://v",
+        "https://github.com/sindresorhus/got)",
+        "https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cookie-prefixes-00#section-3.2",
+        "https://github.com/Microsoft/vscode-java-debug.git",
+        "https://antigravity.google/docs/mcp",
+        "https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.svg#web",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/smart-buffer/build/utils.js.mapU",
+        "https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand),",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#section-5.2.2.10-3",
+        "https://go.dev/doc/godebug),",
+        "https://tools.ietf.org/html/rfc7230#section-3.2.6",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/https-proxy-agent/dist/parse-proxy-response.js.map",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.authProviderSpecific.d.ts"
+      ],
+      "ip_addresses": [
+        "134.199.80.223",
+        "4.2.6.6",
+        "4.1.2.2",
+        "45.88.100.36",
+        "161.0.8.31",
+        "5.4.2.1",
+        "178.171.117.81",
+        "4.2.5.2",
+        "204.217.149.135",
+        "112.17.241.235",
+        "1.5.1.2",
+        "194.113.81.217",
+        "43.134.12.154",
+        "1.3.6.1",
+        "224.0.0.0",
+        "4.2.6.8",
+        "101.32.109.185",
+        "192.0.2.42",
+        "198.56.7.117",
+        "14.2.231.21",
+        "95.217.72.181",
+        "5.3.2.1",
+        "4.2.6.7",
+        "4.2.6.4",
+        "255.0.0.0",
+        "7.6.3.2",
+        "192.168.0.1",
+        "10.162.108.147",
+        "7.6.3.1",
+        "19.2.3.1",
+        "45.82.99.33",
+        "2.2.1.2",
+        "5.5.7.3",
+        "4.2.6.2",
+        "186.179.19.20",
+        "119.28.119.172",
+        "88.99.29.146",
+        "195.133.209.198",
+        "17.0.8.101",
+        "104.194.80.193",
+        "134.199.78.221",
+        "88.214.3.213",
+        "154.30.99.146",
+        "169.254.242.252",
+        "45.84.80.16",
+        "4.2.5.1",
+        "4.2.6.3",
+        "10.10.10.10",
+        "138.201.82.55",
+        "45.143.175.113"
+      ],
+      "file_paths": [
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\hidvhf.inf_amd64_cd250a24b1c9eb86\\vhf.sys",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\css-language-featuresq",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\terminal-suggest",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\dc21x4vm.inf_amd64_9512f2b97d63f7fa\\dc21x4vm.sys",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-basics",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T183833\\window1\\exthost\\vscode.git",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\merge-conflict\\package.json",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\storage\\snapshots\\system_snapshot_20260222_184703\\antigravity.exe_18816.raw",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\ms-python.python-2026.0.0-universal\\python_files\\get_variable_info.py",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\websocket\\constants.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\configuration-editing\\dist\\configurationEditingMainU",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\typescript-basics",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T183833\\window1\\exthost\\vscode.github\\GitHub.log",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\csharp",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\websocket\\receiver.js",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\vscjava.vscode-java-dependency-0.27.0-universal",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\pug",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\npm\\dist\\npmMain",
+        "c:\\Users\\node_modules",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\mock\\mock-symbols.jsM",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\git\\dist",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\iagpio.inf_amd64_07b64df61e783bfe\\iagpio.inf",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\iastorav.inf_amd64_87f761c07c99d5e7\\iastorav.inf",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\fetch\\formdata-parser.js",
+        "C:\\Program Files\\dotnet\\",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\mock",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\ip-address\\distq",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\mechatroner.rainbow-csv-3.3.0-universal\\rbql_core\\rbql-js\\csv_utils.js",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant",
+        "R:\\Sg",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\git\\dist\\git-editor-main.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\theme-red",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\dispatcher\\client.jsU",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\ms-python.debugpy-2025.18.0-win32-x64\\.noConfigDebugAdapterEndpoints",
+        "C:\\Program Files\\qemu",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\socks-proxy-agent\\node_modules",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\agent-base\\package.json",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\extension-editing",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\theme-symbols",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\smart-buffer\\build\\smartbuffer.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\git\\dist\\ssh-askpass.sh",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\objective-c",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\llhttp\\utils.js",
+        "y:\\n\\n",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\elxstor.inf_amd64_4481b8e838553a6e\\elxstor.inf",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\ialpssi_i2c.inf_amd64_8e00e1aed7fbdf70\\iaLPSSi_I2C.sys",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\websocketM",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\core\\errors.js",
+        "C:\\jdk-24_windows-x64_bin\\jdk-24.0.2\\bin"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.3219,
+      "null_byte_ratio": 0.2472,
+      "printable_ratio": 0.3608,
+      "unique_bytes": 256,
+      "total_size": 561831936
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T13:31:31.867644Z",
+    "process_name": "Antigravity.exe",
+    "pid": 18816,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

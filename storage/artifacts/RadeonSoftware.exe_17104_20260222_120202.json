@@ -1,0 +1,337 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\RadeonSoftware.exe_17104.raw",
+    "dump_sha256": "70c893236deca138c5680048301e37c718e83df1708b151e11df57470422fe82",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              583023336
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              583022864
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 24,
+            "offsets": [
+              283790294,
+              560825232,
+              577652246,
+              583380424,
+              583715784,
+              591826544,
+              603367008,
+              697030095,
+              700186208,
+              701499008
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T12:01:26.325599Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7847,
+      "malware": 0.2153
+    },
+    "is_malicious": true,
+    "risk_score": 22.5,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 7.535499999999999
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\RadeonSoftware.exe_17104.raw",
+      "dump_size_mb": 733.0
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 634,
+        "api_details": {
+          "VirtualAllocEx": 10,
+          "WriteProcessMemory": 7,
+          "CreateRemoteThread": 12,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 20,
+          "GetAsyncKeyState": 16,
+          "CryptEncrypt": 24,
+          "CryptDecrypt": 24,
+          "InternetReadFile": 11,
+          "URLDownloadToFile": 5,
+          "WinExec": 2,
+          "ShellExecute": 78,
+          "CreateProcess": 136,
+          "AdjustTokenPrivileges": 24,
+          "OpenProcess": 205,
+          "NtMapViewOfSection": 14,
+          "NtUnmapViewOfSection": 14,
+          "QueueUserAPC": 11,
+          "SetThreadContext": 17,
+          "RtlCreateUserThread": 2
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 3052,
+        "patterns": {
+          "http://": 743,
+          "https://": 822,
+          "ftp://": 1,
+          "POST": 94,
+          "GET": 1349,
+          "User-Agent:": 24,
+          "Content-Type:": 14,
+          "Cookie:": 5
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://www.microsoft.com/pki/certs/MicrosoftRootCert.crt0!",
+        "http://www.iec.ch",
+        "http://www.w3.org/2000/svg",
+        "http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z",
+        "http://status.geotrust.com0",
+        "http://crl.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl0]",
+        "http://www.microsoft.com/pki/certs/MicCerTruLisPCA_2009-04-02.crt0",
+        "http://www.microsoft.com/typography/fonts/http://www.sajatypeworks.comMicrosoft",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "https://download.amd.com/cccads/images/FeedbackAdrenalin_banner_900x600.png",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "http://www.bis.doc.gov/",
+        "http://support.amd.com/5u$q",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_privacyview.png",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_softwareadrenalinedition.png",
+        "http://support.amd.com/drivers/xml/driver_09_us.xml",
+        "http://ocsp.digicert.com0B",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_smartaccessvideo.png",
+        "http://microsoft.com0",
+        "https://download.amd.com/cccads/cccad-113.json",
+        "https://drivers.amd.com/drivers/installer/json/NewComponen",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_enhancedsync.png",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_boost.png",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_smartshiftrsr.png",
+        "http://crl.microsoft.com/pki/crl/products/microsoftrootcert.crl0T",
+        "https://docs.microsoft.com/typography/http://www.carterandcone.comMicrosoft",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_smartshiftmax.png",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_noisesuppression.png",
+        "http://www.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_antilagnext.png",
+        "http://www.w3.org/1999/xlink",
+        "http://support.amd.com/",
+        "https://download.amd.com/cccads/images/243043376-N_25Q3_GF2.0_ROW_SoftwareBanner_2200x900.jpg",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_fluidmotionframes.png",
+        "http://cacerts.geotrust.com/GeoTrustTLSRSACAG1.crt0",
+        "https://docs.microsoft.com/typography/aboutWeightWidthLightSemiLightSemiBoldBoldLight",
+        "http://ns.adobe.com/xap/1.0/sType/ResourceEvent#",
+        "http://ns.adobe.com/xap/1.0/",
+        "http://www.tiro.comMicrosoft",
+        "https://docs.microsoft.com/typography/aboutMicrosoft",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "http://www.digicert.com/CPS0",
+        "http://purl.org/dc/elements/1.1/",
+        "http://www.microsoft.com/typography/fonts/Microsoft",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_imagesharpening.png",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_smartaccessmemory.png",
+        "http://www.microsoft.comhttp://www.microsoft.com/typography/Microsoft",
+        "https://download.amd.com/rs-featurehelpinfo/Images/CN_IMAGE_superresolution.png",
+        "http://www.microsoft.com/typography/ctfontshttp://fontfabrik.comMicrosoft"
+      ],
+      "ip_addresses": [
+        "4.1.311.67",
+        "2.5.29.14",
+        "2.5.4.11",
+        "5.5.7.1",
+        "2.5.29.32",
+        "2.5.4.10",
+        "5.5.7.2",
+        "2.5.29.15",
+        "2.23.140.1",
+        "1.311.10.11",
+        "5.5.7.48",
+        "2.5.4.7",
+        "2.5.29.35",
+        "1.3.132.0",
+        "1.1.2.1",
+        "032.017.000.055",
+        "1.9.16.1",
+        "2.16.840.1",
+        "2.5.29.31",
+        "4.1.311.64",
+        "4.1.311.76",
+        "2.5.29.37",
+        "6.0.0.0",
+        "1.3.6.1",
+        "4.1.311.80",
+        "1.3.14.3",
+        "32.017.000.055",
+        "1.2.1.0",
+        "4.1.311.60",
+        "127.0.0.1",
+        "2.5.29.19",
+        "3.6.1.4",
+        "2.5.4.8",
+        "1.5.5.7",
+        "17.0.8.101",
+        "3.2.8.1",
+        "5.7.3.2",
+        "5.5.7.3",
+        "2.5.4.3",
+        "1.9.16.2",
+        "2.23.43.1",
+        "4.1.311.10",
+        "2.5.4.6",
+        "1.3.36.3",
+        "2.5.29.17",
+        "4.1.311.92"
+      ],
+      "file_paths": [
+        "C:\\Program Files (x86)\\Windows Media Player\\wmplayer.exeWindows Media Player",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Users\\Admin\\AppData\\Local\\Micro9",
+        "C:\\Users\\Admin\\AppData\\Local\\AMD\\CN\\RGStats.db-wal",
+        "C:\\\\DxxPipelines\\\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\dxxpDump\\shaderHive.txt",
+        "C:\\WINDOWS\\System32\\DriverStore\\FileRepository\\u0404816.inf_amd64_67287cb685021ef9\\B404750\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "C:\\\\Games\\\\Days Gone\\\\BendGame\\\\Binaries\\\\Win64\\\\DaysGone.exe",
+        "C:\\Users\\Public",
+        "C:\\Windows\\SysWOW64\\msiexec.exe",
+        "D:\\DxxpDump",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "C:\\Users\\Admin\\AppData\\Local\\AMD\\CN\\RGStats.db",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "C:\\apitrace\\",
+        "C:\\Users\\Admin",
+        "C:\\Users\\Admin\\AppData\\Local\\AMD\\CN\\RGStats.db-journal",
+        "C:\\BOOST\\DXXPBOOST.INI",
+        "C:\\Windows",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Program Files (x86)\\Windows Media Player\\wmplayer.exe",
+        "C:\\Games\\Days Gone\\BendGame\\Binaries\\Win64\\DaysGone.exe",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\\\Program Files (x86)\\\\Steam",
+        "C:\\ProgramData",
+        "C:\\DxxResources\\",
+        "C:\\Program Files\\Epic Games\\HogwartsLegacy\\Phoenix\\Binaries\\Win64\\HogwartsLegacy.exe",
+        "C:\\Need For Speed Most Wanted\\speed.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp",
+        "d:\\ShaderReplace",
+        "C:\\Program Files\\VS Revo Group\\Revo Uninstaller\\RevoUnin.exe",
+        "C:\\Userx",
+        "C:\\WINDOWS\\System32\\DriverStore\\FileRepository\\u0404816.inf_amd64_67287cb685021ef9\\B404750\\amdxx64.dll",
+        "C:\\Games\\Hitman-GOTY-AnkerGames\\retail\\hitman.exe",
+        "C:\\Games\\Hitman-GOTY-AnkerGames\\retail\\hitman.exeHitman",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "C:\\dump\\",
+        "C:\\Program Files (x86)\\DODI-Repacks\\Prince of Persia The Forgotten Sands\\Prince of Persia.exe",
+        "D:\\NFS\\speed.exe",
+        "o:\\nv",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "C:\\Program Files\\WinRAR\\WhatsNew.txt",
+        "C:\\Program Files (x86)\\Ghost of Tsushima DIRECTORS CUT\\GhostOfE"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.2824,
+      "null_byte_ratio": 0.3981,
+      "printable_ratio": 0.2603,
+      "unique_bytes": 256,
+      "total_size": 768610304
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T12:02:02.461560Z",
+    "process_name": "RadeonSoftware.exe",
+    "pid": 17104,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

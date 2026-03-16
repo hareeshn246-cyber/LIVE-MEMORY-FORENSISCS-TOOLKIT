@@ -1,0 +1,329 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\SearchHost.exe_10988.raw",
+    "dump_sha256": "8814f640854082ffe685c4cab115247fc3be13bf56e9a66074d851c458aa720a",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              63003808
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              63004456
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 22,
+            "offsets": [
+              96683916,
+              226779022,
+              288733470,
+              331978262,
+              398057750,
+              407953978,
+              414736402,
+              432801231,
+              435683340,
+              436149856
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:32:09.792898Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\SearchHost.exe_10988.raw",
+      "dump_size_mb": 466.89
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 631,
+        "api_details": {
+          "VirtualAllocEx": 13,
+          "WriteProcessMemory": 7,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 20,
+          "GetAsyncKeyState": 21,
+          "CryptEncrypt": 21,
+          "CryptDecrypt": 22,
+          "InternetReadFile": 11,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 66,
+          "CreateProcess": 114,
+          "AdjustTokenPrivileges": 22,
+          "OpenProcess": 248,
+          "NtMapViewOfSection": 11,
+          "NtUnmapViewOfSection": 9,
+          "QueueUserAPC": 12,
+          "SetThreadContext": 13,
+          "RtlCreateUserThread": 2
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 573,
+        "patterns": {
+          "http://": 193,
+          "https://": 102,
+          "POST": 19,
+          "GET": 256,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://crl4.digicert.com/DigiCertGlobalRootCA.crl00",
+        "http://crl4.digicert.com/DigiCertCloudServicesCA-1-g1.crl0",
+        "https://www.bing.com",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "https://www.hasleo.com/https://www.hasleo.com/-",
+        "https://apps.microsoft.com/start-menu/9NB3XCTL0RWD?hl=en",
+        "https://go.microsoft.com/fwlink/?linkid=2286319",
+        "http://buildweb.nvidia.com/CertEnroll/buildweb.nvidia.com_NVIDIACorp.crt0V",
+        "https://login.microsoft.com",
+        "http://ocspx.digicert.com0E",
+        "http://crl.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl0]",
+        "https://www.bing.com/WS/Init",
+        "http://ocsp.digicert.com0@",
+        "https://ejlh.fa.em1.ukg.oraclecloud.com/fscmUI.",
+        "https://apps.microsoft.com/start-menu/XPFFKXN4TCCLFB?hl=en",
+        "https://apps.microsoft.com/start-menu/XPDNZJFNCR1B07?hl=en",
+        "http://www.microsoft.com/pki/certs/MicrosoftRootCert.crt0!",
+        "https://store-images.s-microsoft.com/image/apps.48443.13520645424616117.f2408dc1-94f0-4646-92f6-dfc0a16ac28e.0d788af1-11ec-48f3-ba47-29af11a8e844?h=40",
+        "http://www.w3.org/2000/svg",
+        "http://crl3.digicert.com/DigiCertCloudServicesCA-1-g1.crl0?",
+        "https://www.revouninstaller.com/https://www.revouninstaller.com/-",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "http://crl3.digicert.com/DigiCertGlobalRootCA.crl07",
+        "https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHM0OYfiFeMI2p9MWie0CvL99U4GA1gf6_kayTt_kBblFwHwo8BW8JXlqfnYxKPmmBYruO6vI1R0xRxtDZje6JX7Lui4CboUyOixwWR0BeXtk_UraRUofKKlxgon4EpGD_BviL4rh7HK7IR_8Ohw9yPQ-",
+        "http://www.digicert.com/CPS0",
+        "http://www.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl",
+        "http://cacerts.digicert.com/DigiCertGlobalRootCA.crt0",
+        "http://dmd-ca-beta2/CertEnroll/dmd-ca-beta2_Microsoft",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "http://cacerts.digicert.com/DigiCertCloudServicesCA-1.crt0",
+        "http://crl.microsoft.com/pki/crl/products/microsoftrootcert.crl0T",
+        "http://microsoft.com0",
+        "http://www.microsoft.com/pki/certs/MicCerTruLisPCA_2009-04-02.crt0",
+        "http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z",
+        "https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxpnP3GeJQNzqVKBfpSeVDiqDL9Q3B7sDOWEarehw9jsauPgEm8oGWtXweaeRZq.avPCSmi1.YH2R09n8SoA_UMg-",
+        "https://gitforwindows.org/faqhttps://gitforwindows.org/faq-",
+        "https://apps.microsoft.com/start-menu/9WZDNCRFJ4MV?hl=en"
+      ],
+      "ip_addresses": [
+        "65.0.4.0",
+        "9.0.0.01",
+        "4.1.311.76",
+        "5.5.7.1",
+        "1.311.10.3",
+        "5.5.7.2",
+        "1.3.132.0",
+        "2.2.5.0",
+        "4.1.311.92",
+        "2.5.29.37",
+        "12.0.3.0",
+        "4.1.311.80",
+        "64.0.4.0",
+        "2.23.43.1",
+        "4.1.311.64",
+        "5.0.96.3",
+        "2.5.29.32",
+        "4.1.311.67",
+        "1.3.6.1",
+        "1.9.16.1",
+        "2.5.29.17",
+        "2.0.1.2",
+        "5.3.0.433",
+        "2.5.29.19",
+        "1.3.36.3",
+        "4.1.311.60",
+        "2.5.4.11",
+        "2.3.18.0",
+        "2.5.4.3",
+        "2.16.840.1",
+        "17.0.8.101",
+        "2.5.29.35",
+        "1.78.26.0",
+        "12.7.9.0",
+        "2.23.140.1",
+        "1.3.14.3",
+        "7.0.0.0",
+        "0.0.0.0",
+        "4.1.311.10",
+        "2.5.29.14",
+        "3.132.0.30",
+        "2.5.29.31",
+        "1.9.16.2",
+        "8.0.0.0",
+        "1.1.2.1",
+        "7.0.3.01",
+        "12.2.00.00",
+        "2.5.4.8",
+        "2.5.4.6",
+        "3.2.8.1"
+      ],
+      "file_paths": [
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\SharedFileItem.cpp",
+        "C:\\emu8086\\emu8086.exe.",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\UdkSettingItem.cpp",
+        "C:\\Journal\\Melior\\Melior.exe",
+        "S:\\sbrowser.exe",
+        "C:\\WKRadar\\Pgms\\Radar\\WKRadar.exe1",
+        "C:\\ProgramData\\CatalogoTubaCabos\\CallCatalogoExpresso.exe0",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\Search\\SearchUx.SearchApi.FileProviderQueryHelpers.cpp",
+        "C:\\AmericasCardroom\\AmericasCardroom.exe",
+        "C:\\ProgramData\\CatalogoCofapSuspensao\\CallCatalogoExpresso.exe-",
+        "C:\\ShanaEncoder\\ShanaEncoder.exe0y",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\Search\\SearchUx.SearchApi.ShellPropertyHelper.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\SearchHistory.cpp",
+        "C:\\BITOfficeTrainer\\BITOfficeTrainer.exe0",
+        "C:\\Oracle\\Middleware\\Oracle_Home\\jdeveloper\\jdeveloper.exe",
+        "C:\\Juneinter\\Getamped\\amped_launcher.exe1",
+        "C:\\Cobranza\\SUA\\SUA.exe",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\WebSearchExtension.cpp",
+        "C:\\PaperSecu\\SecuProperty32.exe",
+        "C:\\Zenit Games\\Priston Tale Brasil\\PsTale.exe0Y",
+        "D:\\Program Files\\Foxmail 7.2\\Foxmail.exe(",
+        "C:\\Pfx Engagement\\WM\\PFXEngagement.exe",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchCore\\StorageProviderSearchQueryOptions.cpp",
+        "C:\\Joygame\\WolfteamTurkiye\\NyxLauncher.exe.",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\SearchUx.SearchApi.LanguageResolver.cpp",
+        "D:\\Tor Browser\\Browser\\firefox.exe.",
+        "C:\\Users\\Admin\\.dotnet\\tools",
+        "C:\\RID",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\Model\\SearchAppearance\\SearchAppearanceParserSecure.cpp",
+        "C:\\Smart\\SmartLink\\SmartLinkUpdater.exe1",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\SearchUx.SearchApi.ScopeResolver.cpp",
+        "C:\\Games\\Counter-Strike WaRzOnE\\CS16Launcher.exe-",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchUI\\ViewModels\\SearchBoxViewModel.cpp",
+        "C:\\LDPlayer\\LDPlayer4.0\\dnmultiplayer.exe-tN",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\Search\\FileHelpers.h",
+        "C:\\ProgramData\\Accenture\\ProtectMyTech\\ProtectMyTech.exe",
+        "P:\\KBOI_client\\KBOIClient.exe",
+        "C:\\SProV8i SS6\\STAAD\\Staadpro.exe1iH",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchUI\\ActivationManager.cpp",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "C:\\S102000\\PS102000.exe0",
+        "C:\\totalcmd\\TOTALCMD64.EXE",
+        "D:\\DZSALauncher\\DZSALauncher.exe.",
+        "C:\\SaflokV4\\Saflok_Client.exe.",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\Program Files (x86)\\Thunder Network\\Thunder\\Program\\Thunder.exe",
+        "C:\\RetroArch-Win64\\retroarch.exe",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchApi\\winrt\\Search\\SearchUx.SearchApi.TileAppItem.cpp"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.0249,
+      "null_byte_ratio": 0.2769,
+      "printable_ratio": 0.2894,
+      "unique_bytes": 256,
+      "total_size": 489570304
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:32:37.964647Z",
+    "process_name": "SearchHost.exe",
+    "pid": 10988,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

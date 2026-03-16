@@ -1,0 +1,335 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\Antigravity.exe_18200.raw",
+    "dump_sha256": "b723ce7668da501082ae2809b81516a2ea2b6bb7ef45ac421327e06fcf50ee01",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 2,
+            "offsets": [
+              90552799,
+              90554091
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 16,
+            "offsets": [
+              90553734,
+              90553988,
+              329374056,
+              406687762,
+              413365711,
+              414802004,
+              421274678,
+              421986180,
+              429091176,
+              429721996
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:39:18.093060Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7647,
+      "malware": 0.2353
+    },
+    "is_malicious": true,
+    "risk_score": 15.0,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)",
+      "Score reduced from 23.2 (Trusted Process)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 8.2355
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\Antigravity.exe_18200.raw",
+      "dump_size_mb": 448.84
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 529,
+        "api_details": {
+          "VirtualAllocEx": 11,
+          "WriteProcessMemory": 8,
+          "CreateRemoteThread": 14,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 19,
+          "GetAsyncKeyState": 15,
+          "CryptEncrypt": 18,
+          "CryptDecrypt": 18,
+          "InternetReadFile": 6,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 67,
+          "CreateProcess": 113,
+          "AdjustTokenPrivileges": 16,
+          "OpenProcess": 174,
+          "NtMapViewOfSection": 11,
+          "NtUnmapViewOfSection": 9,
+          "QueueUserAPC": 11,
+          "SetThreadContext": 10,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 4706,
+        "patterns": {
+          "http://": 1031,
+          "https://": 2857,
+          "ftp://": 1,
+          "POST": 187,
+          "GET": 588,
+          "Content-Type:": 40,
+          "Cookie:": 2
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js.mapU",
+        "http://www.w3.org/2000/svg",
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalSelection.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.quickInputButtonLocation.d.ts",
+        "https://*.google",
+        "https://open-vsx.org/vscode/item",
+        "https://github.com/node-fetch/fetch-blob.git",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm0",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.treeViewMarkdownMessage.d.ts",
+        "https://github.com/sindresorhus/make-dir",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.findTextInFiles.d.ts",
+        "https://github.com/jimmywarting/node-domexception#readme",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.mcpToolDefinitions.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.chatParticipantPrivate.d.ts",
+        "http://i.pki.goog/wr2.crt0",
+        "http://localhost:4445/test/test-polyfill.html",
+        "https://httpwg.org/specs/rfc9110.html#obsolete.date.formats",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalQuickFixProvider.d.ts",
+        "http://localhost:$",
+        "https://github.com/jprichardson/node-fs-extra/issues/269',",
+        "https://github.com/isaacs/node-mkdirp.git",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.interactive.d.ts",
+        "https://github.com/delvedor",
+        "https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand),",
+        "https://github.com/MikeMcl/bignumber.js.git",
+        "https://127.0.0.1:49699/exa.language_server_pb.LanguageServerService/StreamCascadeReactiveUpdates",
+        "https://w3c.github.io/webappsec-referrer-policy/#referrer-policies",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.taskExecutionTerminal.d.ts",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/ip-address/dist/ipv6.js.map",
+        "http://www.accv.es/fileadmin/Archivos/certificados/raizaccv1_der.crl0",
+        "http://i.pki.goog/we2.crt",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribViewsRemote.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookReplDocument.d.ts",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#section-5.2.1.1",
+        "https://developer.mozilla.org/en-US/docs/Web/API/Response/status",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/ip-address/dist/address-error.js.map",
+        "https://github.com/feross/safe-buffer/issues",
+        "https://code.visualstudio.com/docs/setup/enterprise#_configure-allowed-extensions)",
+        "https://github.com/googleapis/google-auth-library-nodejs/security/code-scanning/85",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityDevContainers.d.ts",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/google-auth-library/build/src/auth/idtokenclient.js.mapU",
+        "http://n8.io/",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribNotebookStaticPreloads.d.ts",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/google-auth-library/build/src/auth/jwtclient.js.map",
+        "https://developer.mozilla.org/en-US/docs/Web/API/DOMException#error_names",
+        "https://github.com/microsoft/vscode.git",
+        "https://code.visualstudio.com/docs/copilot/security)",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/socks/build/index.js.map",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookControllerAffinityHidden.d.ts"
+      ],
+      "ip_addresses": [
+        "2.5.29.14",
+        "4.2.6.8",
+        "4.2.6.5",
+        "2.1.1.1",
+        "5.5.7.1",
+        "1.0.0.2",
+        "7.178.07.207",
+        "4.2.5.1",
+        "2.5.29.32",
+        "5.2.2.10",
+        "127.0.0.0",
+        "083.205.173.405",
+        "4.2.6.3",
+        "2.5.29.15",
+        "163.19.291.404",
+        "99.0.0.0",
+        "2.5.29.35",
+        "2.5.29.10",
+        "2.5.29.1",
+        "109.94.209.70",
+        "169.254.169.254",
+        "5.3.2.1",
+        "4.2.6.6",
+        "10.10.10.10",
+        "1.9.16.1",
+        "2.5.29.31",
+        "216.239.38.223",
+        "7.6.3.1",
+        "1.3.6.1",
+        "216.239.36.223",
+        "4.2.6.2",
+        "026.67.21.865",
+        "1.3.14.3",
+        "127.0.0.1",
+        "2.5.29.19",
+        "01.05.027.1",
+        "4.1.311.21",
+        "1.5.75.75",
+        "1.0.6.7",
+        "4.2.6.10",
+        "1.715.045.422",
+        "12.1.1.4",
+        "19.2.3.1",
+        "42.2.0.192",
+        "2.5.4.3",
+        "7.6.3.2",
+        "4.2.5.2",
+        "1.1.1.1",
+        "7.1.1.1",
+        "4.2.6.7"
+      ],
+      "file_paths": [
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\gaxios\\node_modules\\node-fetch\\src\\request.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\gcp-metadata",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\output_logging_20260222T165349\\2-Pyrefly language server.log",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\rules",
+        "C:\\\\Users\\\\Admin\\\\.gemini\\\\antigravity\\\\brain\\\\c66913f2-4d60-4004-b9b5-c985d74ab046\\\\walkthrough.md",
+        "s:\\n1. ",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\json\\jsonfile.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\ip-address\\dist\\ipv4.jsA",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\jsonU",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\uuid\\dist\\v3.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\mock\\mock-call-history.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\index.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\remove\\node_modules",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\path-exists",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\dispatcherM",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\google-auth-library\\build\\src\\auth\\externalAccountAuthorizedUserClient.js",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\extensions.json",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\google-auth-library\\build\\src\\auth\\googleauth.js",
+        "C:\\Users\\Public",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\ip-address\\dist\\address-error.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\cacheU",
+        "c:\\\\Users",
+        "C:\\Us",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\auth.log",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\uuid\\dist\\v35.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\bignumber.js\\package.json",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\storage\\snapshots\\System_Snapshot_20260126_125745\\browser_assistant.exe_11124.raw",
+        "C:\\Program Files",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\User\\History\\532730a0\\yo6d.md",
+        "c:\\\\\\\\Users\\\\\\\\Admin\\\\\\\\OneDrive\\\\\\\\Desktop\\\\\\\\INFOZIANT\\\\\\\\demo_real_analysis.py\\",
+        "y:\\n\\u003e ",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\userDataSync.log",
+        "n:\\n\\n",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\dispatcher",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\notebook.rendering.log",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\google-logging-utils\\build\\node_modules",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\google-auth-library\\build\\src\\auth\\executable-response.js",
+        "C:\\\\\\\\Users\\\\\\\\Admin\\\\\\\\OneDrive\\\\\\\\Desktop\\\\\\\\INFOPROJECT",
+        "c:\\\\Users\\\\Admin\\\\Downloads\\\\INFOZIANT\\\\.venv\\\\Scripts\\\\python.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\google-auth-library\\build\\src\\auth\\refreshclient.js",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\path-exists\\index.js",
+        "C:\\\\\\\\Users\\\\\\\\Admin\\\\\\\\OneDrive\\\\\\\\Desktop\\\\\\\\INFOPROJECT\\\\\\\\MBMD\\\\\\\\src\\\\\\\\mbmd\\\\\\\\gui\\\\\\\\launcher_debug.py\\",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\vscode.github-authentication\\GitHub Authentication.log",
+        "C:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fs-extra\\lib\\empty\\index.jsU",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\fetch-blob\\streams.cjs",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\safe-buffer\\package.json",
+        "C:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOPROJECT\\\\MBMD\\\\src\\\\mbmd\\\\gui\\\\launcher_debug.py",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\product.jsonU"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.302,
+      "null_byte_ratio": 0.2296,
+      "printable_ratio": 0.3558,
+      "unique_bytes": 256,
+      "total_size": 470642688
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:39:44.973664Z",
+    "process_name": "Antigravity.exe",
+    "pid": 18200,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\explorer.exe_4960.raw",
+    "dump_sha256": "4d71dbdedb24634685044445b1166166711fa69a995919d6930e3d54aed32deb",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              292264680
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 2,
+            "offsets": [
+              273941520,
+              292264208
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 28,
+            "offsets": [
+              167871082,
+              241814038,
+              274166652,
+              277926008,
+              288457570,
+              292621768,
+              295705544,
+              359846236,
+              446415418,
+              448275286
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:16:00.380124Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\explorer.exe_4960.raw",
+      "dump_size_mb": 516.84
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 804,
+        "api_details": {
+          "VirtualAllocEx": 13,
+          "WriteProcessMemory": 8,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 27,
+          "GetAsyncKeyState": 26,
+          "CryptEncrypt": 28,
+          "CryptDecrypt": 28,
+          "InternetReadFile": 11,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 104,
+          "CreateProcess": 119,
+          "AdjustTokenPrivileges": 28,
+          "OpenProcess": 343,
+          "NtMapViewOfSection": 11,
+          "NtUnmapViewOfSection": 10,
+          "QueueUserAPC": 13,
+          "SetThreadContext": 15,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 578,
+        "patterns": {
+          "http://": 217,
+          "https://": 88,
+          "POST": 18,
+          "GET": 252,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://login.microsoft.com",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://www.w3.org/2000/svg",
+        "http://schemas.microsoft.com/SMI/2016/WindowsSettings"
+      ],
+      "ip_addresses": [
+        "1.3.6.1",
+        "1.3.14.3",
+        "6.0.0.0",
+        "1.5.284.7",
+        "5.1.0.0",
+        "1.5.284.5",
+        "5.5.7.3",
+        "2.5.29.19",
+        "1.0.0.0",
+        "1.5.284.2",
+        "2.5.29.37",
+        "4.1.311.20",
+        "127.0.0.1",
+        "17.0.8.101"
+      ],
+      "file_paths": [
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\WindowsUdk.UI.Composition.h",
+        "C:\\__w\\1\\s\\Output\\Packages\\Microsoft.Windows.Wil.Internal.0.3.25\\inc\\wil\\opensource\\wil\\resource.h",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\SuggestedAppsProvider.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\TaskListGroupViewModel.h",
+        "C:\\DxxMemoryDumps\\",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\TaskListWindowViewModel.h",
+        "C:\\__w\\1\\s\\Output\\Packages\\Microsoft.Windows.Wil.Internal.0.3.25\\inc\\wil\\opensource\\wil\\result.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\TaskbarConfigurationTuning.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\OverflowItemViewModel.h",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\SuggestedSetupAppViewModel.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\WindowsUdk.System.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\HostWindowClip.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\PinnedListModel.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\OverflowFlyoutList.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\TaskbarBackground.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\HeuristicChatAgentPromptSource.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\Windows.System.h",
+        "C:\\Users\\Admin\\",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\LaunchListItemViewModel.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\DragDropUtils.h",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\ChatAgent.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\SystemTray\\lib\\HotkeyManager.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\StartMenuPersistenceManager.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\StartResources.xaml.g.hpp",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\__w\\1\\s\\Src\\Components\\AppListBackup\\lib\\CDSInterface.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\ExperienceToggleButton.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\Windows.UI.h",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\StartInnerFrameViewModel.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\SystemTray\\lib\\DataModel\\ClockSystemTrayIconDataModel2.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\ShareWindowViewModel.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchUI\\ViewModels\\SearchBoxViewModel.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\StableSlimDistribution.h",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\base.h",
+        "C:\\\\DxxAmdIlReplace\\\\",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\TemporaryUtils.h",
+        "C:\\__w\\1\\s\\Src\\Components\\WebExperienceHost\\CoreEligibility\\GuidedSetupEligibility.cpp",
+        "C:\\Users\\Admin\\AppData\\Ro",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\ContextMenuUtils.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Search\\SearchUI\\ActivationManager.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\WindowsUdk.UI.Input.h",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "C:\\__w\\1\\s\\Src\\Components\\StartMenu\\lib\\CategoryProvider.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\WindowsUdk.Storage.Search.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\TaskbarCollapsibleLayout.cpp",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\WindowsUdk.System.Profile.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Taskbar\\Taskbar\\lib\\TaskbarItemTemplateSelector.cpp",
+        "C:\\__w\\1\\s\\Output\\Release\\x64\\External\\V21\\GeneratedFiles\\StartMenuLib\\winrt\\Windows.UI.Input.h",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.6197,
+      "null_byte_ratio": 0.3361,
+      "printable_ratio": 0.2777,
+      "unique_bytes": 256,
+      "total_size": 541949952
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:16:29.480237Z",
+    "process_name": "explorer.exe",
+    "pid": 4960,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

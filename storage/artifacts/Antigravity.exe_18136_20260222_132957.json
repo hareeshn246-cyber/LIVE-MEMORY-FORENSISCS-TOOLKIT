@@ -1,0 +1,343 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_184703\\Antigravity.exe_18136.raw",
+    "dump_sha256": "fbe4ab615ff8d25fac67bf80c4f475a8fd242034fe6975ef6c798edc18c0bd49",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 19,
+            "offsets": [
+              3468414,
+              20764848,
+              20766140,
+              60447575,
+              60448963,
+              91943246,
+              92009065,
+              96634281,
+              179206336,
+              179207628
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 34,
+            "offsets": [
+              20765783,
+              20766037,
+              20767460,
+              21270433,
+              57734497,
+              60340232,
+              60448578,
+              60448848,
+              60450426,
+              67938273
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T13:29:20.038255Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.6177,
+      "malware": 0.3823
+    },
+    "is_malicious": true,
+    "risk_score": 85.0,
+    "decision_rationale": [
+      "Score reduced from 28.4 (Trusted Process)",
+      "Forensic Override: Critical YARA match detected (Score Boosted).",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 13.3805
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_184703\\Antigravity.exe_18136.raw",
+      "dump_size_mb": 733.34
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 413,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 12,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 10,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 12,
+          "CryptDecrypt": 14,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 34,
+          "CreateProcess": 89,
+          "AdjustTokenPrivileges": 34,
+          "OpenProcess": 139,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 11,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 5700,
+        "patterns": {
+          "http://": 1067,
+          "https://": 3987,
+          "ftp://": 1,
+          "POST": 165,
+          "GET": 468,
+          "Content-Type:": 11,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://clients2.google.com/service/update2/crx",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/core/vs/workbench/workbench.desktop.main.js.map",
+        "https://github.com/robb0wen/synthwave-vscode",
+        "https://github.com/features/codespaces)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.mcpToolDefinitions.d.ts",
+        "https://gh.io",
+        "https://open-vsx.org/vscode/item?itemName=vscjava.vscode-java-debug",
+        "https://antigravity.google/blog/gemini-3-1-pro-in-google-antigravityF",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.tokenInformation.d.tsU",
+        "https://aka.ms/vscode-settings-sync-help",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.fileSearchProvider.d.ts",
+        "https://github.com/sqs/goreturns.",
+        "https://open-vsx.org/vscode/item?itemName=redhat.java",
+        "https://code.visualstudio.com/docs/editor/accessibility#_terminal-accessibility",
+        "https://github.com/James-Yu/LaTeX-Workshop/blob/master/syntax/TeX.tmLanguage.json",
+        "https://github.com/markedjs/marked.",
+        "https://www.gstatic.com/antigravity/nuxes/file_commenting.mp4",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalShellEnv.d.tsU",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalExecuteCommandEvent.d.ts",
+        "https://github.com/microsoft/vscode/issues/103170",
+        "http://www.w3.org/1999/xlinkU",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribMenuBarHome.d.ts",
+        "https://127.0.0.1:62387/exa.language_server_pb.LanguageServerService/GetWorkspaceInfos",
+        "https://www.typescriptlang.org/tsconfig#strictFunctionTypes)",
+        "https://raw.githubusercontent.com/composer/composer/master/res/composer-schema.json",
+        "https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.fsChunks.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityCommandPopup.d.ts",
+        "https://www.python.org/downloads).",
+        "https://api.githubcopilot.com/mcp/",
+        "http://engelschall.com)",
+        "https://github.com/microsoft/vscode-gradle/",
+        "https://github.com/microsoft/vscode-gradle.git",
+        "https://github.com/Microsoft/vscode-references-view",
+        "https://pkg.go.dev/cmd/cgo)",
+        "https://nodejs.org/en/download/)",
+        "https://github.com/atom/language-coffee-script/blob/master/grammars/coffeescript.cson",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityFiles.d.tsU",
+        "https://open-vsx.org/vscode/gallery/vscode/devsense/intelli-php-vscode/latestt",
+        "https://github.com/microsoft/vscode-js-debug",
+        "https://chevrotain.io/docs/guide/resolving_lexer_errors.html#CUSTOM_LINE_BREAK",
+        "https://github.com/RedCMD/YAML-Syntax-Highlighter/commit/0b50d9c47145df62c4461c4407698a24e8f1f3c2",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.scmProviderOptions.d.ts",
+        "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
+        "https://github.com/microsoft/vscode-python/discussions/categories/q-a",
+        "https://open-vsx.org/vscode/item?itemName=tomoki1207.pdf&ssr=false#review-details",
+        "https://chevrotain.io/docs/guide/resolving_lexer_errors.html#ANCHORS",
+        "https://golang.org/pkg/builtin/#len",
+        "https://github.com/microsoft/vscode-js-profile-visualizer#readmee",
+        "https://github.com/sindresorhus/got)"
+      ],
+      "ip_addresses": [
+        "45.88.100.36",
+        "015.044.013.044",
+        "021.024.023.024",
+        "178.171.117.81",
+        "083.205.173.405",
+        "178.04.183.04",
+        "204.217.149.135",
+        "047.039.045.04",
+        "155.046.16.045",
+        "006.045.004.045",
+        "061.051.066.051",
+        "131.05.135.049",
+        "249.008.253.006",
+        "006.022.007.022",
+        "101.32.109.185",
+        "056.05.06.05",
+        "074.033.073.033",
+        "2.3.4.5",
+        "001.021.001.021",
+        "097.052.102.051",
+        "163.045.167.043",
+        "99.0.0.0",
+        "009.044.007.045",
+        "07.051.075.052",
+        "018.023.019.024",
+        "014.023.015.024",
+        "024.043.023.043",
+        "27.602.197.4",
+        "236.016.24.014",
+        "126.051.131.05",
+        "033.042.032.042",
+        "256.003.259.001",
+        "231.028.229.031",
+        "7.178.07.207",
+        "249.008.253.005",
+        "45.82.99.33",
+        "186.179.19.20",
+        "092.052.096.052",
+        "212.028.216.027",
+        "123.051.127.05",
+        "201.046.198.048",
+        "06.037.058.037",
+        "187.039.19.037",
+        "03.042.029.042",
+        "134.199.78.221",
+        "018.044.017.043",
+        "209.03.212.029",
+        "079.052.084.052",
+        "88.214.3.213",
+        "16.046.163.045"
+      ],
+      "file_paths": [
+        "d:\\d\\d",
+        "C:\\\\Users\\\\Admin\\\\.gemini\\\\antigravity\\\\brain\\\\c66913f2-4d60-4004-b9b5-c985d74ab046\\\\walkthrough.md",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\terminal-suggest",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-basics",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\.venv\\Scripts",
+        "C:\\Users\\p",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\IIIINFOZIANT\\\\AURA_Framework\\\\core\\\\scanner.py",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\models\\anomaly_model.pkl",
+        "t:\\n        is_admin ",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\.venv\\pyvenv.cfg",
+        "y:\\n\\u003e ",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT\\\\generate_exact_report.py",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT\\\\clean_all_theme.py",
+        "c:\\users\\admin\\onedrive\\desktop\\infoziant\\storage\\raw_temp\\conhost.exe_608_1788.raw",
+        "c:\\\\User",
+        "d:\\n\\n- ",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\debug-auto-launchM",
+        "C:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT PROJECT",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT\\\\ui\\\\cyber_panel_code.py",
+        "C:\\\\Users\\\\Admin\\\\.gemini\\\\antigravity\\\\brain\\\\a4707a7e-2b22-444e-bce4-0c82438a9e44\\\\implementation_plan.md",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\typescript-basics",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\storage\\snapshots\\System_Snapshot_20260125_170146\\chrome.exe_20908.raw",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T183833\\window1\\exthost\\vscode.github\\GitHub.log",
+        "c:\\users\\admin\\.gemini\\antigravity\\brain\\eb6874f3-2ebf-4592-87fc-edfab0266b57\\implementation_plan.md.resolved",
+        "c:\\\\Users\\\\Admin\\\\.gemini\\\\antigravity\\\\brain\\\\58745c17-bfeb-4f6f-91ea-2cfb21dd4fdd\\\\task.md.resolved",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\csharp",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOPROJECT\\MBMD",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\vscjava.vscode-java-dependency-0.27.0-universal",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\pug",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\app_main.py",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\.venv",
+        "c:\\users\\admin\\.gemini\\antigravity\\brain\\9d7e837f-9206-466d-a77c-af809e42e82c\\project_summary.md.resolved",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Users\\Admin\\.gemini\\antigravity\\brain\\58745c17-bfeb-4f6f-91ea-2cfb21dd4fdd",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT\\\\core\\\\kernel_interface.py",
+        "c:\\users\\admin\\.gemini\\antigravity\\brain\\bc1f8b2f-e624-4ac5-a4ff-65f470ded203\\walkthrough.md.resolved",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\58745c17-bfeb-4f6f-91ea-2cfb21dd4fdd\\walkthrough.md.resolved",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\ms-python.debugpy-2025.18.0-win32-x64\\.noConfigDebugAdapterEndpoints",
+        "C:\\Program Files\\qemu",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\verify_split_workflow.py",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\storage\\snapshots\\System_Snapshot_20260126_125745\\browser_assistant.exe_11124.raw",
+        "e:\\r\\n    -",
+        "s:\\n1.  ",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\compile_driver.bat",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\extension-editing",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\theme-symbols",
+        "C:\\\\Users\\\\Admin\\\\.gemini\\\\antigravity\\\\brain\\\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\\\walkthrough.md",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\rules\\malmem_rules.yar",
+        "y:\\n\\tDocstring"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.489,
+      "null_byte_ratio": 0.3835,
+      "printable_ratio": 0.2931,
+      "unique_bytes": 256,
+      "total_size": 768966656
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T13:29:57.661190Z",
+    "process_name": "Antigravity.exe",
+    "pid": 18136,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

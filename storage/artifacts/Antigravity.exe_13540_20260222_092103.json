@@ -1,0 +1,145 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\Antigravity.exe_13540.raw",
+    "dump_sha256": "7a63d3e1cc056db847bcf7f0edcb50d1453d3cd3b2bb12a0f1a6be4058fe281c",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "AsyncRAT_Client",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects AsyncRAT Client",
+          "severity": "high",
+          "author": "Community"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 15,
+            "offsets": [
+              517736417,
+              518324477,
+              520008567,
+              521348823,
+              525989683,
+              527845989,
+              536025573,
+              536026355,
+              543300101,
+              543300173
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 5,
+            "offsets": [
+              46366574,
+              46366660,
+              46367135,
+              46367254,
+              337943036
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 4,
+            "offsets": [
+              170081055,
+              170107578,
+              209343620,
+              209347850
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:20:59.571696Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "High Severity YARA Match (+40)"
+    ],
+    "components": {
+      "yara_score": 40.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 0.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\Antigravity.exe_13540.raw",
+      "dump_size_mb": 538.43
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "AsyncRAT_Client",
+          "severity": "high",
+          "description": "Detects AsyncRAT Client"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {},
+    "pe_features": {},
+    "statistical_features": {},
+    "error": "Analysis failed",
+    "warnings": [
+      ""
+    ],
+    "risk_assessment": {
+      "risk_score": 40.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 40.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 0.0
+      },
+      "risk_factors": [
+        "High Severity YARA Match (+40)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:21:03.318463Z",
+    "process_name": "Antigravity.exe",
+    "pid": 13540,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

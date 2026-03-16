@@ -1,0 +1,331 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_184703\\backgroundTaskHost.exe_16308.raw",
+    "dump_sha256": "a25662068876d7cca679d0c375b44f3d60c928a5a72ad1378966d911e8e6b139",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              108894196
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 13,
+            "offsets": [
+              107644740,
+              171541050,
+              173531154,
+              174179791,
+              175509588,
+              176225718,
+              180129872,
+              194042216,
+              194673036,
+              199647232
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T13:34:56.339531Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.6177,
+      "malware": 0.3823
+    },
+    "is_malicious": true,
+    "risk_score": 85.0,
+    "decision_rationale": [
+      "Score reduced from 28.4 (Trusted Process)",
+      "Forensic Override: Critical YARA match detected (Score Boosted).",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 13.3805
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_184703\\backgroundTaskHost.exe_16308.raw",
+      "dump_size_mb": 204.4
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 403,
+        "api_details": {
+          "VirtualAllocEx": 10,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 13,
+          "GetAsyncKeyState": 6,
+          "CryptEncrypt": 19,
+          "CryptDecrypt": 21,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 39,
+          "CreateProcess": 93,
+          "AdjustTokenPrivileges": 13,
+          "OpenProcess": 126,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 12,
+          "SetThreadContext": 12,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 4303,
+        "patterns": {
+          "http://": 80,
+          "https://": 4196,
+          "POST": 4,
+          "GET": 23
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://store-images.s-microsoft.com/image/apps.62974.14055161679904948.28ec6365-6d0a-45b2-ac78-80781844b7ea.e0c813c7-41d3-4398-8052-bdae98e6ab33hi",
+        "https://store-images.s-microsoft.com/image/apps.47471.13627408701762808.ab28b8b0-ae79-4ed5-b40d-f68a7ac9bf87.f55f0488-4cf6-44c8-beb7-43fbec2bfdd2en",
+        "https://store-images.s-microsoft.com/image/apps.1920.71220804959101191.bad88979-60b4-40b4-af6d-182d4534c987.1bd53913-3aff-42c9-8d2b-fb0467e78e72en",
+        "https://store-images.s-microsoft.com/image/apps.58862.14159410862978133.08a7ac44-5c17-4c0d-a8d6-c3e247e74fcb.136a3e89-555e-4209-b48c-93791d3cbd05hi",
+        "https://store-images.s-microsoft.com/image/apps.56999.13939620334061218.8d4e6fc0-2951-4263-836c-29bd08659d5d.769658fc-5ebc-40c8-a69f-798a587121achi",
+        "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE46mefmrtn",
+        "https://store-images.s-microsoft.com/image/apps.40189.65577870102127192.24a0a154-ded1-4a40-a91f-102019aaee70.cd208361-5bce-4225-b615-4b9771b2b8ecen",
+        "https://store-images.s-microsoft.com/image/apps.12523.13510798883893052.557ec932-10af-4cef-83d5-26be72d959ef.e9f1b9b4-e0f5-4e65-b926-228001acbfcemr",
+        "https://store-images.s-microsoft.com/image/apps.29871.13897338724952727.a6cf0fa2-27f4-468b-9b9a-d1da7c39dcf0.75de6899-f118-441b-bc9d-f0e79e66616dmr",
+        "https://store-images.s-microsoft.com/image/apps.58342.13744479854832406.0affa1b0-655f-49af-ab66-9c9ccd71090c.37daa6e1-e0fd-4a64-a1a0-ac488dfb914cmr",
+        "https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxpnP3GeJQNzqVKBfpSeVDiqDL9Q3B7sDOWEarehw9jsauPgEm8oGWtXweaeRZq.avPCSmi1.YH2R09n8SoA_UMg-&format=sourceen",
+        "https://store-images.s-microsoft.com/image/apps.1369.14239344665439398.f72b7e9e-0a95-4e76-b1e3-8989c4d70e2e.b3c057a4-8d69-420d-8d02-9c28587dac55hi",
+        "https://store-images.s-microsoft.com/image/apps.26576.14182662959774929.a7aaf161-3947-4aee-9b44-4197e3e065fd.fa94dbd1-d5ef-4da2-8bd5-5631ffe6b226en",
+        "https://store-images.s-microsoft.com/image/apps.17401.14258547668150351.c20c8953-e19e-40f6-8081-ab904c694484.4265c5ba-ab6a-4b8f-b7ad-c190b0da7603hi",
+        "https://store-images.s-microsoft.com/image/apps.25275.13660342589962425.cc3df91a-6499-44e4-9c1e-b1df05b0d6d6.2599014d-e132-4080-ae14-519725c4e48bmr",
+        "https://store-images.s-microsoft.com/image/apps.13158.14096633086109397.7f90aeea-1565-48a4-9880-f7afe09da648.1acdfdac-ffe0-45ea-bb3d-8f91e7284f09en",
+        "https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxl2iAbsXA6iMNHnNlwb_DNvU78ZdydT3lk6WrwnlP0haPdxbK0Gx5kfEJt.WTlHKmrY4UCnjIWX1kA4VzSAZxk8-&format=sourcehi",
+        "https://store-images.s-microsoft.com/image/apps.29606.13806794139286725.9e26e632-fcb6-4218-ade6-3d1cfeb108b2.fb8110eb-21de-4587-b7a4-5fc4935d303ahi",
+        "https://store-images.s-microsoft.com/image/apps.58935.13662804336614394.63dd49dd-f93b-4b67-b597-bace2d4550c2.26dbe4d6-f7d0-4e9e-a21d-d5ade4bdc93bhi",
+        "https://store-images.s-microsoft.com/image/apps.27333.68150164172276526.ddc374d7-ef5e-43b9-940a-bbc04440bb33.fa908ac2-c1a8-4d1b-9652-c977565a8111en",
+        "https://store-images.s-microsoft.com/image/apps.55101.14336626908214534.fa34edb2-04d9-4efb-a501-8aac349575de.fdf8b65d-71fa-4710-9171-84cda408ac6ehi",
+        "https://store-images.s-microsoft.com/image/apps.29938.14251135785127874.acea74a2-d3be-4245-b0f7-a6cfda8ef6ab.e630847d-c328-4117-9031-097dcbec8d08en",
+        "https://store-images.s-microsoft.com/image/apps.57565.14481391283536320.2e278a9d-b63d-454a-a60e-ac81b25b445c.392440ba-2841-42da-9eae-3624c032300bmr",
+        "https://store-images.s-microsoft.com/image/apps.2475.13883721464006213.e7408f78-281f-4d17-9448-de93c5af760c.117a2901-b635-43e2-9ff1-38cbb11784camr",
+        "https://store-images.s-microsoft.com/image/apps.29938.14251135785127874.acea74a2-d3be-4245-b0f7-a6cfda8ef6ab.e630847d-c328-4117-9031-097dcbec8d08hi",
+        "https://store-images.s-microsoft.com/image/apps.37945.14293123921570736.739af26b-0b56-4d3a-8d57-149d26c2cc05.9c568e6b-ca17-4dc8-9c75-efe33e27f910hi",
+        "https://store-images.microsoft.com/image/apps.21979.9007199266546701.9bf759dc-84e7-4ae4-8f05-caba0d5a6bcf.c1cfedf8-3e7c-4e5e-b580-63275f84e1b1mr",
+        "https://store-images.s-microsoft.com/image/apps.3496.13568632792554292.fea70ec4-25b5-4014-996b-52c5abc58b71.69e7078c-ec44-4a16-90d2-10509e7f21a6en",
+        "https://store-images.s-microsoft.com/image/apps.8153.14337981917813897.eb8300d5-dfde-4f92-a94d-940b86a95d1b.694e28ca-9847-44fb-aa88-9deb08630188mr",
+        "https://store-images.s-microsoft.com/image/apps.8372.67042979280693273.43c77eda-5631-4533-8def-815848101ca4.e59a9ae5-7b60-450a-b2ba-5dedf9c4d41cen",
+        "https://store-images.s-microsoft.com/image/apps.475.14050533476382116.9ce9be62-6690-4c40-8e76-7e5af2a256fb.890d72d8-ceb4-4c0d-9653-e9fbcfeb27c7hi",
+        "https://store-images.s-microsoft.com/image/apps.33737.13510798887566628.c27c0b2b-f560-4202-acf8-0be110e2a787.872bd516-6ecb-451d-871e-b0ec2651fb08mr",
+        "https://store-images.s-microsoft.com/image/apps.57594.13904344027300912.cec2fecb-939a-4112-bd71-27452297c286.1605d2c4-264d-4926-85ae-384ecae37537en",
+        "https://store-images.s-microsoft.com/image/apps.15635.13926467577230618.aebc12c1-a02c-4047-952c-dc997a861676.0f3a4235-106e-4cd3-9f6d-cd409f17d8cfen",
+        "https://store-images.s-microsoft.com/image/apps.23697.13538845508086461.dd58a2de-736b-4b8b-bf73-c2e82eccad53.c8cceec5-af83-4758-9bfb-5a55adb3a080en",
+        "https://store-images.s-microsoft.com/image/apps.24143.13592668300764735.55b49f05-a58f-437f-95f4-f51ea7542976.f30e5790-6318-41e4-86ef-6b813b3b2a17en",
+        "https://store-images.s-microsoft.com/image/apps.56137.13510798887937837.2862aa6c-ece8-4296-ba10-be533bb93389.9e84ca82-9f25-45fa-8e5d-fdf5f0fd3286mr",
+        "https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHHFT949fUipzkiFOBH3fAiZZUCdYojwUyX2aTonS1aIwMrx6NUIsHfUHSLzjGJFxxqGVNN9hxjOZj6eVAK9RPsfNxee00sZGHMGzNCVJ7yJvADkRtFot7WmQPLUVEgYCuLTCDRX62MAsjvwFwqbxRYc-&format=sourcehi",
+        "https://store-images.s-microsoft.com/image/apps.35266.13920371347656934.a1c76e75-1119-47af-9298-1ffa41c93ccb.8cfbb6c0-fa4f-412b-a989-0f477078d307en",
+        "https://store-images.s-microsoft.com/image/apps.8886.13532663548506747.cb33631d-b9e7-48c7-a84d-23985981f3d1.1f91e407-81d4-4741-91ca-d7fb22169e13hi",
+        "https://store-images.s-microsoft.com/image/apps.10769.9007199266246184.7b7dea7e-e480-4008-b420-a807cc23c9cf.4d0fe093-40ab-4d97-8baf-c5263a583e14mr",
+        "https://store-images.s-microsoft.com/image/apps.64849.13510798887933723.57e43f19-4066-429e-b1a2-caea56e427b4.860c35a4-ccbf-413e-9574-1c7c8826d6c6mr",
+        "https://store-images.s-microsoft.com/image/apps.29662.14318793375483754.bef3d00f-b454-4ca1-b55e-94fd2ae048e4.46331d6c-a378-4cc7-8684-b3ed472abb0dmr",
+        "https://store-images.s-microsoft.com/image/apps.46741.13518543789452586.33e180bb-4f0b-4a39-b1c8-cde6206c1eb3.63c679bb-4c3c-42c4-81bf-e3b3666a61b6hi",
+        "https://store-images.s-microsoft.com/image/apps.53555.13987063656190732.fb6edc6a-e326-4476-a56f-d5cf33712783.b43f4c9d-f8b4-48b1-ad41-c489d1e2678chi",
+        "https://store-images.s-microsoft.com/image/apps.63252.13863063026361755.b99b325f-e318-4389-a025-4226ebd12bbc.6621e50b-18ce-4a2f-8d71-a5b9e78f2ccben",
+        "https://images-eds-ssl.xboxlive.com/image?url=4rt9.lXDC4H_93laV1_eHM0OYfiFeMI2p9MWie0CvL99U4GA1gf6_kayTt_kBblFwHwo8BW8JXlqfnYxKPmmBTUFOy3RKVoUXHKnhpP7MQsulSLZ902HsPrcG58VAXYyak.nIcSkwcC5J8hn1GF0_dLmTL6voo4Nd_OoGH1BAUE-&format=sourceen",
+        "https://store-images.s-microsoft.com/image/apps.27495.13510798886908206.d72b143e-ec29-42a7-bccc-8301cff80374.7f927445-9361-490e-8cf3-978a24d576b8hi",
+        "https://store-images.s-microsoft.com/image/apps.55414.14502846065894900.53e7de8b-2b8a-4b60-abb8-e1acdfddeb51.bc6007c2-ecce-472b-bd4e-25af8526731dhi",
+        "https://store-images.s-microsoft.com/image/apps.28846.14473651905739879.7f43362d-1933-408d-9e83-d87d2265f4cf.a6be247d-0433-4b8a-ad2f-536e801f6b61mr"
+      ],
+      "ip_addresses": [
+        "3.5.0.0",
+        "1.28.1.0",
+        "72.1.0.4",
+        "1.3.132.0",
+        "2.5.29.5",
+        "8.4.0.1",
+        "4.1.311.67",
+        "1.3.133.16",
+        "2.5.29.16",
+        "2.5.29.17",
+        "1.12.1.2",
+        "4.1.311.2",
+        "2.5.4.35",
+        "4.1.311.13",
+        "1.3.6.1",
+        "4.1.311.61",
+        "4.1.311.66",
+        "2.23.43.1",
+        "4.1.311.21",
+        "4.0.0.0",
+        "2.5.29.27",
+        "233.33.333.3",
+        "1.3.14.7",
+        "1.7.1.1",
+        "0.1.0.0",
+        "5.1.0.0",
+        "2.5.4.28",
+        "1.12.1.3",
+        "4.1.311.42",
+        "9.0.3.0",
+        "2.5.29.2",
+        "4.2.1.0",
+        "2.5.4.4",
+        "2.5.29.4",
+        "2.5.29.30",
+        "101.3.4.1",
+        "4.1.311.65",
+        "2.5.4.26",
+        "1.2.3.2",
+        "2.23.133.8",
+        "1.12.5.1",
+        "2.5.4.6",
+        "5.5.8.2",
+        "1.12.1.6",
+        "8.2.0.0",
+        "2.2.1.0",
+        "2.5.4.52",
+        "4.1.311.17",
+        "2.5.4.46",
+        "2.0.0.0"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\backgroundTaskHost.exe",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\Microsoft.WindowsStore_8wekyb3d8bbwe\\LocalState\\store.db-wal",
+        "C:\\Users\\Justin\\AppData\\Roaming\\imo\\1.5.3.3\\ImoDesktopApp.exeimo Team",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\",
+        "C:\\Users\\Admin\\OneDrive",
+        "C:\\Users\\Admin",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\microsoft.windowsstore_8wekyb3d8bbwe\\AC\\Temp",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Windows\\system32\\cmd.exe",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "C:\\MinGW\\bin",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoStub.inl",
+        "D:\\a\\cb\\cb\\cb\\bld\\bin\\e_sqlite3\\win\\v142\\plain\\x64\\e_sqlite3.pdb",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Public",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\Microsoft.WindowsStore_8wekyb3d8bbwe\\LocalState\\store.db-journal",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\microsoft.windowsstore_8wekyb3d8bbw",
+        "C:\\Program Files\\dotnet\\",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\Windows\\system32",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Users\\Justin\\AppData\\Roaming\\FliTik\\FliTik.exe",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "C:\\Users\\Admin\\.dotnet\\tools",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "c:\\crypt32\\",
+        "C:\\Program Files\\qemu",
+        "c:\\ [",
+        "C:\\Users\\Admin\\AppData\\Local\\Python\\bin",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoPeer.inl",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files (x86)\\Nmap",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "C:\\ProgramData",
+        "C:\\Users\\Justin\\AppData\\Local\\Wondershare\\Wondershare Filmora\\unins000.exeWONDERSHARE GLOBAL LIMITEDx64",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoVariablySizedResult.inl",
+        "C:\\jdk-24_windows-x64_bin\\jdk-24.0.2\\bin",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Windows"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.5424,
+      "null_byte_ratio": 0.1478,
+      "printable_ratio": 0.3298,
+      "unique_bytes": 256,
+      "total_size": 214327296
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T13:35:14.469434Z",
+    "process_name": "backgroundTaskHost.exe",
+    "pid": 16308,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

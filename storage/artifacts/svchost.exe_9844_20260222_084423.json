@@ -1,0 +1,332 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\svchost.exe_9844.raw",
+    "dump_sha256": "a75080e1e06dbdb406cc69bef797f68b7297caffecca86298c12dbc77ce858a2",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              11162360
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              11161760
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 10,
+            "offsets": [
+              8532246,
+              12005394,
+              12654031,
+              14300214,
+              14970756,
+              18647400,
+              19278220,
+              25354320,
+              34297926,
+              38504846
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:44:15.812454Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\svchost.exe_9844.raw",
+      "dump_size_mb": 39.19
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 296,
+        "api_details": {
+          "VirtualAllocEx": 9,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 10,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 14,
+          "CryptDecrypt": 15,
+          "InternetReadFile": 7,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 12,
+          "CreateProcess": 83,
+          "AdjustTokenPrivileges": 10,
+          "OpenProcess": 76,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 9,
+          "SetThreadContext": 10,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 128,
+        "patterns": {
+          "http://": 105,
+          "https://": 11,
+          "POST": 5,
+          "GET": 5,
+          "Cookie:": 2
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://ator",
+        "http://w",
+        "https://was",
+        "http://s;text-align:centerfont-weight:",
+        "http://UA-Compatible",
+        "https://sectigo.com/CPS0",
+        "http://staticsuggested",
+        "http://i",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "http://mathematicsmargin-top:eventually",
+        "https://www.World",
+        "http://www.hortcut",
+        "http://crl3.digicert.com/DigiCertTrustedRootG4.crl0",
+        "http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl0",
+        "http://www./div",
+        "http://www.style=",
+        "http://www.microsoft.com/pkiops/crl/Microsoft",
+        "http://logo.verisign.com/vslogo.gif0",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "http://option",
+        "http://cacerts.digicert.com/DigiCertTrustedRootG4.crt0C",
+        "http://.jpg",
+        "http://px;",
+        "http://crt.sectigo.com/SectigoPublicCodeSigningCAR36.crt0#",
+        "http://crl3.digicert.com/DigiCertTrustedG4RSA4096SHA256TimeStampingCA.crl0",
+        "http://www.w3.org/shortcut",
+        "http://www.w3.org/2001/XMLSchema-instance",
+        "http://www.",
+        "https://www.verisign.com/CPS04",
+        "http://www.a",
+        "http://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt0E",
+        "http://addEventListenerresponsible",
+        "http://www-//W3C//DTD",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "http://crl.sectigo.com/SectigoPublicCodeSigningCAR36.crl0y",
+        "http://crl.comodo.net/AAACertificateServices.crl0",
+        "http://);",
+        "http://www.css",
+        "http://navigation",
+        "http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z",
+        "http://whether",
+        "http://imEnglish",
+        "http://www.microsoft.com0",
+        "http://encoding=",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "http://cript",
+        "http://.css",
+        "https://www.recent",
+        "http://www.language=",
+        "http://www"
+      ],
+      "ip_addresses": [
+        "2.5.29.28",
+        "1.311.10.11",
+        "5.5.7.1",
+        "2.5.29.2",
+        "101.3.4.4",
+        "4.1.311.73",
+        "1.3.132.0",
+        "840.63.0.2",
+        "2.5.4.20",
+        "5.5.7.48",
+        "2.23.133.2",
+        "2.5.4.21",
+        "4.1.311.64",
+        "5.2.3.5",
+        "4.1.311.21",
+        "1.12.1.2",
+        "2.5.29.54",
+        "2.5.29.32",
+        "2.5.4.27",
+        "1.3.6.1",
+        "4.1.311.17",
+        "1.9.16.1",
+        "11.67.1.1",
+        "2.5.4.16",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.16.840.1",
+        "2.5.4.3",
+        "101.2.1.1",
+        "1.3.14.7",
+        "2.5.4.39",
+        "2.5.4.18",
+        "2.5.29.14",
+        "1.12.1.6",
+        "1.12.1.1",
+        "5.5.7.7",
+        "1.1.2.1",
+        "2.5.29.1",
+        "2.5.4.23",
+        "2.5.4.17",
+        "2.5.4.8",
+        "2.5.4.6",
+        "2.5.4.7",
+        "4.1.311.3",
+        "2.5.4.10",
+        "2.5.4.24",
+        "4.1.311.72",
+        "1.12.1.3",
+        "3.6.1.4",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\Windows\\System32\\wsl.exe",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe",
+        "b:\\Windows",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Roaming",
+        "C:\\Windows\\TEMP",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "c:\\ [",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "c:\\crypt32\\",
+        "C:\\Windows\\system32\\svchost.exe -k LocalSystemNetworkRestricted -p -s PcaSvc",
+        "C:\\Windows\\system32",
+        "C:\\Program Files\\WindowsApps\\Microsoft.GamingServices_33.108.12001.0_x64__8wekyb3d8bbwe\\gameinputredist.msi",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Program ",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Program Files",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe ",
+        "C:\\Program Files\\WindowsApps\\AdvancedMicroDevicesInc-2.AMDRadeonSoftware_10.24.10035.0_x64__0a9344xs7nr4m\\radeonsoftware\\AMDRSServ.exe ",
+        "C:\\Users\\Public",
+        "C:\\Program Files\\WindowsApps\\AdvancedMicroDevicesInc-2.AMDRadeonSoftware_10.24.10035.0_x64__0a9344xs7nr4m\\radeonsoftware\\AMDRSServ.exe",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Program Files (x86)",
+        "C:\\Windows\\System32\\conhost.exe",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\ProgramData",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local",
+        "C:\\Windows\\System32\\cmd.exe",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\python.exe "
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.0016,
+      "null_byte_ratio": 0.2661,
+      "printable_ratio": 0.3081,
+      "unique_bytes": 256,
+      "total_size": 41095168
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:44:23.594516Z",
+    "process_name": "svchost.exe",
+    "pid": 9844,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

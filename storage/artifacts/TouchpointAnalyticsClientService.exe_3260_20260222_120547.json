@@ -1,0 +1,343 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\TouchpointAnalyticsClientService.exe_3260.raw",
+    "dump_sha256": "453361952d5e1afbeb72118f00e2cd421f9a3403900601091ae9da712c4358bd",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 4,
+            "offsets": [
+              685868,
+              163362357,
+              164967536,
+              189001394
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 2,
+            "offsets": [
+              188781880,
+              189000801
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 18,
+            "offsets": [
+              27167421,
+              126459556,
+              126577608,
+              132353648,
+              161996628,
+              163457084,
+              177055328,
+              186798641,
+              196202314,
+              220495748
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T12:05:28.141235Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.711,
+      "malware": 0.289
+    },
+    "is_malicious": true,
+    "risk_score": 25.1,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 10.114999999999998
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\TouchpointAnalyticsClientService.exe_3260.raw",
+      "dump_size_mb": 254.75
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 495,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 16,
+          "GetAsyncKeyState": 10,
+          "CryptEncrypt": 23,
+          "CryptDecrypt": 24,
+          "InternetReadFile": 7,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 96,
+          "CreateProcess": 114,
+          "AdjustTokenPrivileges": 18,
+          "OpenProcess": 120,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 7,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 11,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 1671,
+        "patterns": {
+          "http://": 775,
+          "https://": 60,
+          "POST": 50,
+          "GET": 784,
+          "Content-Type:": 1,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://crl3.digicert.com/DigiCertTrustedG4TimeStampingRSA4096SHA2562025CA1.crl0",
+        "http://schemas.microsoft.com/netfx/2007/xaml/presentation",
+        "http://go.microsoft.com/fwlink/?linkid=14202",
+        "http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z",
+        "http://go.microsoft.com/fwlink?LinkID=119805.",
+        "http://go.microsoft.com/fwlink/?LinkId=155570",
+        "https://iecvlist.microsoft.com/edge/phone/1499812172/edgecompatviewlist.xml",
+        "http://tempuri.org/XMLSchema.xsd",
+        "http://go.microsoft.com/fwlink/?LinkId=288746",
+        "http://crl.microp",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "https://go.microsoft.com/fwlink/?LinkId=129221&check=Check&hide_type=all&summary=on&uri=",
+        "https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetconnectedstate",
+        "http://schemas.openxmlformats.org/markup-compatibility/2006",
+        "http://www.w3.org/2000/09/xmldsig#rsa-sha256",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm0",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm",
+        "http://schemas.microsoft.com/xps/2005/06/documentstructure",
+        "http://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt0E",
+        "http://www.w3.org/2000/09/xmldsig#rsa-sha512",
+        "http://www.w3.org/2001/10/xml-exc-c14n#",
+        "https://go.microsoft.com/fwlink/?linkid=2132227",
+        "http://ocsp.digicert.com0]",
+        "http://crl3.digicert.com/DigiCertTrustedRootG4.crl0",
+        "https://ieonline.microsoft.com/ieflipahead/ie11mobile/rules.xml",
+        "http://www.w3.org/2001/XMLSchema-instance.",
+        "http://schemas.microsoft.com/xps/2005/06/documentstructure+System.Windows.Documents.DocumentStructures",
+        "https://go.microsoft.com/fwlink/?linkid=2233907",
+        "http://www.xmlspy.com)",
+        "http://cD",
+        "http://ocsp.digicert.com0",
+        "http://ocsp.digicert.c",
+        "https://www.bing.com/widget/insights/lookup",
+        "https://www.microsoft.com/en-us/windows",
+        "http://ocsp.digicert.com0C",
+        "http://www.w3.org/2000/09/xmldsig#sha256",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "http://schemas.microsoft.com/xps/2005/06/resourcedictionary-key,http://schemas.microsoft.com/winfx/2006/xaml",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.c",
+        "http://www.microsoft.com/",
+        "http://cacerts",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "http://go.microsoft.com/fwlink/?LinkId=155571",
+        "https://go.microsoft.com/fwlink/p/?LinkId=620947",
+        "http://www.w3.org/2000/09/xmldsig#sha384",
+        "http://www.w3.org/2001/XMLSchema",
+        "http://www.w3.org/1999/xhtml'",
+        "https://www.msn.com/spartan/ientp?locale",
+        "https://c.urs.microsoft.com/"
+      ],
+      "ip_addresses": [
+        "4.1.311.67",
+        "10.0.0.0",
+        "08.99.999.9",
+        "2.5.4.5",
+        "2.5.29.14",
+        "2.5.4.11",
+        "311.60.2.1",
+        "5.5.7.1",
+        "3.5.0.0",
+        "1.311.2.1",
+        "2.5.29.32",
+        "2.5.4.10",
+        "5.5.7.2",
+        "2.5.4.15",
+        "1.0.0.6",
+        "2.5.29.15",
+        "2.23.140.1",
+        "2.0.0.0",
+        "09.00.000.0",
+        "2.5.4.7",
+        "5.7.3.3",
+        "13.0.0.0",
+        "4.0.0.0",
+        "2.5.29.35",
+        "2.5.29.10",
+        "2.5.29.1",
+        "1.3.132.0",
+        "1.1.2.1",
+        "4.1.311.2",
+        "12.0.742.112",
+        "1.9.16.1",
+        "2.16.840.1",
+        "4.1.311.64",
+        "2.5.29.31",
+        "4.1.311.3",
+        "0.0.0.0",
+        "4.1.311.76",
+        "2.5.29.37",
+        "6.0.0.0",
+        "1.3.6.1",
+        "16.0.0.0",
+        "4.1.311.15",
+        "4.1.311.80",
+        "1.3.14.3",
+        "4.1.311.60",
+        "2.5.29.19",
+        "2.0.15.0",
+        "5.7.3.1",
+        "1.0.0.0",
+        "08.00.000.0"
+      ],
+      "file_paths": [
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_formatter.cpp",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\hpanalyticscomp.inf_amd64_ef460d1f2a35fc16\\x64\\TouchpointAnalyticsClientService.exe",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\dsig_c14ncanonicalizer.cpp",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\GraphicsSettingsProvider\\obj\\Release\\GraphicsSettingsProvider.pdb",
+        "f:\\dd\\ndp\\clr\\src\\jit\\RegAlloc.cpp",
+        "C:\\Users\\Public",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FSTRACKBOTTOMLESS.C",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "f:\\dd\\wpf\\src\\Native\\ums\\msls\\ls4\\src\\SUBLUTIL.C",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\pcmc_pcmbuilder.cpp",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\HPBiosSensorsProvider\\obj\\Release\\HPBiosSensorsProvider.pdb",
+        "f:\\dd\\wpf\\src\\Native\\ums\\msls\\ls4\\src\\LSSETDOC.C",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FsFloater.c",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FSCRSUBP.C",
+        "f:\\dd\\wpf\\src\\Native\\ums\\shared\\src\\TSMEMORYCORE.C",
+        "C:\\Program Files",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\com\\definitionappid.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\com\\definitionidentity.cpp",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\SleepStateEventProvider\\obj\\Release\\SleepStateEventProvider.pdb",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\appidp.h",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\DiskSelfTestProvider\\obj\\Release\\DiskSelfTestProvider.pdb",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\DisplayProvider\\obj\\Release\\DisplayProvider.pdb",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FSSECTIONAPI.C",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_idlist.cpp",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "f:\\dd\\wpf\\src\\Native\\ums\\msls\\ls4\\src\\TEXTENUM.C",
+        "C:\\ProgramData",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\NetworkProvider\\obj\\Release\\NetworkProvider.pdb",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\SystemStateProvider\\obj\\Release\\SystemStateProvider.pdb",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FSCONTEXTAPI.C",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\SystemSlotsProvider\\obj\\Release\\SystemSlotsProvider.pdb",
+        "f:\\dd\\wpf\\src\\Native\\ums\\msls\\ls4\\src\\LSDSPLY.C",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\RealTimeClockProvider\\obj\\Release\\RealTimeClockProvider.pdb",
+        "f:\\dd\\ndp\\clr\\src\\jit\\LoopCloning.cpp",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\PortPeripheralProvider\\obj\\Release\\PortPeripheralProvider.pdb",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\tsh_tshandle.cpp",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\DeviceConsentProvider\\obj\\Release\\DeviceConsentProvider.pdb",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "f:\\dd\\ndp\\clr\\src\\jit\\ValueNum.cpp",
+        "C:\\ProgramData\\HP\\HP Touchpoint Analytics Client\\OnEnrollment\\service_provider_cache.bin",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\com\\referenceidentity.cpp",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FsMathPara.c",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\win32\\util_win32.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_identity.cpp",
+        "f:\\dd\\wpf\\src\\Native\\ums\\msls\\ls4\\src\\TABUTILS.C",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\BiosphereProvider\\obj\\Release\\BiosphereProvider.pdb",
+        "C:\\agent\\_work\\1\\s\\ta-client\\TouchpointAnalyticsClient\\Providers\\SystemProvider\\obj\\Release\\SystemProvider.pdb",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FSTRACKFINITE.C",
+        "f:\\dd\\wpf\\src\\Native\\ums\\pts3\\src\\FsTableSrv.c"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.0934,
+      "null_byte_ratio": 0.2818,
+      "printable_ratio": 0.285,
+      "unique_bytes": 256,
+      "total_size": 267120640
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T12:05:47.769410Z",
+    "process_name": "TouchpointAnalyticsClientService.exe",
+    "pid": 3260,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

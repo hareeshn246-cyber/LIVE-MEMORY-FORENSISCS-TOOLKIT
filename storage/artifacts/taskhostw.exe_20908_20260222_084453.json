@@ -1,0 +1,277 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\taskhostw.exe_20908.raw",
+    "dump_sha256": "8fce1fb65f2cfc8cde0f9974d72641ccd863d8aeebb1bd5c64b7a42ec9c85c6b",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              5934392
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 8,
+            "offsets": [
+              5941794,
+              11536744,
+              12167564,
+              33001472,
+              33033554,
+              41473586,
+              44963910,
+              49375630
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:44:44.118568Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\taskhostw.exe_20908.raw",
+      "dump_size_mb": 49.56
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 337,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 10,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 13,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 14,
+          "CryptDecrypt": 14,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 54,
+          "CreateProcess": 94,
+          "AdjustTokenPrivileges": 8,
+          "OpenProcess": 68,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 8,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 9,
+        "patterns": {
+          "http://": 7,
+          "GET": 2
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://schemas.microsoft.com/Search/2013/ApplicationContent",
+        "http://www.w3.org/2001/XMLSchema"
+      ],
+      "ip_addresses": [
+        "1.2.13.1",
+        "2.5.29.28",
+        "5.5.7.1",
+        "2.5.29.2",
+        "4.1.311.61",
+        "1.3.132.0",
+        "840.63.0.2",
+        "2.5.29.37",
+        "5.5.7.48",
+        "5.2.3.5",
+        "4.1.311.64",
+        "4.1.311.21",
+        "2.5.29.54",
+        "2.5.29.32",
+        "1.3.6.1",
+        "101.3.4.2",
+        "2.5.29.17",
+        "4.1.311.65",
+        "5.1.0.0",
+        "2.5.29.46",
+        "4.1.311.44",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.16.840.1",
+        "2.5.4.3",
+        "101.2.1.1",
+        "2.5.29.35",
+        "1.3.14.7",
+        "2.5.4.18",
+        "6.0.0.0",
+        "4.1.311.42",
+        "2.5.29.14",
+        "2.5.29.31",
+        "1.3.133.16",
+        "4.1.311.20",
+        "5.5.7.7",
+        "2.5.29.20",
+        "4.1.311.31",
+        "2.5.29.1",
+        "2.5.4.17",
+        "4.1.311.47",
+        "2.5.4.8",
+        "2.5.4.6",
+        "2.5.4.7",
+        "2.5.4.10",
+        "2.5.4.24",
+        "2.5.4.42",
+        "2.5.4.13",
+        "2.5.4.20",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Program Files\\Common Files",
+        "C:\\Users\\Admin\\Downloads\\zsteg-master\\zsteg-master\\bin",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Users\\Admin\\OneDrive",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Ollama",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows",
+        "C:\\Program Files (x86)\\Nmap",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Users\\Admin",
+        "c:\\ [",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\MinGW\\bin",
+        "C:\\Windows\\system32",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Users\\Admin\\.dotnet\\tools",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Program Files",
+        "C:\\jdk-24_windows-x64_bin\\jdk-24.0.2\\bin",
+        "C:\\Users\\Public",
+        "C:\\Program Files (x86)\\Minimal ADB and Fastboot",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Admin\\AppData\\Local\\Python\\bin",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\ProgramData",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "C:\\Program Files\\qemu",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.1205,
+      "null_byte_ratio": 0.2338,
+      "printable_ratio": 0.319,
+      "unique_bytes": 256,
+      "total_size": 51965952
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:44:53.966134Z",
+    "process_name": "taskhostw.exe",
+    "pid": 20908,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

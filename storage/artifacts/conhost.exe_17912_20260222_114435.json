@@ -1,0 +1,230 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\conhost.exe_17912.raw",
+    "dump_sha256": "e594d143f7ca4924c7620d1a033f5f086549932393ab0052c1bee6e7b05e9877",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              830940
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 6,
+            "offsets": [
+              18651496,
+              19282316,
+              22779974,
+              26978702,
+              35889152,
+              35921234
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:44:28.432650Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.4245,
+      "malware": 0.5755
+    },
+    "is_malicious": true,
+    "risk_score": 15.0,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)",
+      "Score reduced from 35.1 (Trusted Process)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 20.142500000000002
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\conhost.exe_17912.raw",
+      "dump_size_mb": 36.73
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 258,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 3,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 11,
+          "GetAsyncKeyState": 8,
+          "CryptEncrypt": 9,
+          "CryptDecrypt": 9,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 12,
+          "CreateProcess": 77,
+          "AdjustTokenPrivileges": 6,
+          "OpenProcess": 65,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 7,
+          "QueueUserAPC": 8,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 3,
+        "patterns": {
+          "GET": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [],
+      "ip_addresses": [
+        "5.1.0.0",
+        "17.0.8.101",
+        "1.3.6.1",
+        "6.0.0.0",
+        "127.0.0.1",
+        "4.1.311.10",
+        "1.0.0.0"
+      ],
+      "file_paths": [
+        "C:\\Program Files\\Common Files",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\jdk-2I",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\Users\\Public",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "C:\\jdk-24_windows-x64_bin\\jdk-24.0.2\\bin",
+        "C:\\Pro",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoImplObject.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "C:\\Users\\Admin",
+        "C:\\Windows\\",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPeer.inl",
+        "C:\\Windows",
+        "C:\\Program Files (x86)",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoList.inl",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "C:\\ProgramData",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoStub.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoAsyncOperationCoordinator.inl",
+        "C:\\Users\\Admin\\Downloads\\zsteg-master\\zsteg-master\\bin",
+        "C:\\Prog",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoProxy.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\PO",
+        "C:\\MinGW\\bin",
+        "C:\\Windows\\system32\\conhost.exe 0x4",
+        "C:\\User",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\Users\\Admin\\OneDrive",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Users\\Admin\\.dotnet\\tools"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.1581,
+      "null_byte_ratio": 0.2286,
+      "printable_ratio": 0.3171,
+      "unique_bytes": 256,
+      "total_size": 38518784
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:44:35.989844Z",
+    "process_name": "conhost.exe",
+    "pid": 17912,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

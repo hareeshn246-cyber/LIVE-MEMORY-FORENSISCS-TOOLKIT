@@ -1,0 +1,743 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\Antigravity.exe_16736.raw",
+    "dump_sha256": "99ebb2c469f591f72d9f6dd54f5a04ee35ba01e3f8bc3bfffaf78e771a5a3214",
+    "total_matches": 8,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 8,
+            "offsets": [
+              85603698,
+              86068594,
+              86070117,
+              86261735,
+              200028292,
+              200404244,
+              200455104,
+              200457688
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 2,
+            "offsets": [
+              86261795,
+              200028341
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 18,
+            "offsets": [
+              86069693,
+              86069993,
+              86071724,
+              86261852,
+              104900878,
+              200028385,
+              488352104,
+              515457108,
+              518431798,
+              518733700
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "WannaCry_Ransomware",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects WannaCry Ransomware strings",
+          "severity": "critical",
+          "author": "Florian Roth (Signature-Base)"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 2,
+            "offsets": [
+              86264895,
+              200030840
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              86264947,
+              200030881
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 2,
+            "offsets": [
+              86264999,
+              200030921
+            ]
+          },
+          {
+            "identifier": "$x1",
+            "instances": 2,
+            "offsets": [
+              86265055,
+              200030965
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "Mimikatz_Credential_Dumper",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects Mimikatz credential dumping tool",
+          "severity": "critical",
+          "author": "Benjamin Delpy (gentilkiwi)"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 2,
+            "offsets": [
+              86266531,
+              200032150
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              86266603,
+              200032210
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 2,
+            "offsets": [
+              86266663,
+              200032258
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 2,
+            "offsets": [
+              86266727,
+              200032310
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "AsyncRAT_Client",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects AsyncRAT Client",
+          "severity": "high",
+          "author": "Community"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 17,
+            "offsets": [
+              86267467,
+              200032871,
+              508250081,
+              508838141,
+              510579575,
+              511919831,
+              516560691,
+              518416997,
+              522488293,
+              522489075
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              86267519,
+              200032911
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 7,
+            "offsets": [
+              48371202,
+              48371288,
+              48371763,
+              48371882,
+              86267567,
+              200032948,
+              329767420
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 6,
+            "offsets": [
+              86267611,
+              147718707,
+              147722937,
+              177133338,
+              177158869,
+              200032981
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "LockBit_Ransomware",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects LockBit Ransomware artifacts",
+          "severity": "critical",
+          "author": "Research"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 2,
+            "offsets": [
+              86267939,
+              200033232
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              86267991,
+              200033272
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 2,
+            "offsets": [
+              86268051,
+              200033321
+            ]
+          },
+          {
+            "identifier": "$cmd1",
+            "instances": 2,
+            "offsets": [
+              86268101,
+              200033360
+            ]
+          },
+          {
+            "identifier": "$cmd2",
+            "instances": 2,
+            "offsets": [
+              86268165,
+              200033414
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "Conti_Ransomware",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects Conti Ransomware artifacts",
+          "severity": "critical",
+          "author": "Research"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 2,
+            "offsets": [
+              86268543,
+              200033715
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 6,
+            "offsets": [
+              86268595,
+              200033757,
+              457334784,
+              457334800,
+              457335392,
+              478704016
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 2,
+            "offsets": [
+              86268647,
+              200033797
+            ]
+          },
+          {
+            "identifier": "$ext",
+            "instances": 2,
+            "offsets": [
+              86268704,
+              200033843
+            ]
+          },
+          {
+            "identifier": "$note",
+            "instances": 8,
+            "offsets": [
+              86268749,
+              86269750,
+              148196693,
+              151495664,
+              175762338,
+              177423370,
+              200033878,
+              200034650
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "Ryuk_Ransomware",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects Ryuk Ransomware artifacts",
+          "severity": "critical",
+          "author": "Research"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 2,
+            "offsets": [
+              86269075,
+              200034125
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              86269131,
+              200034168
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 2,
+            "offsets": [
+              86269195,
+              200034220
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 16,
+            "offsets": [
+              51481024,
+              51481200,
+              59590334,
+              59590345,
+              59590630,
+              60555201,
+              60555212,
+              60555497,
+              86269255,
+              121643378
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "Sodinokibi_REvil",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects Sodinokibi/REvil Ransomware",
+          "severity": "critical",
+          "author": "Research"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 6,
+            "offsets": [
+              86269353,
+              86269415,
+              86269579,
+              200034333,
+              200034395,
+              200034514
+            ]
+          },
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              86269631,
+              200034553
+            ]
+          },
+          {
+            "identifier": "$note",
+            "instances": 2,
+            "offsets": [
+              86269749,
+              200034649
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:07:02.096969Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\Antigravity.exe_16736.raw",
+      "dump_size_mb": 530.28
+    },
+    "signature_indicators": {
+      "total_detections": 8,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        },
+        {
+          "name": "WannaCry_Ransomware",
+          "severity": "critical",
+          "description": "Detects WannaCry Ransomware strings"
+        },
+        {
+          "name": "Mimikatz_Credential_Dumper",
+          "severity": "critical",
+          "description": "Detects Mimikatz credential dumping tool"
+        },
+        {
+          "name": "AsyncRAT_Client",
+          "severity": "high",
+          "description": "Detects AsyncRAT Client"
+        },
+        {
+          "name": "LockBit_Ransomware",
+          "severity": "critical",
+          "description": "Detects LockBit Ransomware artifacts"
+        },
+        {
+          "name": "Conti_Ransomware",
+          "severity": "critical",
+          "description": "Detects Conti Ransomware artifacts"
+        },
+        {
+          "name": "Ryuk_Ransomware",
+          "severity": "critical",
+          "description": "Detects Ryuk Ransomware artifacts"
+        },
+        {
+          "name": "Sodinokibi_REvil",
+          "severity": "critical",
+          "description": "Detects Sodinokibi/REvil Ransomware"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 399,
+        "api_details": {
+          "VirtualAllocEx": 11,
+          "WriteProcessMemory": 8,
+          "CreateRemoteThread": 16,
+          "NtCreateThreadEx": 6,
+          "SetWindowsHookEx": 15,
+          "GetAsyncKeyState": 10,
+          "CryptEncrypt": 15,
+          "CryptDecrypt": 17,
+          "InternetReadFile": 7,
+          "URLDownloadToFile": 3,
+          "WinExec": 3,
+          "ShellExecute": 39,
+          "CreateProcess": 91,
+          "AdjustTokenPrivileges": 18,
+          "OpenProcess": 98,
+          "NtMapViewOfSection": 10,
+          "NtUnmapViewOfSection": 9,
+          "QueueUserAPC": 11,
+          "SetThreadContext": 10,
+          "RtlCreateUserThread": 2
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 5397,
+        "patterns": {
+          "http://": 957,
+          "https://": 2980,
+          "ftp://": 2,
+          "POST": 402,
+          "GET": 1021,
+          "User-Agent:": 8,
+          "Content-Type:": 23,
+          "Cookie:": 4
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://registry.npmjs.org",
+        "https://fetch.spec.whatwg.org/#dom-body-body",
+        "https://go.dev/wiki/Deprecated",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.textEditorDiffInformation.d.ts",
+        "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+        "https://V",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribEditSessions.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookLiveShare.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalDataWriteEvent.d.ts",
+        "https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.commentReveal.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.tunnelFactory.d.ts",
+        "https://wicg.github.io/cookie-store/#cookie-maximum-name-value-pair-size",
+        "https://github.com/enkia/tokyo-night-vscode-theme",
+        "https://github.com/chromium/chromium/blob/694d20d134cb553d8d89e5500b9148012b1ba299/content/browser/cache_storage/cache_storage_cache.cc#L260-L262",
+        "https://aka.ms/vscode-github-push-protection",
+        "https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.ttf",
+        "http://www.w3.org/1999/xhtml]U",
+        "https://github.com/facebook/pyrefly",
+        "https://aka.ms/vscode-extensions/navigator",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityFiles.d.tsU",
+        "https://code.visualstudio.com/api/references/activation-events#Start-up",
+        "https://daily-cloudcode-pa.googleapis.com",
+        "https://github.com/Microsoft/vscode-maven/",
+        "https://fetch.spec.whatwg.org/#dom-body-blob",
+        "https://datatracker.ietf.org/doc/html/rfc5861#section-4",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/extensions/terminal-suggest/dist/terminalSuggestMain.js.map",
+        "https://getcomposer.org/schema.json",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.cider.d.ts",
+        "https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html.",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#name-storing-responses-to-authen",
+        "https://tools.ietf.org/html/rfc7231#section-6.4.4",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.codiconDecoration.d.ts",
+        "https://docs.github.com/rest/orgs/security-managers#add-a-security-manager-team",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/smart-buffer/build/smartbuffer.js.map",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.tokenInformation.d.tsU",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.debugVisualization.d.ts",
+        "https://code.visualstudio.com/docs/getstarted/userinterface#_preview-mode",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#section-5.2.1.1",
+        "https://img.shields.io/badge/-changelog-green",
+        "https://antigravity.google/docs/rules",
+        "https://img.shields.io/badge/platform-MacOS",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityInteractiveCascade.d.ts",
+        "https://$",
+        "https://www.schemastore.org/bowerrc",
+        "https://aka.ms/python-27-support).",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.timeline.d.tsU",
+        "https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis#section-5.4.3",
+        "https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.svg#web",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.chatContextProvider.d.ts"
+      ],
+      "ip_addresses": [
+        "24.37.191.17",
+        "186.179.19.20",
+        "1.0.6.7",
+        "95.217.72.181",
+        "2.2.1.2",
+        "43.134.17.224",
+        "5.253.185.239",
+        "43.134.14.148",
+        "136.227.181.96",
+        "19.2.3.2",
+        "4.2.6.1",
+        "199.245.101.143",
+        "4.2.5.1",
+        "5.5.2.1",
+        "136.227.168.216",
+        "1.3.6.1",
+        "5.4.2.1",
+        "1.0.0.2",
+        "104.194.80.193",
+        "198.190.0.126",
+        "204.217.149.135",
+        "178.171.117.81",
+        "85.194.243.117",
+        "4.0.0.0",
+        "167.234.222.222",
+        "112.17.241.235",
+        "195.133.209.198",
+        "14.2.231.21",
+        "42.2.0.192",
+        "45.84.80.16",
+        "136.227.190.22",
+        "101.32.109.185",
+        "198.56.6.108",
+        "45.134.107.27",
+        "45.82.99.33",
+        "194.187.37.144",
+        "169.254.242.252",
+        "4.2.6.7",
+        "192.168.0.1",
+        "194.113.81.217",
+        "20.189.173.8",
+        "134.199.80.223",
+        "149.88.90.176",
+        "4.1.2.2",
+        "134.199.75.67",
+        "5.3.2.1",
+        "45.143.175.113",
+        "5.2.2.10",
+        "91.103.121.31",
+        "88.214.3.213"
+      ],
+      "file_paths": [
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\qps-ploc\\msprivs.dll.mui",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\remoteaudioendpoint.dll",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\Manifests\\amd64_bfad.inf-languagepack_31bf3856ad364e35_10.0.26100.1_en-us_92d0a44630f368a4.manifest",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\Manifests\\amd64_c_fsreplication.inf.resources_31bf3856ad364e35_10.0.26100.1_en-us_e17f1f7440834adb.manifest",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\bxois.inf_amd64_720cb627c5c7afdc\\bxois.inf",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\drivers\\portcfg.sys",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\netsstpa.inf_amd64_a982732ea027811e\\netsstpa.inf",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\NetworkList\\Icons\\StockIcons\\office_16.bin",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\FileMaps\\program_files_common_files_microsoft_shared_ink_fsdefinitions_keypad_bb29f287c24d4a93.cdf-ms",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\drivers\\usbccgp.sys",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\FileMaps\\programdata_microsoft_windows_wer_reportarchive_5449504010b82c41.cdf-mse",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\mchgr.inf_amd64_d324fd60dcc3fe67\\m4mc.sys",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\da-DK\\fms.dll.mui",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\wbem\\en-US\\wmipdfs.mfle",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\utilq",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\socks\\build\\index.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\Manifests\\amd64_bfadfcoe.inf-languagepack_31bf3856ad364e35_10.0.26100.1_en-us_3665a2cc3b5d5a1b.manifest",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\de-DE\\msimsg.dll.mui",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\WindowsPowerShell\\v1.0\\Modules\\SmbShare\\Smb.types.ps1xml",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\NetSetupEngine.dlle",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\as-IN\\fms.dll.mui",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\lsi_sas.inf_amd64_74bb5e3e01cfd526\\lsi_sas.inf",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\pvscsii.inf_amd64_9aaa769bfa6923b1\\pvscsii.sys",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\interceptor\\cache.js",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\KBDUKX.DLL",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\mock\\mock-symbols.jse",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\downlevel\\API-MS-Win-core-localization-obsolete-l1-2-0.dll",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\storage\\snapshots\\System_Snapshot_20260222_131942\\uTorrent.exe_19208.raw",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\wbem\\krnlprov.mof",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\configuration-editing\\dist\\configurationEditingMainU",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\FileMaps\\sources_recovery_en-us_38d0190271db68af.cdf-ms",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\wdscsl.dlle",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\quz-PE\\fms.dll.mui",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\wbem\\nlsvc.mof",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\RpcRtRemote.dll",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\INF\\LSM\\0409\\lagcounterdef.ini",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\Manifests\\amd64_c_firmware.inf.resources_31bf3856ad364e35_10.0.26100.1_en-us_3bf77b154f48d701.manifest",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\pics\\IMG_20191020_091943.jpg",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\Manifests\\amd64_audioendpoint.inf-languagepack_31bf3856ad364e35_10.0.26100.1_en-us_88d423f6c1a13006.manifeste",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\WinSxS\\Catalogs\\f63a6b14b18b6211e5bef3c30f1aebb7a35a16e48963a6d988bbb4038842676b.cat",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\c_fscontinuousbackup.inf_amd64_9ff70c1e6a947a7d\\c_fscontinuousbackup.inf",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\downlevel\\API-MS-Win-Eventing-Controller-L1-1-0.dll",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\wininit.exe",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\nb-NO\\fms.dll.mui",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\iai2c.inf_amd64_a77c815b2999404d\\iai2c.sys",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\drivers\\watchdog.sys",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\riched32.dll",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\win\\Mount\\Boot\\1\\Windows\\System32\\DriverStore\\FileRepository\\netrast.inf_amd64_f955916b393df102\\netrast.inf",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.299,
+      "null_byte_ratio": 0.2486,
+      "printable_ratio": 0.3767,
+      "unique_bytes": 256,
+      "total_size": 556036096
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:07:31.363756Z",
+    "process_name": "Antigravity.exe",
+    "pid": 16736,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

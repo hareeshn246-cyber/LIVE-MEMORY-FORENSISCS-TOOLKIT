@@ -1,0 +1,344 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\svchost.exe_6100.raw",
+    "dump_sha256": "2a60489b6fe72ad6671bef5dfd7c54d6b89b0bde5608b7413b6f73832cc13fab",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              71189240
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 2,
+            "offsets": [
+              29766672,
+              71188640
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 16,
+            "offsets": [
+              29991804,
+              45846278,
+              63181078,
+              72716784,
+              73596946,
+              74571860,
+              78777782,
+              79598646,
+              80310148,
+              83986792
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:41:01.372751Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\svchost.exe_6100.raw",
+      "dump_size_mb": 113.1
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 410,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 4,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 10,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 24,
+          "CryptDecrypt": 24,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 37,
+          "CreateProcess": 90,
+          "AdjustTokenPrivileges": 16,
+          "OpenProcess": 141,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 194,
+        "patterns": {
+          "http://": 57,
+          "https://": 103,
+          "POST": 9,
+          "GET": 23,
+          "Content-Type:": 1,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://vor(@",
+        "http://ww",
+        "https://uk.vortex-win.data.microsoft.com/collect/v1",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "https://www.bing.com/images/detail/search",
+        "https://us5-v20.events.data.microsoft.com/collect/v1",
+        "https://us-v20.events.data.microsoft.com/OneCollector/1.0/",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "https://us-v10.events.data.microsoft.com/collect/v1",
+        "http://go.microsoft.com/fwlink/?LinkId=838604",
+        "http://www.w3.org/2001/XMLSchema",
+        "https://vortex-wi",
+        "https://go.microsoft.com/fwlink/?LinkId=528085",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "http://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt0",
+        "https://login.microsoft.com",
+        "https://go.microsoft.com/fwlink/?LinkId=129217&profile=css3&warning=2&uri=",
+        "https://www.msn.com/spartan/ientp?locale",
+        "https://us-v10.eve",
+        "http://msedge.b.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/de071377-0f9b-4012-b571-81f9e7f0998b?P1=1756706296&P2=404&P3=2&P4=T4EOjX8T9Jz9",
+        "https://go.microsoft.com/fwlink/?LinkId=129219",
+        "https://go.microsoft.com/fwlink/p/?LinkId=619797&pc=UE03&ocid=UE03DHP",
+        "https://us-v10.events.data.micros",
+        "https://vorte",
+        "https://iecvlist.microsoft.com/edge/desktop/1499812172/edgecompatviewlist.xml",
+        "https://v10.vortex-win.data.microsoft.com/collect/v1",
+        "http://www.microsoft.com/pki/certs/MicrosoftRootCert.crt0!",
+        "https://us-v10.events.data.microsoft.com/OneCollector/1.0/",
+        "https://events(@",
+        "https://c.urs.microsoft.com/",
+        "https://v10.events.data.microsoft.com/OneCollector/1.0",
+        "https://in-v20.events.data.microsoft.com/OneCollector/1.0/",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "https://events.data.micro",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "https://go.microsoft.com/fwlink/?LinkId=129223&rptmode=2&url1=",
+        "http://www.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl",
+        "http://www.w3.org/2001/XMLSchema-instance",
+        "https://us-v10.events.data.microsoft.com/OneCollector/1.0",
+        "https://au.vortex-win.data.microsoft.com",
+        "https://go.microsoft.com/fwlink/?LinkId=129220&url=",
+        "https://www.bing.com/widget/edge/search",
+        "https://ieonline.microsoft.com/ieflipahead/ie10/rules.xml",
+        "http://appmap.trafficmanager.net/api/v1/parse?url=",
+        "https://au.vortex-win.data.microsoft.com/collect/v1",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0",
+        "http://www.m",
+        "http://www.microsoft.com/pkiops/crl/MicWinProPCA2011_2011-10-19.crl",
+        "https://us4-v20.events.data.microsoft.com/collect/v1",
+        "https://go.microsoft.com/fwlink/?LinkId=392206"
+      ],
+      "ip_addresses": [
+        "2.5.29.28",
+        "5.5.7.1",
+        "2.5.29.2",
+        "101.3.4.4",
+        "4.1.311.73",
+        "1.3.132.0",
+        "840.63.0.2",
+        "5.5.7.48",
+        "2.23.133.2",
+        "2.5.4.21",
+        "4.1.311.64",
+        "5.2.3.5",
+        "4.1.311.21",
+        "1.12.1.2",
+        "2.5.29.54",
+        "2.5.29.32",
+        "2.5.4.27",
+        "1.3.6.1",
+        "4.1.311.17",
+        "1.9.16.1",
+        "2.5.4.16",
+        "4.1.311.65",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.16.840.1",
+        "2.5.4.3",
+        "101.2.1.1",
+        "1.3.14.7",
+        "2.5.4.39",
+        "2.5.4.18",
+        "6.0.0.0",
+        "2.5.29.14",
+        "1.12.1.6",
+        "1.12.1.1",
+        "5.5.7.7",
+        "1.1.2.1",
+        "2.5.29.1",
+        "2.5.4.23",
+        "2.5.4.17",
+        "4.1.311.47",
+        "2.5.4.8",
+        "2.5.4.6",
+        "2.5.4.7",
+        "4.1.311.3",
+        "2.5.4.10",
+        "2.5.4.24",
+        "4.1.311.72",
+        "1.12.1.3",
+        "2.5.4.20",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoStub.inl",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files\\Git\\cmd",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\onepass.cc",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\dfa.cc",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\regexp.cc",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoImplObject.inl",
+        "C:\\Program Files\\dotnet\\",
+        "t:\\windows\\system32",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\prog.cc",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\TenantStorage\\P-ARIA\\EventStore.db-wal",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Roaming",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\EventStore.db-journal",
+        "C:\\Windows\\TEMP",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "c:\\ [",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\ScenariosSqlStore\\EventStore.db-wal",
+        "c:\\crypt32\\",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoVariablySizedResult.inl",
+        "C:\\Windows\\system32",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\EventStore.db-wal",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\parse.cc",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\ScenariosSqlStore\\EventStore.db-shm",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\ScenariosSqlStore\\EventStore.db-journal",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Program ",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Program Files",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoBufferingMessageCallHost.inl",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\TenantStorage\\P-ARIA\\EventStore.db",
+        "C:\\Users\\Public",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\bitstate.cc",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\ProgramData\\Microsoft\\Diagnosis\\TenantStorage\\P-ARIA\\EventStore.db-journal",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Program Files (x86)",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\nfa.cc",
+        "D:\\os\\obj\\amd64fre\\onecore\\base\\telemetry\\utc\\tools\\settingtool\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\re2\\src\\2023-02-01-4de2684268.clean\\re2\\tostring.cc",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\145.0.3800.70\\telclient.dll",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.0575,
+      "null_byte_ratio": 0.2618,
+      "printable_ratio": 0.326,
+      "unique_bytes": 256,
+      "total_size": 118591488
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:41:14.360320Z",
+    "process_name": "svchost.exe",
+    "pid": 6100,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

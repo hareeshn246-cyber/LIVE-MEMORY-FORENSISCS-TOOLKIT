@@ -1,0 +1,396 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\Antigravity.exe_4504.raw",
+    "dump_sha256": "eb2c435aebb230e06bf9072af3f58c31f2a009a94e25454e0e3429b761639be7",
+    "total_matches": 2,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 12,
+            "offsets": [
+              163924304,
+              163926615,
+              249607340,
+              249608632,
+              249641830,
+              249643353,
+              249659204,
+              249660472,
+              249695678,
+              249697201
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 27,
+            "offsets": [
+              249608275,
+              249608529,
+              249609952,
+              249642929,
+              249643229,
+              249660122,
+              249660372,
+              249661763,
+              249696777,
+              249697077
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "AsyncRAT_Client",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects AsyncRAT Client",
+          "severity": "high",
+          "author": "Community"
+        },
+        "strings": [
+          {
+            "identifier": "$s1",
+            "instances": 15,
+            "offsets": [
+              525604833,
+              526250237,
+              527934327,
+              528811735,
+              533915443,
+              535771749,
+              543271397,
+              543272179,
+              561605191,
+              566057047
+            ]
+          },
+          {
+            "identifier": "$s3",
+            "instances": 5,
+            "offsets": [
+              48149674,
+              48149760,
+              48150235,
+              48150354,
+              345811452
+            ]
+          },
+          {
+            "identifier": "$s4",
+            "instances": 2,
+            "offsets": [
+              148593102,
+              148620533
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:40:32.285547Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7772,
+      "malware": 0.2228
+    },
+    "is_malicious": true,
+    "risk_score": 15.0,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)",
+      "Score reduced from 22.8 (Trusted Process)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 7.798
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\Antigravity.exe_4504.raw",
+      "dump_size_mb": 546.83
+    },
+    "signature_indicators": {
+      "total_detections": 2,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        },
+        {
+          "name": "AsyncRAT_Client",
+          "severity": "high",
+          "description": "Detects AsyncRAT Client"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 397,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 12,
+          "NtCreateThreadEx": 4,
+          "SetWindowsHookEx": 12,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 12,
+          "CryptDecrypt": 14,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 35,
+          "CreateProcess": 92,
+          "AdjustTokenPrivileges": 27,
+          "OpenProcess": 124,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 6021,
+        "patterns": {
+          "http://": 1170,
+          "https://": 3316,
+          "ftp://": 1,
+          "POST": 489,
+          "GET": 1027,
+          "User-Agent:": 2,
+          "Content-Type:": 15,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://www.w3.org/TR/html5/dom.html#phrasing-content.",
+        "https://go.dev/wiki/CodeReviewComments#package-comments.",
+        "https://vscode.one/new-tab-vscode/",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/ip-address/dist/ipv4.js.mapU",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.resolvers.d.ts",
+        "https://fetch.spec.whatwg.org/#http-redirect-fetch",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalSelection.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.quickInputButtonLocation.d.ts",
+        "https://*.google",
+        "https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.6",
+        "https://open-vsx.org/vscode/item",
+        "https://staticcheck.io/docs/checks/).",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.treeViewMarkdownMessage.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.findTextInFiles.d.ts",
+        "https://127.0.0.1:49699/exa.language_server_pb.LanguageServerService/Heartbeat",
+        "https://c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.eot",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/core/bootstrap-fork.js.map",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.mcpToolDefinitions.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.chatParticipantPrivate.d.ts",
+        "https://localhost:5001'",
+        "http://localhost:8080",
+        "https://httpwg.org/specs/rfc9110.html#obsolete.date.formats",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalQuickFixProvider.d.ts",
+        "http://127.0.0.1:49698/exa.extension_server_pb.ExtensionServerService/SubscribeToUnifiedStateSyncTopic",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.interactive.d.ts",
+        "https://github.com/Microsoft/vscode-maven/",
+        "https://raw.githubusercontent.com/clangd/vscode-clangd/master/",
+        "https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand),",
+        "http://localhost:49700/proxy/unleash",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.taskExecutionTerminal.d.ts",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/ip-address/dist/ipv6.js.map",
+        "https://aka.ms/AAmx2ft).",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribViewsRemote.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookReplDocument.d.ts",
+        "https://www.rfc-editor.org/rfc/rfc9111.html#section-5.2.1.1",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/ip-address/dist/address-error.js.map",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/vscode-regexpp/index.js.mapU",
+        "https://code.visualstudio.com/docs/setup/enterprise#_configure-allowed-extensions)",
+        "https://www.schemastore.org/bowerrc",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityDevContainers.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode-css-languageservice/master/docs/customData.schema.json",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribNotebookStaticPreloads.d.ts",
+        "https://github.com/microsoft/vscode.git",
+        "https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters)",
+        "https://code.visualstudio.com/docs/copilot/security)",
+        "https://main.vscode-cdn.net/sourcemaps/1504c8cc4b34dbfbb4a97ebe954b3da2b5634516/node_modules/socks/build/index.js.map",
+        "http://localhost:49700/proxy/unleash/client/features-",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookControllerAffinityHidden.d.ts",
+        "https://www.google.com/generate_204",
+        "https://github.com/Haree-code/PROJECT"
+      ],
+      "ip_addresses": [
+        "154.30.99.146",
+        "95.217.72.181",
+        "5.253.185.239",
+        "4.2.6.8",
+        "136.227.190.22",
+        "4.2.6.7",
+        "2.1.1.1",
+        "4.2.6.5",
+        "1.0.0.2",
+        "4.2.5.1",
+        "134.199.80.223",
+        "5.2.2.10",
+        "45.139.193.125",
+        "4.2.6.3",
+        "204.217.149.135",
+        "5.3.2.1",
+        "134.199.75.67",
+        "178.171.117.81",
+        "43.134.17.224",
+        "136.227.170.191",
+        "43.134.12.154",
+        "85.194.243.117",
+        "195.133.209.198",
+        "91.103.121.31",
+        "7.6.3.1",
+        "198.56.6.108",
+        "1.3.6.1",
+        "4.2.6.2",
+        "1.3.14.3",
+        "127.0.0.1",
+        "95.216.45.233",
+        "88.214.3.213",
+        "20.42.65.88",
+        "88.99.29.146",
+        "1.0.6.7",
+        "194.113.81.217",
+        "4.2.6.10",
+        "194.36.171.49",
+        "19.2.3.1",
+        "104.194.80.193",
+        "42.2.0.192",
+        "136.227.168.216",
+        "7.6.3.2",
+        "45.82.99.33",
+        "4.2.5.2",
+        "136.227.183.162",
+        "149.88.90.176",
+        "1.1.1.1",
+        "7.1.1.1",
+        "45.84.80.16"
+      ],
+      "file_paths": [
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\output_logging_20260222T165349\\2-Pyrefly language server.log",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\redhat.java-1.52.0-win32-x64",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\smart-buffer",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\dispatcher\\dispatcher-base.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\socks\\package.json",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\json-language-features\\client\\dist\\node\\jsonClientMain",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\fetch\\util.js",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\ms-python.python-2026.0.0-universal\\python-env-tools\\bin\\pet.exe",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\meta.pyrefly-0.51.1-win32-x64\\dist\\extension",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\socks\\build\\client\\node_modules",
+        "c:\\Windows\\system32\\MapsBtSvc.dll",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\tunnel-forwarding",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\agent-base\\dist\\index.js",
+        "C:\\Users\\Public",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\core\\acquit",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\fetch\\global.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\json-language-features\\package.json",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\llhttp",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\cookies\\util.js",
+        "C:\\Program Files",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\package.json",
+        "C:\\Path With Spaces",
+        "c:\\users\\admin\\.antigravity\\extensions\\ms-python.python-2026.0.0-universal",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\mkdirp\\index.jsU",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\userDataSync.log",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\ms-python.debugpy-2025.18.0-win32-x64\\dist\\extension.js",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\User\\workspaceStorage\\a758a24e0016a231ed926ad4ff6a4b31\\ms-python.python\\pythonrc.py",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\antigravity\\dist\\extension.jsU",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\dispatcher\\proxy-agent.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\antigravity-dev-containers\\package.json",
+        "c:\\\\Windows\\\\system32\\\\MapsBtSvc.dll",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\vscode.github-authentication\\GitHub Authentication.log",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\mock\\mock-agent.js",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\java",
+        "C:\\\\Program Files (x86)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\configuration-editing\\dist\\configurationEditingMainU",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\coffeescript",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.resolved.13",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\shopify.ruby-lsp-0.10.0-universal",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features\\dist\\extension",
+        "c:\\Program Files (x86)\\Nmap",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\web\\websocket\\permessage-deflate.js",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\mkdirp",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\git\\dist\\ssh-askpass.sh",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\golang.go-0.52.1-universal",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\node_modules\\undici\\lib\\util"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.3244,
+      "null_byte_ratio": 0.2471,
+      "printable_ratio": 0.3649,
+      "unique_bytes": 256,
+      "total_size": 573390848
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:41:03.646663Z",
+    "process_name": "Antigravity.exe",
+    "pid": 4504,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

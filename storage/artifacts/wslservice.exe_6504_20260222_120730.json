@@ -1,0 +1,371 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\wslservice.exe_6504.raw",
+    "dump_sha256": "ce3248085ccb7e2fdd9a5ff3fa99bc6ed2ab44e7195529405b721942a5996a33",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 2,
+            "offsets": [
+              5688176,
+              12241640
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              12241168
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 15,
+            "offsets": [
+              6968746,
+              12598728,
+              15682504,
+              22220400,
+              27666016,
+              29982304,
+              30986324,
+              40442216,
+              41073036,
+              45072464
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T12:07:17.466326Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.5897,
+      "malware": 0.4103
+    },
+    "is_malicious": true,
+    "risk_score": 29.4,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 14.3605
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\wslservice.exe_6504.raw",
+      "dump_size_mb": 76.14
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 389,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 11,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 13,
+          "CryptDecrypt": 15,
+          "InternetReadFile": 9,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 55,
+          "CreateProcess": 104,
+          "AdjustTokenPrivileges": 15,
+          "OpenProcess": 94,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 148,
+        "patterns": {
+          "http://": 78,
+          "https://": 45,
+          "POST": 9,
+          "GET": 12,
+          "User-Agent:": 1,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://www.hortcut",
+        "https://iecvlist.microsoft.com/edge/phone/1499812172/edgecompatviewlist.xml",
+        "http://);",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "https://go.microsoft.com/fwlink/?LinkId=129221&check=Check&hide_type=all&summary=on&uri=",
+        "http://style=",
+        "http://www.",
+        "http://In",
+        "http://s;text-align:centerfont-weight:",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "https://D",
+        "http://site_name",
+        "https://go.microsoft.com/fwlink/?LinkId=129218",
+        "http://html4/loose.dtd",
+        "http://An",
+        "https://ieonline.microsoft.com/ieflipahead/ie11mobile/rules.xml",
+        "http://www",
+        "http://staticsuggested",
+        "http://according",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "http://www.a",
+        "http://www.style=",
+        "http://ator",
+        "http://link",
+        "http://test.com",
+        "http://go.microsoft.com/fwlink/?LinkId=159651",
+        "http://.jpg",
+        "http://www.microsoft.com/pki/certs/MicrosoftCodeVerifRoot.crt0",
+        "https://www.bing.com/widget/insights/lookup",
+        "http://interpreted",
+        "http://w",
+        "http://go.microsoft.com/fwlink/?LinkId=838604",
+        "http://familiar",
+        "http://www.icon",
+        "http://addEventListenerresponsible",
+        "http://www.language=",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "https://go.microsoft.com/fwlink/p/?LinkId=620947",
+        "http://www.css",
+        "https://www.msn.com/spartan/ientp?locale",
+        "http://www.w3.org/2001/XMLSchema",
+        "https://go.microsoft.com/fwlink/?LinkId=392206",
+        "http://www-//W3C//DTD",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue?version=2",
+        "http://applicationslink",
+        "http://encoding=",
+        "http://www.w3.org/shortcut",
+        "http://www./div",
+        "https://c.urs.microsoft.com/"
+      ],
+      "ip_addresses": [
+        "1.12.1.2",
+        "1.9.16.3",
+        "2.5.29.21",
+        "2.5.4.38",
+        "72.1.0.4",
+        "2.5.4.11",
+        "5.5.7.1",
+        "2.5.29.32",
+        "2.5.4.10",
+        "2.5.4.30",
+        "5.5.7.6",
+        "4.1.311.61",
+        "2.5.4.15",
+        "2.5.4.25",
+        "2.5.4.31",
+        "2.5.29.3",
+        "5.1.0.0",
+        "2.5.29.10",
+        "2.5.29.35",
+        "2.5.29.1",
+        "1.3.132.1",
+        "2.5.4.20",
+        "4.1.311.25",
+        "2.23.133.8",
+        "2.5.29.54",
+        "2.5.4.19",
+        "1.1.2.1",
+        "4.1.311.2",
+        "2.5.4.26",
+        "2.5.4.28",
+        "4.1.311.76",
+        "2.5.29.2",
+        "2.5.4.37",
+        "1.3.6.1",
+        "1.7.1.1",
+        "4.1.311.15",
+        "2.5.4.24",
+        "840.63.0.2",
+        "4.1.311.12",
+        "4.1.311.21",
+        "5.5.8.2",
+        "2.5.4.29",
+        "2.5.29.4",
+        "2.5.4.35",
+        "2.5.29.8",
+        "1.311.10.3",
+        "2.5.4.9",
+        "2.5.4.16",
+        "2.5.4.52",
+        "1.12.1.1"
+      ],
+      "file_paths": [
+        "C:\\__w\\1\\s\\src\\windows\\common\\hcs.cpp",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\__w\\1\\s\\src\\windows\\common\\Redirector.cpp",
+        "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt",
+        "C:\\__w\\1\\s\\src\\windows\\common\\relay.hpp",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\__w\\1\\s\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\\include\\wil\\result_macros.h",
+        "C:\\__w\\1\\s\\src\\windows\\inc\\comservicehelper.h",
+        "C:\\__w\\1\\s\\src\\shared\\inc\\stringshared.h",
+        "C:\\__w\\1\\s\\src\\windows\\common\\socket.cpp",
+        "C:\\__w\\1\\s\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\\include\\wil\\resource.h",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\LxssCreateProcess.h",
+        "C:\\__w\\1\\s\\bin\\x64\\Release\\wslservice.pdb",
+        "C:\\Users\\Public",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\PluginManager.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\GuestTelemetryLogger.cpp",
+        "t:\\windows\\system32",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreAdviseHandler.h",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\MirroredNetworking.cpp",
+        "C:\\__w\\1\\s\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\\include\\wil\\win32_helpers.h",
+        "C:\\__w\\1\\s\\src\\shared\\configfile\\configfile.cpp",
+        "C:\\Windows",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\LxssIpTables.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\BridgedNetworking.cpp",
+        "C:\\ProgramData",
+        "C:\\__w\\1\\s\\src\\shared\\configfile\\configfile.h",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreHostDnsInfo.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\notifications.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\inc\\WmiVariant.h",
+        "C:\\__w\\1\\s\\src\\windows\\common\\WslCoreNetworkingSupport.h",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreVm.cpp",
+        "C:\\Program Files\\Git\\cmd",
+        "c:\\ [",
+        "C:\\__w\\1\\s\\src\\windows\\common\\filesystem.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\DistributionRegistration.cpp",
+        "c:\\crypt32\\",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\GnsChannel.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreTcpIpStateTracking.cpp",
+        "C:\\Program Files\\WindowsPowerShell\\Modules",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\LxssSecurity.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreGuestNetworkService.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\Lifetime.cpp"
+      ]
+    },
+    "pe_features": {
+      "Machine": 34404,
+      "SizeOfOptionalHeader": 240,
+      "Characteristics": 8226,
+      "MajorLinkerVersion": 10,
+      "MinorLinkerVersion": 0,
+      "SizeOfCode": 91136,
+      "SizeOfInitializedData": 34816,
+      "SizeOfUninitializedData": 0,
+      "AddressOfEntryPoint": 22596,
+      "BaseOfCode": 4096,
+      "ImageBase": 1785331712,
+      "SectionAlignment": 4096,
+      "FileAlignment": 512,
+      "MajorOperatingSystemVersion": 5,
+      "MinorOperatingSystemVersion": 2,
+      "MajorImageVersion": 0,
+      "MinorImageVersion": 0,
+      "MajorSubsystemVersion": 5,
+      "MinorSubsystemVersion": 2,
+      "SizeOfImage": 155648,
+      "SizeOfHeaders": 1024,
+      "CheckSum": 173593,
+      "Subsystem": 2,
+      "DllCharacteristics": 320,
+      "SectionsNb": 6,
+      "SectionsMeanEntropy": 0.0,
+      "SectionsMinEntropy": 0.0,
+      "SectionsMaxEntropy": 0.0,
+      "ResourcesNb": 0,
+      "ImportsNbDLL": 0
+    },
+    "statistical_features": {
+      "entropy": 6.1639,
+      "null_byte_ratio": 0.2262,
+      "printable_ratio": 0.3295,
+      "unique_bytes": 256,
+      "total_size": 79835136
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T12:07:30.330214Z",
+    "process_name": "wslservice.exe",
+    "pid": 6504,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

@@ -1,0 +1,336 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\Widgets.exe_11452.raw",
+    "dump_sha256": "12291b4484694a0ef85130267cf0653eaf67c8b73064a4316b1cfcf02ad8e113",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              46122000
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 22,
+            "offsets": [
+              13433784,
+              28387212,
+              46347132,
+              50558486,
+              94188090,
+              95183702,
+              99951088,
+              100831250,
+              105096655,
+              106356320
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:46:51.374872Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\Widgets.exe_11452.raw",
+      "dump_size_mb": 155.22
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 589,
+        "api_details": {
+          "VirtualAllocEx": 9,
+          "WriteProcessMemory": 6,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 17,
+          "GetAsyncKeyState": 13,
+          "CryptEncrypt": 31,
+          "CryptDecrypt": 31,
+          "InternetReadFile": 10,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 67,
+          "CreateProcess": 106,
+          "AdjustTokenPrivileges": 22,
+          "OpenProcess": 218,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 11,
+          "SetThreadContext": 11,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 388,
+        "patterns": {
+          "http://": 171,
+          "https://": 105,
+          "POST": 35,
+          "GET": 73,
+          "User-Agent:": 1,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://ator",
+        "http://w",
+        "http://schemas.microsoft.com/windows/pki/2009/01/enrollmentpolicy/IPolicy/GetPoliciesResponse",
+        "https://was",
+        "http://www",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "https://www.bing.com/images/detail/search",
+        "http://i",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "http://go.microsoft.com/fwlink/?LinkId=838604",
+        "http://www.w3.org/2001/XMLSchema",
+        "https://go.microsoft.com/fwlink/?LinkId=528085",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "https://go.microsoft.com/fwlink/?linkid=2286319",
+        "https://login.microsoft.com",
+        "http://www.hortcut",
+        "https://www.w3.org/TR/filter-effects/#sepiaEquivalent",
+        "https://go.microsoft.com/fwlink/p/?LinkId=619797&pc=UE03&ocid=UE03DHP",
+        "http://www.microsoft.com/pki/certs/MicrosoftRootCert.crt0!",
+        "https://c.urs.microsoft.com/",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "https://go.microsoft.com/fwlink/?LinkId=392206",
+        "http://msdn.microsoft.com/en-us/library/windows/desktop/hh706313.aspx",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "http://option",
+        "http://go.microsoft.com/fwlink/?LinkId=159651",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "http://www.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl",
+        "http://www.w3.org/2001/XMLSchema-instance",
+        "http://www.w3.org/shortcut",
+        "http://caissuers.microsoft.com/pkiops/certs/Microsoft",
+        "http://cript",
+        "https://www.shadertoy.com/view/4dS3Wd.",
+        "http://www.a",
+        "https://go.microsoft.com/fwlink/?LinkId=129220&url=",
+        "https://www.bing.com/widget/edge/search",
+        "https://ieonline.microsoft.com/ieflipahead/ie10/rules.xml",
+        "http://www.w3.org/XML/1998/namespace",
+        "http://appmap.trafficmanager.net/api/v1/parse?url=",
+        "http://www-//W3C//DTD",
+        "https://deff.nelreports.net/api/report?cat=msn",
+        "http://);",
+        "http://imEnglish",
+        "http://encoding=",
+        "https://windows.msn.com",
+        "http://cacerts.digicert.com/DigiCertGlobalRootG3.crt0B",
+        "http://.css",
+        "https://www.recent",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "http://www.w3.org/1999/XSL/Transform"
+      ],
+      "ip_addresses": [
+        "2.5.29.28",
+        "2.5.29.23",
+        "5.5.7.1",
+        "101.3.4.4",
+        "12.0.742.112",
+        "4.1.311.73",
+        "2.5.4.20",
+        "2.5.4.21",
+        "2.5.29.54",
+        "1.12.1.2",
+        "2.5.29.32",
+        "1.3.6.1",
+        "4.1.311.17",
+        "4.1.311.87",
+        "4.1.311.74",
+        "2.5.4.16",
+        "4.1.311.65",
+        "1.5.284.3",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.5.4.3",
+        "2.16.840.1",
+        "101.2.1.1",
+        "1.3.14.7",
+        "2.5.4.39",
+        "2.5.4.18",
+        "6.0.0.0",
+        "2.5.29.14",
+        "1.12.1.6",
+        "1.12.1.1",
+        "1.3.101.77",
+        "5.5.7.7",
+        "1.1.2.1",
+        "2.5.8.1",
+        "5.7.3.9",
+        "2.5.4.23",
+        "2.5.29.1",
+        "2.5.4.17",
+        "4.1.311.47",
+        "2.5.4.8",
+        "2.5.4.6",
+        "2.5.4.7",
+        "4.1.311.3",
+        "2.5.4.10",
+        "2.5.4.24",
+        "1.12.1.3",
+        "4.1.311.72",
+        "4.1.311.15",
+        "3.6.1.4",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\CompositionAnimation.cpp",
+        "C:\\__w\\1\\s\\src\\shared\\internal\\hosts\\WidgetCatalogImpl.inl",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\Common\\UdkVelocity.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\HostAsyncMethod.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\VelocityApi.cpp",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\Feeds.Providers.FeedResourceResponse.g.h",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\impl\\Windows.Foundation.Collections.0.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\DeferrableHostEventArgs.h",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoImplObject.inl",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\Hosts.WidgetApiInformation.g.h",
+        "C:\\__w\\1\\s\\src\\inc\\EncryptDecryptStream.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\AuthenticatorApi.cpp",
+        "C:\\Program Files (x86)\\Nmap",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\Windows.ApplicationModel.Resources.Core.h",
+        "C:\\__w\\1\\s\\src\\inc\\Utils.h",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\WidgetRegistrarApi.cpp",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoAsyncOperationCoordinator.inl",
+        "C:\\__w\\1\\s\\src\\shared\\public\\hosts\\WidgetHostContext.cpp",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Users\\Admin\\AppData\\Local\\Micro_3IsN",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\CommandDispatcher.cpp",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\Windows.Data.Json.h",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\Windows.Security.Cryptography.h",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\Windows.ApplicationModel.AppExtensions.h",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\Windows.System.h",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoBufferingMessageCallHost.inl",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\Common\\DashboardRegistryHelpers.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\PlatformDataStore.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\FeedsApi.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\Dashboard\\StartupEventMonitor.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\HostContext.h",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\Hosts.WidgetHost.g.h",
+        "C:\\__w\\1\\s\\src\\sdk\\Microsoft.Windows.Widgets\\x64\\Release\\Generated Files\\winrt\\Microsoft.Windows.Widgets.Providers.h",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\DashboardCampaignHelper.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\AuthStateController.cpp",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\WidgetRegistrar.cpp",
+        "D:\\a\\_work\\1\\s\\binaries\\amd64ret\\bin\\amd64\\\\app\\\\vcruntime140_app.amd64.pdb",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\__w\\1\\s\\src\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.231216.1\\include\\wil\\resource.h",
+        "C:\\Program Files\\qemu",
+        "C:\\__w\\1\\s\\Src\\Components\\Dashboard\\DashboardLib\\AsyncHelpers.h",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "C:\\Users\\Admin\\Desktop\\fastboot"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.1282,
+      "null_byte_ratio": 0.2403,
+      "printable_ratio": 0.3159,
+      "unique_bytes": 256,
+      "total_size": 162758656
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:47:11.814472Z",
+    "process_name": "Widgets.exe",
+    "pid": 11452,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

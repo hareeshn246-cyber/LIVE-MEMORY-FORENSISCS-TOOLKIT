@@ -1,0 +1,339 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\Antigravity.exe_11796.raw",
+    "dump_sha256": "3c80d4d60c009d4724c37333a2c7941c6209b1aafb5e04aa652bec6a4beb3da9",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 3,
+            "offsets": [
+              5833942,
+              5844908,
+              11222901
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 12,
+            "offsets": [
+              221858152,
+              239792212,
+              241308726,
+              241610628,
+              244939112,
+              245569932,
+              252182608,
+              258011136,
+              258043218,
+              266962482
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:05:47.099925Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\Antigravity.exe_11796.raw",
+      "dump_size_mb": 262.66
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 315,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 13,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 11,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 12,
+          "CryptDecrypt": 14,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 34,
+          "CreateProcess": 85,
+          "AdjustTokenPrivileges": 12,
+          "OpenProcess": 67,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 2243,
+        "patterns": {
+          "http://": 677,
+          "https://": 1163,
+          "ftp://": 1,
+          "POST": 73,
+          "GET": 317,
+          "Content-Type:": 11,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://github.com/isaacs/color-support.",
+        "https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html).",
+        "https://sugg.sogou.com/sugg/ajaj_json.jsp?type=addrbar&key=",
+        "https://panda-search.org/favicon.ico",
+        "https://in.search.yahoo.com/favicon.ico",
+        "https://crbug.com/443906252",
+        "https://crbug.com/401439).",
+        "https://infra.spec.whatwg.org/#isomorphic-decode",
+        "https://url.spec.whatwg.org/#concept-urlencoded-byte-serializer",
+        "https://dawn.googlesource.com/dawn/+/refs/heads/main/docs/dawn/features/dawn_internal_usages.md",
+        "https://www.startpage.com/sp/search?q=",
+        "https://crbug.com/407109056",
+        "https://you.com/search?tbm=youchat&q=",
+        "https://www.quendu.com/suggest?query=",
+        "https://infra.spec.whatwg.org/#ascii-whitespace",
+        "https://github.com/google/caja/blob/HEAD/src/com/google/caja/ses/startSES.js",
+        "https://duckduckgo.com/chrome_newtab",
+        "https://github.com/nodejs/node/pull/34385",
+        "https://search.yahoo.com/search",
+        "https://yastatic.net/lego/_/rBTjd6UOPk5913OSn5ZQVYMTQWQ.ico",
+        "https://crbug.com/dawn/379805731",
+        "http://a@b@c/",
+        "https://oceanhero.today/favicon.ico",
+        "https://suggest.yandex.by/suggest-ff.cgi?part=",
+        "https://chromedevtools.github.io/devtools-protocol/1-3/Network/#event-requestWillBeSent",
+        "https://dawn.googlesource.com/dawn/+/refs/heads/main/docs/dawn/features/buffer_map_extended_usages.md",
+        "http://www.squid-cache.org/Doc/config/half_closed_clients/",
+        "https://github.com/libuv/libuv/pull/1501.",
+        "https://fetch.spec.whatwg.org/#dom-body-blob",
+        "https://tools.ietf.org/html/rfc7230#section-3.2.2",
+        "https://gpuweb.github.io/gpuweb/#texture-compression-etc2",
+        "https://crbug.com/dawn/1707",
+        "https://co.search.yahoo.com/search",
+        "https://search.lilo.org/?q=",
+        "https://doh-02.spectrum.com/dns-query",
+        "https://dom.spec.whatwg.org/#interface-abortcontroller",
+        "https://infra.spec.whatwg.org/#forgiving-base64-decode",
+        "https://github.com/nodejs/node/pull/35407#issuecomment-700693439",
+        "https://dawn.googlesource.com/dawn/+/refs/heads/main/docs/dawn/features/dawn_device_allocator_control.md",
+        "https://www.mojeek.com/search?q=",
+        "https://crbug.com/dawn/271",
+        "https://search.naver.com/search.naver?ie=",
+        "http://a@b?@c",
+        "https://$",
+        "https://gpuweb.github.io/gpuweb/#shader-f16",
+        "https://fetch.spec.whatwg.org/#header-list-contains",
+        "https://www.startpage.com/osuggestions?q=",
+        "https://github.com/nodejs/node/issues/2119",
+        "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml",
+        "https://gpuweb.github.io/gpuweb/#timestamp-query"
+      ],
+      "ip_addresses": [
+        "212.60.63.246",
+        "9.9.9.9",
+        "192.168.2.1",
+        "10.0.0.5",
+        "8.1.5.1",
+        "208.67.222.123",
+        "10.0.0.1",
+        "185.228.168.10",
+        "2.5.29.37",
+        "21.4.2.1",
+        "192.0.2.128",
+        "1.3.6.1",
+        "208.67.220.220",
+        "185.228.169.11",
+        "1.0.0.1",
+        "0.1.0.0",
+        "13.3.12.1",
+        "185.222.222.222",
+        "185.228.168.168",
+        "10.2.4.1",
+        "8.1.2.4",
+        "185.43.135.1",
+        "224.0.0.251",
+        "8.1.2.5",
+        "45.11.45.11",
+        "149.112.112.10",
+        "208.67.220.123",
+        "75.75.75.75",
+        "8.8.8.8",
+        "17.0.8.101",
+        "14.2.231.21",
+        "109.236.119.2",
+        "9.9.9.11",
+        "212.60.61.246",
+        "1.3.14.3",
+        "192.168.2.10",
+        "185.228.169.168",
+        "209.18.47.61",
+        "0.0.0.0",
+        "149.112.112.11",
+        "1.3.1.6",
+        "192.168.1.255",
+        "192.0.2.129",
+        "15.1.3.4",
+        "8.8.4.4",
+        "193.17.47.1",
+        "185.228.168.9",
+        "10.0.0.10",
+        "1.1.1.1",
+        "75.75.76.76"
+      ],
+      "file_paths": [
+        "C:\\\\Program Files",
+        "C:\\\\foo\\\\bar\\\\baz",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files\\Git\\cmd",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe",
+        "c:\\Users",
+        "C:\\\\foo\\\\bar",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Users\\",
+        "C:\\Program Files (x86)\\Nmap",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs",
+        "C:\\MinGW\\bin",
+        "C:\\node_modules",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features\\dist\\package.json",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\msys64\\mingw64\\bin",
+        "C:\\Users\\Admin\\.dotnet\\tools",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features\\dist",
+        "C:\\\\orandea\\\\impl\\\\bbb",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program ",
+        "C:\\Program Files",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features\\dist\\serverWorkerMain",
+        "e:\\n\\n",
+        "C:\\Users\\Public",
+        "C:\\Program Files (x86)\\Minimal ADB and Fastboot",
+        "C:\\Program Files\\E",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe c",
+        "C:\\\\Windows",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features\\dist\\serverWorkerMain.js",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Program Files\\qemu",
+        "C:\\\\orandea\\\\test\\\\aaa",
+        "C:\\ProgramData",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\out\\nls.messages.json",
+        "l:\\r\\n\\r\\n",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\markdown-language-features\\dist\\",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.5327,
+      "null_byte_ratio": 0.1676,
+      "printable_ratio": 0.3631,
+      "unique_bytes": 256,
+      "total_size": 275419136
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:06:08.871721Z",
+    "process_name": "Antigravity.exe",
+    "pid": 11796,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

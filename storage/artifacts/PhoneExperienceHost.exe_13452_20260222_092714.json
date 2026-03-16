@@ -1,0 +1,337 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\PhoneExperienceHost.exe_13452.raw",
+    "dump_sha256": "780ebf15d3eae935ade68984ce386f7440f44bae0e0da95e66d6b273affb7fd0",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              436933648
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 21,
+            "offsets": [
+              98004783,
+              98110562,
+              259620206,
+              357957518,
+              419035422,
+              437158780,
+              483516694,
+              493072402,
+              509351375,
+              512163924
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:26:31.573984Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\PhoneExperienceHost.exe_13452.raw",
+      "dump_size_mb": 540.13
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 608,
+        "api_details": {
+          "VirtualAllocEx": 12,
+          "WriteProcessMemory": 7,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 18,
+          "GetAsyncKeyState": 13,
+          "CryptEncrypt": 40,
+          "CryptDecrypt": 38,
+          "InternetReadFile": 7,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 68,
+          "CreateProcess": 111,
+          "AdjustTokenPrivileges": 21,
+          "OpenProcess": 206,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 16,
+          "SetThreadContext": 15,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 1050,
+        "patterns": {
+          "http://": 132,
+          "https://": 249,
+          "POST": 19,
+          "GET": 645,
+          "User-Agent:": 1,
+          "Content-Type:": 1,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://microsoft.visualstudio.com/OS/_git/Shell.MMX",
+        "https://www.newtonsoft.com/jsonschema",
+        "https://aka.ms/GlobalizationInvariantMode",
+        "https://github.com/mono/linker/pull/649",
+        "http://adaptivecards.io/schemas/adaptive-card.json",
+        "https://github.com/dotnet/runtime/issues/50821",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://crl.microsoft.com/pki/crl/products/microsoftrootcert.crl0T",
+        "https://go.microsoft.com/fwlink/?LinkID=169180.",
+        "https://github.com/Azure/azure-sdk-for-net",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "http://crl3.digicert.com/DigiCertGlobalRootG2.crl0",
+        "https://github.com/mono/linker/issues/1416.",
+        "http://schemas.microsoft.com/SMI/2016/WindowsSettings",
+        "https://github.com/JamesNK/Newtonsoft.Json",
+        "https://www.nuget.org/packages/Newtonsoft.Json.Bson",
+        "https://github.com/dotnet/linker/issues/2715.",
+        "https://aka.ms/dotnet-extensions-warnings/",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "https://github.com/App-vNext/Polly",
+        "https://aka.ms/dotnet-warnings/",
+        "http://cacerts.digicert.com/DigiCertGlobalRootG2.crt0B",
+        "http://oneocsp.microsoft.com/ocsp0",
+        "https://aka.ms/nativeaot-compatibility",
+        "https://aka.ms/dotnet-illink/nativehost",
+        "http://buildweb.nvidia.com/CertEnroll/buildweb.nvidia.com_NVIDIACorp.crt0V",
+        "http://www.microsoft.com/pki/certs/MicrosoftRootCert.crt0!",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "https://github.com/dotnet/extensions",
+        "http://www.microsoft.com/pki/certs/MicCerTruLisPCA_2009-04-02.crt0",
+        "http://crl.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl0]",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonnumberhandling).",
+        "http://go.microsoft.com/fwlink/?LinkId=522706.",
+        "https://github.com/dotnet/runtime/issues/97737g",
+        "https://github.com/dotnet/dotnet/tree/fad253f51b461736dfd3cd9c15977bb7493becef",
+        "https://github.com/microsoft/kiota-dotnet",
+        "https://github.com/dotnet/dotnet",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm0",
+        "https://github.com/dotnet/runtime/blob/bbc898f3e5678135b242faeb6eefd8b24bf04f3c/src/native/corehost/hostpolicy/hostpolicy.cpp#L527-L538",
+        "https://github.com/mono/linker/issues/378",
+        "http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z",
+        "http://dmd-ca-beta2/CertEnroll/dmd-ca-beta2_Microsoft",
+        "http://www.microsoft.com/pkiops/crl/Microsoft",
+        "http://ocsp.digicert.com0@",
+        "https://aka.ms/binaryformatter",
+        "https://aka.ms/dotnet-illink/com",
+        "https://github.com/TestableIO/System.IO.Abstractions.git",
+        "http://www.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl",
+        "https://github.com/dotnet/runtime/issues/71847"
+      ],
+      "ip_addresses": [
+        "4.0.0.0",
+        "13.0.0.0",
+        "10.0.0.0",
+        "2.5.4.3",
+        "3.0.0.0",
+        "1.3.6.1",
+        "4.1.311.10",
+        "16.0.0.0",
+        "3.2.8.1",
+        "2.1.0.0",
+        "2.5.4.6",
+        "1.20.1.0",
+        "4.1.311.60",
+        "1.1.2.1",
+        "1.9.16.2",
+        "15.0.0.0",
+        "2.16.840.1",
+        "2.3.23.0",
+        "9.0.0.0",
+        "0.0.0.0",
+        "4.2.2.0",
+        "2.5.29.17",
+        "4.1.311.21",
+        "4.1.311.76",
+        "4.1.311.67",
+        "2.5.29.37",
+        "8.14.0.0",
+        "5.5.7.2",
+        "2.3.0.0",
+        "22.0.12.0",
+        "127.0.0.1",
+        "2.5.29.19",
+        "1.3.132.0",
+        "1.0.0.0",
+        "2.23.43.1",
+        "1.3.14.3",
+        "4.1.311.64",
+        "4.1.311.80",
+        "2.5.29.31",
+        "8.0.0.0",
+        "5.5.7.1",
+        "2.23.140.1",
+        "4.1.311.92",
+        "2.5.4.7",
+        "2.5.4.10",
+        "2.5.4.11",
+        "1.3.17.166",
+        "2.5.29.14",
+        "2.5.4.8",
+        "17.0.8.101"
+      ],
+      "file_paths": [
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libbasix-network\\dct\\asynctransport.cpp",
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\Microsoft.Windows.Storage.Pickers.FileOpenPicker.g.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\0002a9d8828fd19b.nvph",
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\Microsoft.Windows.ApplicationModel.WindowsAppRuntime.RuntimeInfo.g.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\0002a9d8c985f7b1.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8e9786046.nvph",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libbasix-network\\dct\\rtp.cpp",
+        "C:\\Program Files (x86)\\Minimal ADB and Fastboot",
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\winrt\\Windows.Storage.Streams.h",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.YPP\\net10.0-windows10.0.26100\\YourPhone.YPP.pdb",
+        "C:\\vcpkg\\buildtrees\\opus\\src\\v1.5.2-0e66c71300.clean\\silk\\x86\\VAD_sse4_1.c",
+        "C:\\__w\\1\\s\\dev\\AppLifecycle\\RedirectionRequest.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\0002a9d85c6dc3fe.nvph",
+        "D:\\a\\_work\\1\\s\\sdk\\mgmtcommon\\ClientRuntime\\ClientRuntime",
+        "D:\\a\\_work\\1\\s\\artifacts\\obj\\Microsoft.Rest.ClientRuntime\\Release\\netstandard2.0\\Microsoft.Rest.ClientRuntime.pdb",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8389eddcd.nvph",
+        "C:\\vcpkg\\buildtrees\\opus\\src\\v1.5.2-0e66c71300.clean\\silk\\VAD.c",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\LibNanoAPI\\Connect\\ClientConnect.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8786b653f.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d82ac6783f.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d843c877cd.nvph",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libnano\\streaming\\windowsmftresampler.cpp",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\clientlib\\connect\\baseconnect.cpp",
+        "d:\\os\\public\\x86fre\\onecoreuap\\internal\\sdk\\ref\\strongnamekeys\\fake\\windows.snk",
+        "C:\\__w\\1\\s\\dev\\Interop\\CameraCaptureUI\\CameraCaptureUI\\CameraCaptureUI.cpp",
+        "E:\\NettyProjects\\dotnetty-span-fork\\src\\DotNetty.Transport\\obj\\Release\\netcoreapp3.1\\DotNetty.Transport.pdb",
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\winrt\\Windows.Security.Cryptography.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8ed53c641.nvph",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\LibNanoAPI\\g\\DCT.ChannelFactory.g.h",
+        "C:\\__w\\1\\s\\dev\\DynamicDependency\\API\\PackageGraphManager.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8a6f3db7e.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d8786b653f.nvph",
+        "C:\\vcpkg\\buildtrees\\opus\\src\\v1.5.2-0e66c71300.clean\\silk\\NLSF_VQ_weights_laroia.c",
+        "C:\\__w\\1\\s\\dev\\ApplicationData\\ApplicationDataTelemetry.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d89d982193.nvph",
+        "C:\\__w\\1\\s\\dev\\AppNotifications\\AppNotificationBuilder\\AppNotificationBuilder.cpp",
+        "C:\\__w\\1\\s\\dev\\DynamicDependency\\API\\MsixDynamicDependency.cpp",
+        "C:\\__w\\1\\s\\dev\\AppLifecycle\\ExecuteCommandBase.h",
+        "C:\\vcpkg\\buildtrees\\opus\\src\\v1.5.2-0e66c71300.clean\\celt\\kiss_fft.c",
+        "C:\\__w\\1\\s\\dev\\UndockedRegFreeWinRT\\urfw.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d83bfbab27.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d80dc786f1.nvph",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libnano\\streaming\\videoformatencode.cpp",
+        "C:\\__w\\1\\s\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.240803.1\\include\\wil\\result.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d88ecda0a2.nvph",
+        "C:\\__w\\1\\s\\dev\\AccessControl\\SecurityDescriptorHelpers.h",
+        "C:\\__w\\1\\s\\dev\\DynamicDependency\\API\\PackageGraphNode.cpp",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\LibNanoAPI\\g\\module.g.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\0002a9d8d69c38dd.nvph",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libnano\\streaming\\windowssourcereaderresampler.cpp"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.4816,
+      "null_byte_ratio": 0.2095,
+      "printable_ratio": 0.3105,
+      "unique_bytes": 256,
+      "total_size": 566370304
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:27:14.977506Z",
+    "process_name": "PhoneExperienceHost.exe",
+    "pid": 13452,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

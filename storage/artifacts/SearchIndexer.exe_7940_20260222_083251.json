@@ -1,0 +1,362 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\SearchIndexer.exe_7940.raw",
+    "dump_sha256": "e4b465ca240c64e8eb0c9ee39dc5763c697f08318ec2305040627f609e880e89",
+    "total_matches": 2,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              37920632
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 12,
+            "offsets": [
+              38291456,
+              44671324,
+              48320530,
+              50730038,
+              52068228,
+              55744872,
+              56375692,
+              60964944,
+              75591680,
+              75623762
+            ]
+          }
+        ]
+      },
+      {
+        "rule_name": "Conti_Ransomware",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Detects Conti Ransomware artifacts",
+          "severity": "critical",
+          "author": "Research"
+        },
+        "strings": [
+          {
+            "identifier": "$s2",
+            "instances": 2,
+            "offsets": [
+              31657576,
+              31734240
+            ]
+          },
+          {
+            "identifier": "$ext",
+            "instances": 9,
+            "offsets": [
+              4274751,
+              4860285,
+              4903644,
+              4911256,
+              8807860,
+              10157144,
+              21665910,
+              21667574,
+              45978448
+            ]
+          },
+          {
+            "identifier": "$note",
+            "instances": 6,
+            "offsets": [
+              4848984,
+              9136575,
+              9151068,
+              10117649,
+              10175688,
+              10655678
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:32:37.967283Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\SearchIndexer.exe_7940.raw",
+      "dump_size_mb": 83.11
+    },
+    "signature_indicators": {
+      "total_detections": 2,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        },
+        {
+          "name": "Conti_Ransomware",
+          "severity": "critical",
+          "description": "Detects Conti Ransomware artifacts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 328,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 4,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 9,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 15,
+          "CryptDecrypt": 16,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 33,
+          "CreateProcess": 87,
+          "AdjustTokenPrivileges": 12,
+          "OpenProcess": 88,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 50,
+        "patterns": {
+          "http://": 14,
+          "https://": 26,
+          "POST": 2,
+          "GET": 8
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://creativecommo",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://schemas.microsoft.com/vs/2009/dgml",
+        "http://www.w3.org/2001/XMLSchema",
+        "http://sourceforge.net/projects/adodbapi",
+        "https://share.google/TCt7QRTHvhPlqef8V",
+        "https://docs.google.com/spreadsheets/d/1rWfX5DtFme12cTUnxbrkHmyl2H7R46YMGRm710yWHqo/edit?usp=sharing",
+        "https://www.office.com/",
+        "https://www.flickr.com/photos/vultilion/",
+        "https://www.bing.com/search?q=arduino+ide&form=WSBEDG&qs=OS&cvid=17b4c3d5424942829b028201dd98b830&pq=ardino+ide&cc=IN&setlang=en-US&nclid=0F539854741EEC11E4F9F84BA22BE0A1&ts=1771082617501&nclidts=1771082617&tsms=501&PC=WSBQUF",
+        "https://www.us-cert.gov/ncas/alerts/AA19-024A",
+        "https://accounts.google.com/signin/oauth/firstparty/nativeapp?authuser=0&part=AJi8hANMeb65GU643GNBcKaSEXKk2z6zbSiovI8n4HUW8h_0ICRpZ635b4ZPqiPxtFfOtkeGNp7JjrdtY5qjmCkWfCSFbYLQYi-F51wqH1w3rCRWvhDH1FtYsw4ybd5ixChGN3-4j9Zd4gtfd--3bqMH4sjfxM_IgWPzoeHVjahXbkSknwFmoB1NxyfQtL-m4FVA7QmXk5zD2hYHdWEXLXDGVe5BQgiAEaKlk998S6R1FXmPYdXzuAapZM8mjQtJVi4dZq_3t1RkUCj5g4XEXeTGEwFipv8xZCdShTSgLKgjUi1Sbccmmt1ou5GVVPaInV7Iyb1mrxV8Z9o8YVEQDijtJu3l0o6WtJbH6xKIdAkIBemRueGsf7N_3zP_MIFFmDqT_YKDwagKnQ5gmkU8EkWFYKHpBvCRrdl-oKr1XPj7MyzkyIRdcyrKnljH-AeGQ1jswqo58vV6YFR-m3ad53ezrLMp1L6a6KCs5CEn69B3-CDf_cNTadRk1M_k-FwQ6fXxj3AQ6X3L&flowName=GeneralOAuthFlow&as=S-553168606",
+        "https://docs.platformio.org/page/projectconf.html",
+        "https://www.bing.com/search?q=anrigravity+",
+        "https://accounts.google.com/v3/signin/challenge/pwd?TL=APgKAcahtMTs_ystx76G_tcATn8799J8xOt9FELQ7ntQRuQIGcu-awNooysFAReP&authuser=1&checkConnection=youtube",
+        "https://majestronicz.in/col",
+        "https://docs.google.com/accounts/SetOSID?authuser=1&continue=https://accounts.youtube.com/accounts/SetSID?ssdc",
+        "https://www.bing.com/search?q=powerpoint&form=WSBEDG&qs=SW&cvid=77817a51118b4ab28f564b6199515eff&pq=powerpoint&cc=IN&setlang=en-US&nclid=0F539854741EEC11E4",
+        "https://www.flickr.com/photos/danielbuechele/",
+        "http://schemas.microsoft.com/SMI/2016/WindowsSettings",
+        "https://www.flickr.com/photos/vultilion/6056698931/sizes/z/in/photostream/",
+        "http://schemas.microsoft.com/Search/2013/ApplicationContent",
+        "https://www.flickr.com/photos/danielbuechele/6061409035/sizes/z/in/photostream/",
+        "https://www.bing.com/search?q=python+idle&form=WSBEDG&qs=EP&cvid=96413718fe0447e99afa69440078c67a&pq=python+idle&cc=IN&setlang=en-US&nclid=0F539854741EEC11E4F9F84BA22BE0A1&ts=1770039527218&PC=WSBQUF",
+        "https://creativecommons.org/licenses/by/2.0/",
+        "https://arduinojson.org"
+      ],
+      "ip_addresses": [
+        "2.5.29.28",
+        "5.5.7.1",
+        "2.5.29.2",
+        "101.3.4.4",
+        "4.1.311.73",
+        "1.3.132.0",
+        "840.63.0.2",
+        "5.5.7.48",
+        "2.23.133.2",
+        "2.5.4.21",
+        "5.2.3.5",
+        "4.1.311.21",
+        "1.12.1.2",
+        "2.5.29.54",
+        "2.5.29.32",
+        "2.5.4.27",
+        "1.3.6.1",
+        "4.1.311.17",
+        "1.9.16.1",
+        "101.3.4.2",
+        "2.5.4.16",
+        "2.5.29.17",
+        "5.1.0.0",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.16.840.1",
+        "2.5.4.3",
+        "101.2.1.1",
+        "1.3.14.7",
+        "2.5.4.39",
+        "2.5.4.18",
+        "6.0.0.0",
+        "2.5.29.14",
+        "1.12.1.6",
+        "1.12.1.1",
+        "5.5.7.7",
+        "1.1.2.1",
+        "2.5.4.23",
+        "2.5.29.1",
+        "2.5.4.17",
+        "2.5.4.8",
+        "2.5.4.6",
+        "2.5.4.7",
+        "4.1.311.3",
+        "2.5.4.10",
+        "2.5.4.24",
+        "4.1.311.72",
+        "1.12.1.3",
+        "2.5.4.20",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\storage\\artifacts\\Antigravity.exe_19304_20260206_163851.jsonG",
+        "C:\\Users\\Admin\\Downloads\\QP.pdf ",
+        "C:\\Users\\Admin\\Downloads\\example.exe ",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\storage\\artifacts\\Antigravity.exe_21276_20260124_054416.json",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\NetBeansProjects\\interactivemap\\public_html\\js\\libs",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2026-02-10 095859.png4",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2026-02-08 085152.png4",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\tzdata\\zoneinfo\\Pacific",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\pytz\\zoneinfo\\AntarcticaQ",
+        "C:\\Windows\\system32\\perfmon.exe",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\tzdata\\zoneinfo)",
+        "C:\\Users\\Admin\\Downloads\\Sekiro - Shadows Die Twice [FitGirl Repack].torrent ",
+        "C:\\ProgramData\\Microsoft\\Search\\Data\\Applications\\Windows\\Windows-gather.db-wal",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\Microsof",
+        "C:\\Users\\Admin\\Downloads\\Unconfirmed 602674.crdownload",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\tzdata\\zoneinfo\\Mexico\\__pycache__",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\scipy\\interpolate\\_fitpack.cp312-win_amd64.dll.a",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2025-12-25 213950.png3",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2026-01-23 000611.png3",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\dateutil\\__pycache__\\_common.cpython-312.pyc",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\Virtual Machines\\Windows 11 x64)",
+        "C:\\ProgramData\\Microsoft\\Search\\Data\\Applications\\Windows\\Windows.db-journal",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\NetBeansProjects\\interactivemap\\public_html\\js\\libs)",
+        "C:\\Users\\Public\\Public Desktop\\Ghost of Tsushima DIRECTORS CUT.lnk",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\tzdata\\zoneinfo\\Antarctica",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\Virtual Machines\\Windows 11 x64 (2)",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\storage\\artifacts\\Antigravity.exe_10204_20260207_143628.jsonG",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\WPS Cloud Files\\500215571",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\win32\\Demos\\security\\sspi\\__pycache__\\fetch_url.cpython-312.pyc",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2025-12-09 194018.png4",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\storage\\artifacts\\Antigravity.exe_10204_20260207_143147.jsonG",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\tzdata\\zoneinfo\\Europe\\Oslo",
+        "C:\\Program K",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\Virtual Machines",
+        "C:\\Users\\Admin\\OneDrive\\Documents",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\tzdata\\zoneinfo\\Australia\\__pycache__",
+        "C:\\Users\\Admin\\Downloads\\Transparent-Computing.zip",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2026-02-12 210242.png4",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\LocalState\\EBWebView\\Default\\DawnWebGPUCache\\data_1",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\sklearn\\__pycache__\\_config.cpython-312.pyc",
+        "C:\\Users\\Hareesh\\AppData\\Local\\Pack",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\Arduino\\libraries\\ArduinoJson\\extras\\fuzzing\\json_seed_corpus) ",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Users\\Admin\\OneDrive\\Pictures\\Screenshots\\Screenshot 2026-01-31 174347.png",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\pytz\\zoneinfo\\America\\Indiana)",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\Users\\Admin\\Downloads\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\adodbapi)pN",
+        "C:\\Users\\Admin\\Downloads\\INFOZIANT\\.venv\\Lib\\site-packages\\sklearn\\utils)"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.7867,
+      "null_byte_ratio": 0.3138,
+      "printable_ratio": 0.2794,
+      "unique_bytes": 256,
+      "total_size": 87150592
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:32:51.630908Z",
+    "process_name": "SearchIndexer.exe",
+    "pid": 7940,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

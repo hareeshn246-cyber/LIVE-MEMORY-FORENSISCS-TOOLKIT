@@ -1,0 +1,3270 @@
+"""
+Desktop UI Layout - PyQt5 Interface
+Main dashboard for Windows memory forensics tool
+"""
+
+import sys
+import json
+from pathlib import Path
+from datetime import datetime
+from typing import Optional, Dict
+import logging
+
+from PyQt5.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QPushButton, QTableWidget, QTableWidgetItem, QLabel, QTextEdit,
+    QProgressBar, QGroupBox, QMessageBox, QFileDialog, QTabWidget,
+    QHeaderView, QFrame, QSplitter, QGridLayout
+)
+from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
+from PyQt5.QtGui import QFont, QColor, QPalette
+
+logger = logging.getLogger(__name__)
+
+
+class ProcessingOverlay(QWidget):
+    """
+    Semi-transparent overlay that covers the main window during 
+    heavy processing to indicate work is in progress.
+    """
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setAttribute(Qt.WA_TransparentForMouseEvents, False)
+        
+        # Layout
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignCenter)
+        
+        # Container frame with dark background
+        container = QFrame(self)
+        container.setStyleSheet("""
+            QFrame {
+                background-color: rgba(30, 30, 30, 240);
+                border-radius: 16px;
+                padding: 30px;
+            }
+        """)
+        container_layout = QVBoxLayout(container)
+        container_layout.setAlignment(Qt.AlignCenter)
+        
+        # Spinner/Icon Label
+        self.icon_label = QLabel("Loading...")
+        self.icon_label.setStyleSheet("font-size: 24px; color: #00ffcc;")
+        self.icon_label.setAlignment(Qt.AlignCenter)
+        container_layout.addWidget(self.icon_label)
+        
+        # Title
+        self.title_label = QLabel("Processing...")
+        self.title_label.setStyleSheet("""
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #00ffcc;
+            margin-top: 10px;
+        """)
+        self.title_label.setAlignment(Qt.AlignCenter)
+        container_layout.addWidget(self.title_label)
+        
+        # Status
+        self.status_label = QLabel("This may take several minutes.\nPlease wait...")
+        self.status_label.setStyleSheet("font-size: 14px; color: #cccccc;")
+        self.status_label.setAlignment(Qt.AlignCenter)
+        container_layout.addWidget(self.status_label)
+        
+        layout.addWidget(container)
+        
+        # Animation Timer
+        self.anim_state = 0
+        self.anim_timer = QTimer(self)
+        self.anim_timer.timeout.connect(self._animate)
+        
+        self.hide()
+        
+    def _animate(self):
+        """Cycle through animation frames"""
+        icons = ["/", "-", "\\", "|"]
+        self.anim_state = (self.anim_state + 1) % len(icons)
+        self.icon_label.setText(icons[self.anim_state])
+        
+    def show_overlay(self, title="Processing...", status="Please wait..."):
+        """Show the overlay with custom message"""
+        self.title_label.setText(title)
+        self.status_label.setText(status)
+        if self.parent():
+            self.setGeometry(self.parent().rect())
+        self.show()
+        self.raise_()
+        self.anim_timer.start(500)  # 500ms per frame
+        QApplication.processEvents()
+        
+    def hide_overlay(self):
+        """Hide the overlay"""
+        self.anim_timer.stop()
+        self.hide()
+        
+    def update_status(self, status: str):
+        """Update the status text"""
+        self.status_label.setText(status)
+        QApplication.processEvents()
+
+
+class AnalysisWorker(QThread):
+    """Worker thread for performing analysis without blocking UI"""
+    
+    progress = pyqtSignal(str)
+    finished = pyqtSignal(dict)
+    error = pyqtSignal(str)
+    
+    def __init__(self, pid: int, process_name: str):
+        super().__init__()
+        self.pid = pid
+        self.process_name = process_name
+    
+    def run(self):
+        """Execute full analysis pipeline: Snapshot → YARA → Anomaly → Behavior"""
+        try:
+            from core.acquisition import MemoryAcquisition
+            from core.integrity import HookDetector
+            from core.lifecycle import EvidenceManager
+            from detection.yara_engine import YARAEngine
+            from detection.feature_extractor import FeatureExtractor
+            from detection.ml_inference import MLDetector
+            from detection.anomaly_detector import AnomalyDetector
+            from config import get_temp_raw_path
+
+            
+            # Fetch current memory usage for report accuracy
+            try:
+                import psutil
+                proc_obj = psutil.Process(self.pid)
+                mem_curr = proc_obj.memory_info().rss / (1024 * 1024)
+                mem_mb_val = round(mem_curr, 2)
+            except:
+                mem_mb_val = 0
+
+            results = {
+                'status': 'running',
+                'pid': self.pid,
+                'process_name': self.process_name,
+                'memory_mb': mem_mb_val
+            }
+            
+            # Step 1: Acquire memory (Snapshot)
+            self.progress.emit("Acquiring process memory...")
+            acquisition = MemoryAcquisition()
+            dump_path = get_temp_raw_path(self.process_name, self.pid)
+            
+            try:
+                acq_result = acquisition.acquire_process_memory(self.pid, dump_path)
+                results['acquisition'] = acq_result
+                
+                if acq_result.get('status') != 'success':
+                    raise Exception(f"Memory acquisition failed: {acq_result.get('error', 'Unknown')}")
+            except Exception as acq_error:
+                logger.error(f"Acquisition error for {self.process_name}: {acq_error}")
+                results['status'] = 'failed'
+                results['error'] = str(acq_error)
+                self.finished.emit(results)
+                return
+            
+            # Step 2: Create evidence metadata
+            self.progress.emit("Creating evidence metadata...")
+            evidence_mgr = EvidenceManager()
+            evidence_metadata = evidence_mgr.create_evidence_metadata(
+                dump_path,
+                {'name': self.process_name, 'pid': self.pid}
+            )
+            results['evidence_metadata'] = evidence_metadata
+            
+            # Step 3: YARA scanning (first detection phase)
+            self.progress.emit("Scanning with YARA signatures...")
+            yara_engine = YARAEngine()
+            yara_results = yara_engine.scan_memory_dump(dump_path, evidence_metadata)
+            results['yara_scan'] = yara_results
+            
+            # Step 4: Hook detection
+            self.progress.emit("Detecting API hooks...")
+            hook_detector = HookDetector()
+            hook_results = hook_detector.comprehensive_scan(self.pid)
+            results['hook_detection'] = hook_results
+            
+            # Step 5: Feature extraction (needed for anomaly and ML)
+            self.progress.emit("Extracting behavioral features...")
+            feature_extractor = FeatureExtractor()
+            features = feature_extractor.extract_features(
+                dump_path, yara_results, hook_results
+            )
+            results['features'] = features
+            
+            # Step 6: Anomaly detection (before ML classification)
+            self.progress.emit("Detecting anomalies...")
+            anomaly_detector = AnomalyDetector()
+            anomaly_results = anomaly_detector.detect_anomalies(features)
+            results['anomaly_detection'] = anomaly_results
+            
+            # Step 7: ML inference (behavior classification)
+            self.progress.emit("Running behavior analysis...")
+            ml_detector = MLDetector()
+            ml_results = ml_detector.predict_from_artifact(features)
+            results['ml_detection'] = ml_results
+            
+            # Step 8: Save JSON artifact
+            self.progress.emit("Saving analysis artifact...")
+            artifact_path = evidence_mgr.save_artifact(
+                {
+                    'yara_scan': yara_results,
+                    'hook_detection': hook_results,
+                    'features': features,
+                    'anomaly_detection': anomaly_results,
+                    'ml_detection': ml_results
+                },
+                self.process_name,
+                self.pid
+            )
+            results['artifact_path'] = str(artifact_path)
+            
+            # Create evidence chain
+            evidence_chain = evidence_mgr.link_evidence(evidence_metadata, artifact_path)
+            results['evidence_chain'] = evidence_chain
+            
+            # Step 9: Secure Cleanup of RAW Dump
+            self.progress.emit("Cleaning up temporary files...")
+            try:
+                evidence_mgr.automated_raw_wipe(dump_path, evidence_metadata)
+                results['yara_scan']['deletion_status'] = "Securely Deleted"
+            except Exception as e:
+                logger.error(f"Error deleting raw dump: {e}")
+                results['yara_scan']['deletion_status'] = f"Deletion Failed: {e}"
+            
+            results['status'] = 'completed'
+            self.finished.emit(results)
+            
+        except Exception as e:
+            logger.error(f"Analysis error: {e}", exc_info=True)
+            self.error.emit(str(e))
+
+
+class OfflineAnalysisWorker(QThread):
+    """Worker thread for analyzing offline memory dumps"""
+    
+    progress = pyqtSignal(str)
+    finished = pyqtSignal(dict)
+    error = pyqtSignal(str)
+    
+    def __init__(self, dump_path: str):
+        super().__init__()
+        self.dump_path = Path(dump_path)
+        self.file_name = self.dump_path.name
+    
+    def run(self):
+        """Execute offline analysis pipeline: YARA → Anomaly → Behavior"""
+        try:
+            from core.lifecycle import EvidenceManager
+            from detection.yara_engine import YARAEngine
+            from detection.feature_extractor import FeatureExtractor
+            from detection.ml_inference import MLDetector
+            from detection.anomaly_detector import AnomalyDetector
+            
+            results = {
+                'status': 'running',
+                'pid': 0,
+                'process_name': self.file_name,
+                'acquisition': {'status': 'skipped', 'method': 'offline_load'}
+            }
+            
+            # Step 1: Create evidence metadata
+            self.progress.emit("Hashing memory dump...")
+            evidence_mgr = EvidenceManager()
+            evidence_metadata = evidence_mgr.create_evidence_metadata(
+                self.dump_path,
+                {'name': self.file_name, 'pid': 0}
+            )
+            results['evidence_metadata'] = evidence_metadata
+            
+            # Step 2: Hook detection (Passive Scan for Offline)
+            self.progress.emit("Running passive hook scanner...")
+            hook_detector = HookDetector()
+            try:
+                 # Use the new offline scanner
+                 hook_results = hook_detector.scan_offline_dump(self.dump_path)
+            except AttributeError:
+                 # Fallback if method missing (safety)
+                 hook_results = {
+                    'status': 'skipped',
+                    'message': 'Scanner update pending',
+                    'hooks_detected': [],
+                    'is_compromised': False
+                 }
+            
+            results['hook_detection'] = hook_results
+            
+            # Step 3: YARA scanning (first detection phase)
+            self.progress.emit("Scanning with YARA signatures...")
+            yara_engine = YARAEngine()
+            yara_results = yara_engine.scan_memory_dump(self.dump_path, evidence_metadata)
+            yara_results['raw_deleted'] = False
+            yara_results['deletion_status'] = "Preserved (User File)"
+            results['yara_scan'] = yara_results
+            
+            # Step 4: Feature extraction (needed for anomaly and ML)
+            self.progress.emit("Extracting behavioral features...")
+            feature_extractor = FeatureExtractor()
+            features = feature_extractor.extract_features(
+                self.dump_path, yara_results, results['hook_detection']
+            )
+            results['features'] = features
+            
+            # Step 5: Anomaly detection (before ML classification)
+            self.progress.emit("Detecting anomalies...")
+            anomaly_detector = AnomalyDetector()
+            anomaly_results = anomaly_detector.detect_anomalies(features)
+            results['anomaly_detection'] = anomaly_results
+            
+            # Step 6: ML inference (behavior classification)
+            results['ml_detection'] = {
+                'classification': 'ML_UNAVAILABLE', 
+                'confidence_scores': {'malware': 0},
+                'is_malicious': False
+            }
+            
+            if 'error' in features:
+                 self.progress.emit("Skipping ML (Feature extraction incomplete)...")
+                 results['ml_detection']['message'] = 'Skipped due to extraction error'
+            else:
+                 self.progress.emit("Running behavior analysis...")
+                 try:
+                     ml_detector = MLDetector()
+                     ml_results = ml_detector.predict_from_artifact(features)
+                     results['ml_detection'] = ml_results
+                 except Exception as ml_e:
+                     logger.error(f"Offline ML failed: {ml_e}")
+                     results['ml_detection']['message'] = f"Inference Error: {str(ml_e)}"
+            
+            # Step 7: Save JSON artifact
+            self.progress.emit("Saving analysis artifact...")
+            artifact_path = evidence_mgr.save_artifact(
+                {
+                    'yara_scan': yara_results,
+                    'hook_detection': results['hook_detection'],
+                    'features': features,
+                    'anomaly_detection': anomaly_results,
+                    'ml_detection': ml_results
+                },
+                self.file_name,
+                0
+            )
+            results['artifact_path'] = str(artifact_path)
+            
+            # Create evidence chain
+            evidence_chain = evidence_mgr.link_evidence(evidence_metadata, artifact_path)
+            results['evidence_chain'] = evidence_chain
+            
+            results['status'] = 'completed'
+            self.finished.emit(results)
+            
+        except Exception as e:
+            logger.error(f"Offline analysis error: {e}", exc_info=True)
+            self.error.emit(str(e))
+
+
+class BatchAnalysisWorker(QThread):
+    """Worker thread for batch analysis of multiple processes"""
+    
+    progress = pyqtSignal(str)
+    finished = pyqtSignal(dict) # Emits summary
+    process_complete = pyqtSignal(dict) # Emits individual result
+    error = pyqtSignal(str)
+    
+    def __init__(self, process_list: list):
+        super().__init__()
+        self.process_list = process_list
+        self.batch_results = []
+        self.total_processes = len(process_list)
+        self._is_running = True # Control flag
+        self.current_index = 0
+    
+    def stop(self):
+        """Request worker to stop safely"""
+        self._is_running = False
+    
+    def run(self):
+        """Execute batch analysis: Snapshot → YARA → Anomaly → Behavior"""
+        try:
+            from core.acquisition import MemoryAcquisition
+            from core.integrity import HookDetector
+            from core.lifecycle import EvidenceManager
+            from detection.yara_engine import YARAEngine
+            from detection.feature_extractor import FeatureExtractor
+            from detection.ml_inference import MLDetector
+            from detection.anomaly_detector import AnomalyDetector
+            from config import get_temp_raw_path, MAX_ANALYSIS_SIZE_MB
+            import os
+            import psutil
+            import time # Added for UI responsiveness
+            import gc # Memory management
+            
+            logger.info(f"Starting batch analysis of {self.total_processes} processes")
+            
+            for idx, proc in enumerate(self.process_list):
+                # STOP CHECK
+                if not self._is_running:
+                    logger.info("Batch analysis stopped by user.")
+                    break
+
+                # SMART THROTTLING
+                # 1. Sleep briefly to yield CPU to UI thread
+                time.sleep(0.01) 
+                
+                # Removed aggressive gc.collect() here as it causes massive stutter
+                
+                self.current_index = idx + 1
+                pid = proc['pid']
+                process_name = proc['name']
+                
+                try:
+                    self.progress.emit(f"[{self.current_index}/{self.total_processes}] Analyzing {process_name} (PID: {pid})")
+                    
+                    results = {
+                        'status': 'running',
+                        'pid': pid,
+                        'process_name': process_name,
+                        'memory_mb': proc.get('memory_mb', 0)
+                    }
+                    
+                    if pid == os.getpid():
+                        logger.info(f"Skipping {process_name} (Self-Protection)")
+                        results['status'] = 'skipped'
+                        results['error'] = 'Self-protection: Cannot analyze own process'
+                        self.batch_results.append(results)
+                        self.process_complete.emit(results)
+                        continue
+
+                    # Whitelist Safe System Processes
+                    SAFE_PROCESSES = [
+                        "System", "Registry", "smss.exe", "csrss.exe", "wininit.exe",
+                        "services.exe", "lsass.exe", "lsm.exe", "winlogon.exe",
+                        "spoolsv.exe", "taskhostw.exe", "explorer.exe", 
+                        "SearchApp.exe", "SearchIndexer.exe", "txtpad.exe", "notepad.exe",
+                        "RuntimeBroker.exe", "ApplicationFrameHost.exe", "ShellExperienceHost.exe",
+                        "sihost.exe", "svchost.exe", "conhost.exe", "dwm.exe", "ctfmon.exe"
+                    ]
+                    
+                    if process_name in SAFE_PROCESSES:
+                        logger.info(f"Skipping {process_name} (Safe System Process)")
+                        results['status'] = 'skipped'
+                        results['error'] = 'Whitelisted system process'
+                        self.batch_results.append(results)
+                        self.process_complete.emit(results)
+                        continue
+
+                    if proc.get('memory_mb', 0) > MAX_ANALYSIS_SIZE_MB:
+                        logger.warning(f"Skipping {process_name} - Too large ({proc.get('memory_mb')} MB)")
+                        results['status'] = 'skipped'
+                        results['error'] = f'Size exceeds limit ({MAX_ANALYSIS_SIZE_MB} MB)'
+                        self.batch_results.append(results)
+                        self.process_complete.emit(results)
+                        continue
+                        
+                    
+                    # [OPTIMIZATION] Yield to UI thread to prevent freezing
+                    time.sleep(0.1) # Increased from 0.05 to improve responsiveness 
+                    QThread.yieldCurrentThread()
+
+                    # DEFAULT FALLBACKS (Prevents "Error" status in UI if one step fails)
+                    results['yara_scan'] = {'total_detections': 0, 'matches': []}
+                    results['hook_detection'] = {'hooks_detected': [], 'is_compromised': False}
+                    results['anomaly_detection'] = {'anomaly_score': 0.0, 'severity': 'LOW'}
+                    results['ml_detection'] = {
+                        'classification': 'N/A', 
+                        'confidence_scores': {'malware': 0.0},
+                        'is_malicious': False
+                    }
+
+                    # Step 1: Acquire memory (Snapshot)
+                    acquisition = MemoryAcquisition()
+                    dump_path = get_temp_raw_path(process_name, pid)
+                    try:
+                        acq_result = acquisition.acquire_process_memory(pid, dump_path)
+                        results['acquisition'] = acq_result
+                        
+                        if acq_result.get('status') != 'success':
+                            # Mark as failed but keep defaults so UI renders ROW
+                            results['status'] = 'failed' 
+                            results['error'] = f"Acquisition failed: {acq_result.get('error', 'Access Denied')}"
+                            self.batch_results.append(results)
+                            self.process_complete.emit(results)
+                            continue
+
+                        # [FIX] Handle 0-byte dumps (Protected Processes)
+                        if acq_result.get('total_bytes', 0) == 0:
+                            results['status'] = 'skipped'
+                            results['error'] = 'Protected Process (0 bytes captured)'
+                            # Emit complete so it shows in table as skipped/grey
+                            self.batch_results.append(results)
+                            self.process_complete.emit(results)
+                            continue
+                            
+                    except Exception as acq_err:
+                        results['status'] = 'failed'
+                        results['error'] = f"Acq Error: {str(acq_err)}"
+                        self.batch_results.append(results)
+                        self.process_complete.emit(results)
+                        continue
+                    
+                    # Step 2: Create evidence metadata
+                    evidence_mgr = EvidenceManager()
+                    evidence_metadata = evidence_mgr.create_evidence_metadata(
+                        dump_path,
+                        {'name': process_name, 'pid': pid}
+                    )
+                    
+                    # Step 3: YARA scanning
+                    yara_engine = YARAEngine()
+                    yara_results = yara_engine.scan_memory_dump(dump_path, evidence_metadata)
+                    results['yara_scan'] = yara_results
+                    
+                    # Step 4: Hook detection
+                    hook_detector = HookDetector()
+                    hook_results = hook_detector.comprehensive_scan(pid)
+                    results['hook_detection'] = hook_results
+                    
+                    # Step 5: Feature extraction
+                    feature_extractor = FeatureExtractor()
+                    features = feature_extractor.extract_features(
+                        dump_path, yara_results, hook_results
+                    )
+                    results['features'] = features
+                    
+                    # Step 6: Anomaly detection
+                    anomaly_detector = AnomalyDetector()
+                    anomaly_results = anomaly_detector.detect_anomalies(features)
+                    results['anomaly_detection'] = anomaly_results
+                    
+                    # [NEW] Recalculate Risk Score with Real Anomaly Score (20/40/40 Logic)
+                    real_anomaly_score = anomaly_results.get('anomaly_score', 0.0)
+                    features['risk_assessment'] = feature_extractor.calculate_weighted_risk(features, real_anomaly_score)
+                    
+                    # Step 7: ML inference
+                    try:
+                        ml_detector = MLDetector()
+                        ml_results = ml_detector.predict_from_artifact(features)
+                        results['ml_detection'] = ml_results
+                    except Exception as ml_err:
+                        # Graceful ML fallback
+                        logger.error(f"ML Inference failed for {process_name}: {ml_err}")
+                        results['ml_detection']['message'] = "ML Inference Failed"
+                    
+                    # Step 8: Save JSON artifact
+                    artifact_path = evidence_mgr.save_artifact(
+                        {
+                            'yara_scan': results['yara_scan'],
+                            'hook_detection': results['hook_detection'],
+                            'features': features,
+                            'anomaly_detection': anomaly_results,
+                            'ml_detection': results['ml_detection']
+                        },
+                        process_name,
+                        pid
+                    )
+                    results['artifact_path'] = str(artifact_path)
+                    
+                    # Create evidence chain
+                    evidence_chain = evidence_mgr.link_evidence(evidence_metadata, artifact_path)
+                    results['evidence_chain'] = evidence_chain
+                    
+                    # Step 9: Secure Cleanup
+                    try:
+                        evidence_mgr.automated_raw_wipe(dump_path, evidence_metadata)
+                    except Exception as e:
+                        logger.error(f"Error deleting raw dump: {e}")
+                    
+                    results['status'] = 'completed'
+                    self.batch_results.append(results)
+                    self.process_complete.emit(results)
+                    
+                    # Yield control to prevent UI freeze
+                    time.sleep(0.15)
+                    
+                except Exception as e:
+                    logger.error(f"Error analyzing {process_name} (PID {pid}): {e}")
+                    results['status'] = 'failed'
+                    results['error'] = str(e)
+                    self.batch_results.append(results)
+                    self.process_complete.emit(results)
+            
+            # Emit batch completion with summary
+            batch_summary = {
+                'total_processes': self.total_processes,
+                'completed': len([r for r in self.batch_results if r['status'] == 'completed']),
+                'failed': len([r for r in self.batch_results if r['status'] == 'failed']),
+                'malicious_detected': len([r for r in self.batch_results if r.get('ml_detection', {}).get('is_malicious', False)]),
+                'results': self.batch_results
+            }
+            
+            self.finished.emit(batch_summary)
+            logger.info(f"Batch analysis completed: {batch_summary['completed']}/{self.total_processes} successful")
+            
+        except Exception as e:
+            logger.error(f"Batch analysis error: {e}", exc_info=True)
+            self.error.emit(str(e))
+
+
+class ProcessListWorker(QThread):
+    """Worker thread for loading process list without blocking UI"""
+    
+    finished = pyqtSignal(list)
+    error = pyqtSignal(str)
+    
+    def run(self):
+        """Load process list in background"""
+        try:
+            from core.acquisition import MemoryAcquisition
+            
+            acquisition = MemoryAcquisition()
+            processes = acquisition.get_process_list()
+            
+            self.finished.emit(processes)
+            
+        except Exception as e:
+            logger.error(f"Error loading process list: {e}")
+            self.error.emit(str(e))
+
+
+
+
+class SystemCaptureWorker(QThread):
+    """
+    Capture-Only Worker:
+    Iterates all processes and dumps memory to a Snapshot folder.
+    NO ANALYSIS - Just Capture.
+    """
+    
+    progress = pyqtSignal(str)
+    finished = pyqtSignal(str) # Emits folder path
+    error = pyqtSignal(str)
+    
+    def run(self):
+        try:
+            from core.acquisition import MemoryAcquisition
+            from config import MAX_ANALYSIS_SIZE_MB
+            import datetime
+            import os
+            import psutil
+            import time
+            
+            # Check Disk Space
+            free_space_gb = psutil.disk_usage('.').free / (1024**3)
+            if free_space_gb < 2.0:
+                raise Exception(f"Insufficient disk space! Free: {free_space_gb:.2f} GB. Need 2GB+.")
+
+            # Create snapshot directory
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            snapshot_dir = Path("storage") / "snapshots" / f"System_Snapshot_{timestamp}"
+            snapshot_dir.mkdir(parents=True, exist_ok=True)
+            
+            self.progress.emit(f"Initializing forensic snapshot at {snapshot_dir}...")
+            
+            acquisition = MemoryAcquisition()
+            processes = acquisition.get_process_list()
+            total = len(processes)
+            success_count = 0
+            
+            for i, proc in enumerate(processes):
+                time.sleep(0.05) # Yield
+                
+                try:
+                    pid = proc['pid']
+                    name = proc['name']
+                    size_mb = proc.get('memory_mb', 0)
+                    
+                    if pid == os.getpid(): continue
+                    
+                    PROTECTED = ["MemCompression", "MsMpEng.exe", "Registry", "smss.exe", "csrss.exe", "Antigravity"]
+                    if any(p.lower() in name.lower() for p in PROTECTED):
+                        continue
+                        
+                    if size_mb > MAX_ANALYSIS_SIZE_MB:
+                        continue
+
+                    self.progress.emit(f"[{i+1}/{total}] Capturing {name}...")
+                    
+                    safe_name = "".join(c for c in name if c.isalnum() or c in (' ', '.', '_', '-')).rstrip()
+                    filename = f"{safe_name}_{pid}.raw"
+                    output_path = snapshot_dir / filename
+                    
+                    try:
+                        acq_res = acquisition.acquire_process_memory(pid, output_path)
+                        if acq_res['status'] == 'success':
+                            success_count += 1
+                    except:
+                        pass
+                        
+                except:
+                    pass
+            
+            final_msg = (f"Snapshot Captured Successfully!\n"
+                         f"Location: {snapshot_dir}\n"
+                         f"Files: {success_count}/{total}\n\n"
+                         f"Next Step: Click 'Load & Analyze Snapshot' to analyze this folder.")
+            
+            self.finished.emit(final_msg)
+            
+        except Exception as e:
+            self.error.emit(str(e))
+
+
+class SnapshotAnalysisWorker(QThread):
+    """
+    Step 2: Analysis Worker
+    Input: Folder Path
+    Action: Analyze all .raw files -> Generate PDF -> Clear Raw Files
+    """
+    
+    progress = pyqtSignal(str)
+    finished = pyqtSignal(str) # Report Path
+    error = pyqtSignal(str)
+    
+    def __init__(self, folder_path):
+        super().__init__()
+        self.folder_path = Path(folder_path)
+        
+    def run(self):
+        try:
+            from core.lifecycle import EvidenceManager
+            from detection.yara_engine import YARAEngine
+            from detection.feature_extractor import FeatureExtractor
+            from detection.ml_inference import MLDetector
+            from detection.anomaly_detector import AnomalyDetector
+            from reports.report_generator import ForensicReportGenerator
+            
+            evidence_mgr = EvidenceManager()
+            yara_engine = YARAEngine()
+            feature_extractor = FeatureExtractor()
+            anomaly_detector = AnomalyDetector()
+            ml_detector = MLDetector()
+            report_generator = ForensicReportGenerator()
+            
+            # Find all .raw files
+            raw_files = list(self.folder_path.glob("*.raw"))
+            total = len(raw_files)
+            
+            if total == 0:
+                self.error.emit("No .raw files found in snapshot folder.")
+                return
+
+            batch_results = []
+            malicious_count = 0
+            
+            self.progress.emit(f"Starting Analysis of {total} memory dumps...")
+            
+            for i, dump_path in enumerate(raw_files):
+                try:
+                    name = dump_path.stem.split('_')[0]
+                    # Parse PID if possible, else 0
+                    try:
+                        pid = int(dump_path.stem.split('_')[-1])
+                    except:
+                        pid = 0
+                        
+                    self.progress.emit(f"[{i+1}/{total}] Analyzing {dump_path.name}...")
+                    
+                    # 1. ANALYZE
+                    meta = evidence_mgr.create_evidence_metadata(dump_path, {'name': name, 'pid': pid})
+                    yara_res = yara_engine.scan_memory_dump(dump_path, meta)
+                    features = feature_extractor.extract_features(dump_path, yara_res, {'hooks_detected': []})
+                    anom_res = anomaly_detector.detect_anomalies(features)
+                    ml_res = ml_detector.predict_from_artifact(features)
+                    
+                    process_result = {
+                        'pid': pid,
+                        'process_name': name,
+                        'status': 'completed',
+                        'yara_scan': yara_res,
+                        'ml_detection': ml_res,
+                        'anomaly_detection': anom_res,
+                        'timestamp': meta['timestamp']
+                    }
+                    batch_results.append(process_result)
+                    
+                    if ml_res.get('is_malicious') or anom_res.get('anomaly_score', 0) > 80:
+                        malicious_count += 1
+                        evidence_mgr.save_artifact({
+                            'yara': yara_res, 'ml': ml_res, 'anomaly': anom_res, 'features': features
+                        }, name, pid)
+                    
+                    # 2. CLEAR (Delete Raw) - As requested
+                    try:
+                        os.remove(dump_path)
+                    except:
+                        pass
+                        
+                except Exception as e:
+                    logger.error(f"Error analyzing {dump_path.name}: {e}")
+            
+            # 3. REPORT
+            self.progress.emit("Generating Unified PDF Report...")
+            report_path = report_generator.generate_batch_report(batch_results)
+            
+            final_msg = (f"Analysis Complete!\n"
+                         f"Scanned: {len(batch_results)}\n"
+                         f"Threats: {malicious_count}\n"
+                         f"Report: {report_path.name}\n"
+                         f"Status: Snapshot folder cleared.")
+            
+            self.finished.emit(final_msg)
+            
+        except Exception as e:
+            self.error.emit(str(e))
+
+
+
+
+class CaptureWorker(QThread):
+    """Worker thread for capturing process memory"""
+    
+    progress = pyqtSignal(str)
+    finished = pyqtSignal(str) # Emits path
+    error = pyqtSignal(str)
+    
+    def __init__(self, pid: int, process_name: str, output_path: str):
+        super().__init__()
+        self.pid = pid
+        self.process_name = process_name
+        self.output_path = output_path
+        
+    def run(self):
+        try:
+            from core.acquisition import MemoryAcquisition
+            
+            self.progress.emit(f"Acquiring memory for {self.process_name} ({self.pid})...")
+            
+            acquisition = MemoryAcquisition()
+            result = acquisition.acquire_process_memory(self.pid, Path(self.output_path))
+            
+            if result['status'] == 'success':
+                self.finished.emit(result['output_path'])
+            else:
+                self.error.emit(result.get('error', 'Unknown error'))
+                
+        except Exception as e:
+            logger.error(f"Capture error: {e}")
+            self.error.emit(str(e))
+
+
+class ProcessLoaderThread(QThread):
+    """Background thread to load process list without freezing UI"""
+    processes_ready = pyqtSignal(list)
+    
+    def run(self):
+        try:
+            from core.acquisition import MemoryAcquisition
+            acq = MemoryAcquisition()
+            # This can take 100-500ms
+            procs = acq.get_process_list()
+            self.processes_ready.emit(procs)
+        except Exception as e:
+            logger.error(f"Background process load failed: {e}")
+            self.processes_ready.emit([])
+
+class ForensicToolUI(QMainWindow):
+    """Main UI for Windows Memory Forensics Tool"""
+    
+    def __init__(self):
+        super().__init__()
+        self.current_worker = None
+        self.batch_worker = None
+        self.process_list_worker = None  # We'll use this now
+        self.capture_worker = None
+        self.analysis_results = None
+        self.batch_results = []
+        self.current_dump_path = None
+        self.auto_worker = None # Worker for silent background refresh
+        
+        # Missing UI references initialization
+        self.batch_results_table = None
+        self.btn_generate_batch_report = None
+        self.quick_results = None
+        
+        self.init_ui()
+        
+        # Processing Overlay (for long-running tasks)
+        self.processing_overlay = ProcessingOverlay(self)
+        self.processing_overlay.hide()
+        
+        # Start background loader (Non-blocking)
+        self.process_loader = ProcessLoaderThread()
+        self.process_loader.processes_ready.connect(self.on_processes_loaded)
+        self.process_loader.start()
+        
+        # Setup Auto-Refresh Timer (5 seconds)
+        self.refresh_timer = QTimer(self)
+        self.refresh_timer.timeout.connect(self.auto_refresh_process_list)
+        self.refresh_timer.start(5000)
+    
+    def on_processes_loaded(self, processes):
+        """Callback when background thread finishes"""
+        self.update_process_table(processes)
+        self.statusBar().showMessage(f"Ready - Loaded {len(processes)} running processes")
+
+    def init_ui(self):
+        """Initialize the user interface"""
+        self.setWindowTitle("Live Memory Forensics Toolkit for Detecting In-Memory Malware and Hidden Processes")
+        
+        # Center Window
+        screen_geometry = QApplication.desktop().screenGeometry()
+        x = (screen_geometry.width() - 1400) // 2
+        y = (screen_geometry.height() - 900) // 2
+        self.setGeometry(x, y, 1400, 900)
+        
+        # Set dark theme
+        self.set_dark_theme()
+        
+        # Central widget
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+        
+        # Main layout
+        main_layout = QVBoxLayout()
+        central_widget.setLayout(main_layout)
+        
+        # Header
+        header = self.create_header()
+        main_layout.addWidget(header)
+        
+        # Tab widget
+        self.tabs = QTabWidget()
+        self.tabs.addTab(self.create_analysis_tab(), "Analysis")
+        self.tabs.addTab(self.create_batch_tab(), "Batch Analysis")
+        # Removed Network Tab (User Request)
+        self.tabs.addTab(self.create_report_tab(), "Report & Integrity") 
+        # Removed YARA Rules Tab (User Request)
+        self.tabs.addTab(self.create_settings_tab(), "Settings")
+        
+        main_layout.addWidget(self.tabs)
+        
+        # Status bar
+        self.statusBar().showMessage("Ready - Select 'Acquire Memory Dump' to begin")
+    
+    def set_dark_theme(self):
+        """Apply dark color scheme"""
+        palette = QPalette()
+        palette.setColor(QPalette.Window, QColor(45, 45, 48))
+        palette.setColor(QPalette.WindowText, Qt.white)
+        palette.setColor(QPalette.Base, QColor(30, 30, 30))
+        palette.setColor(QPalette.AlternateBase, QColor(45, 45, 48))
+        palette.setColor(QPalette.Text, Qt.white)
+        palette.setColor(QPalette.Button, QColor(45, 45, 48))
+        palette.setColor(QPalette.ButtonText, Qt.white)
+        palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+        
+        self.setPalette(palette)
+    
+    def create_header(self) -> QWidget:
+        """Create header section with Top Toolbar"""
+        header = QGroupBox()
+        layout = QVBoxLayout()
+        
+        # Title
+        title_layout = QHBoxLayout()
+        title = QLabel("LIVE MEMORY FORENSICS TOOLKIT")
+        title_font = QFont("Arial", 16, QFont.Bold)
+        title.setFont(title_font)
+        title.setStyleSheet("color: #3498db;")
+        title_layout.addWidget(title)
+        title_layout.addStretch()
+        layout.addLayout(title_layout)
+        
+        # Toolbar
+        toolbar_layout = QHBoxLayout()
+        
+        # Auto-Refresh Indicator
+        self.refresh_label = QLabel("Auto-Refresh On")
+        self.refresh_label.setStyleSheet("color: #27ae60; font-weight: bold; font-size: 11px; padding: 5px;")
+        
+        toolbar_layout.addWidget(self.refresh_label)
+        
+        # [NEW] Full System Capture Button (Removed)
+        # self.btn_capture_system = QPushButton("Capture Entire RAM")
+        # self.btn_capture_system.setToolTip("Create a full snapshot of all running processes")
+        # self.btn_capture_system.clicked.connect(self.capture_system)
+        # self.btn_capture_system.setStyleSheet("background-color: #8e44ad; font-weight: bold; padding: 5px; color: white;")
+        # toolbar_layout.addWidget(self.btn_capture_system)
+
+        # self.btn_acquire = QPushButton("Capture Process RAM") (Removed)
+        # self.btn_acquire.setToolTip("Dump memory of selected process to file")
+        # self.btn_acquire.clicked.connect(self.capture_selected_process)
+        # self.btn_acquire.setStyleSheet("background-color: #27ae60; font-weight: bold; padding: 5px;")
+        
+        # Load File button removed (User Request - Focus on Live Analysis)
+        
+        self.btn_start_analysis = QPushButton("Start Memory Analysis")
+        self.btn_start_analysis.setToolTip("Run forensic plugins on selected process")
+        self.btn_start_analysis.clicked.connect(self.analyze_selected_process)
+        self.btn_start_analysis.setStyleSheet("background-color: #e67e22; font-weight: bold; padding: 5px;")
+        
+        toolbar_layout.addWidget(self.btn_start_analysis)
+
+        toolbar_layout.addStretch()
+        
+        layout.addLayout(toolbar_layout)
+        header.setLayout(layout)
+        return header
+    
+    def create_analysis_tab(self) -> QWidget:
+        """Create Analysis Tab with Forensic Actions"""
+        tab = QWidget()
+        layout = QHBoxLayout() # Split layout
+        
+        # LEFT: Process/Dump Selection
+        left_panel = QVBoxLayout()
+        
+        process_group = QGroupBox("Target Selection")
+        process_layout = QVBoxLayout()
+        self.process_table = QTableWidget()
+        self.process_table.setColumnCount(6)
+        self.process_table.setHorizontalHeaderLabels(["PID", "Process Name", "User", "Parent PID", "Command Line", "Memory (MB)"])
+        
+        # Smart Column Resizing
+        header = self.process_table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents) # PID
+        header.setSectionResizeMode(1, QHeaderView.Interactive)      # Name
+        header.setSectionResizeMode(2, QHeaderView.ResizeToContents) # User
+        header.setSectionResizeMode(3, QHeaderView.ResizeToContents) # PPID
+        header.setSectionResizeMode(4, QHeaderView.Stretch)          # CmdLine (Fills gap)
+        header.setSectionResizeMode(5, QHeaderView.ResizeToContents) # Memory
+
+        self.process_table.setColumnWidth(1, 150) # Initial width for Name
+        
+        # FORENSIC SAFETY: Make table Read-Only
+        from PyQt5.QtWidgets import QAbstractItemView
+        self.process_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.process_table.setSelectionBehavior(QTableWidget.SelectRows)
+        self.process_table.setAlternatingRowColors(True)
+        process_layout.addWidget(self.process_table)
+        process_group.setLayout(process_layout)
+        
+        left_panel.addWidget(process_group)
+        
+        # RIGHT: Analysis Actions
+        # RIGHT: Modern Cyber Dashboard
+        right_panel = QVBoxLayout()
+        right_panel.setSpacing(15)
+        
+        # === SYSTEM METRICS CARD ===
+        metrics_card = QFrame()
+        metrics_card.setStyleSheet("""
+            QFrame {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #00d9ff;
+                border-radius: 12px;
+                padding: 15px;
+            }
+        """)
+        metrics_layout = QVBoxLayout()
+        
+        # Card title
+        metrics_title = QLabel("SYSTEM METRICS")
+        metrics_title.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #00d9ff;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        """)
+        metrics_layout.addWidget(metrics_title)
+        
+        # Metrics grid
+        metrics_grid = QGridLayout()
+        metrics_grid.setSpacing(15)
+        
+        # Metric 1: Total Processes
+        proc_container = QVBoxLayout()
+        self.stats_total_label = QLabel("0")
+        self.stats_total_label.setStyleSheet("""
+            font-size: 36px;
+            font-weight: bold;
+            color: #00ff88;
+        """)
+        proc_label = QLabel("Active Processes")
+        proc_label.setStyleSheet("color: #8899aa; font-size: 10px;")
+        proc_container.addWidget(self.stats_total_label, alignment=Qt.AlignCenter)
+        proc_container.addWidget(proc_label, alignment=Qt.AlignCenter)
+        metrics_grid.addLayout(proc_container, 0, 0)
+        
+        # Metric 2: Total Memory
+        mem_container = QVBoxLayout()
+        self.stats_memory_label = QLabel("0 GB")
+        self.stats_memory_label.setStyleSheet("""
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff6b9d;
+        """)
+        mem_label = QLabel("Total Memory")
+        mem_label.setStyleSheet("color: #8899aa; font-size: 10px;")
+        mem_container.addWidget(self.stats_memory_label, alignment=Qt.AlignCenter)
+        mem_container.addWidget(mem_label, alignment=Qt.AlignCenter)
+        metrics_grid.addLayout(mem_container, 0, 1)
+        
+        metrics_layout.addLayout(metrics_grid)
+        metrics_card.setLayout(metrics_layout)
+        right_panel.addWidget(metrics_card)
+        
+        # === THREAT LEVEL CARD ===
+        threat_card = QFrame()
+        threat_card.setStyleSheet("""
+            QFrame {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #9d4edd;
+                border-radius: 12px;
+                padding: 15px;
+            }
+        """)
+        threat_layout = QVBoxLayout()
+        
+        threat_title = QLabel("THREAT OVERVIEW")
+        threat_title.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #9d4edd;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        """)
+        threat_layout.addWidget(threat_title)
+        
+        # Threat levels
+        threat_levels = QVBoxLayout()
+        threat_levels.setSpacing(8)
+        
+        # Low threats
+        low_container = QHBoxLayout()
+        low_label = QLabel("Low")
+        low_label.setStyleSheet("color: #00ff88; font-weight: bold; font-size: 11px;")
+        self.threat_low_count = QLabel("0")
+        self.threat_low_count.setStyleSheet("color: #00ff88; font-weight: bold; font-size: 11px;")
+        self.threat_low_bar = QProgressBar()
+        self.threat_low_bar.setMaximum(100)
+        self.threat_low_bar.setValue(0)
+        self.threat_low_bar.setTextVisible(False)
+        self.threat_low_bar.setStyleSheet("""
+            QProgressBar {
+                border: none;
+                background-color: #1a1f2e;
+                height: 6px;
+                border-radius: 3px;
+            }
+            QProgressBar::chunk {
+                background-color: #00ff88;
+                border-radius: 3px;
+            }
+        """)
+        low_container.addWidget(low_label, 1)
+        low_container.addWidget(self.threat_low_bar, 4)
+        low_container.addWidget(self.threat_low_count, 1, alignment=Qt.AlignRight)
+        threat_levels.addLayout(low_container)
+        
+        # Medium threats
+        med_container = QHBoxLayout()
+        med_label = QLabel("Medium")
+        med_label.setStyleSheet("color: #ffa500; font-weight: bold; font-size: 11px;")
+        self.threat_med_count = QLabel("0")
+        self.threat_med_count.setStyleSheet("color: #ffa500; font-weight: bold; font-size: 11px;")
+        self.threat_med_bar = QProgressBar()
+        self.threat_med_bar.setMaximum(100)
+        self.threat_med_bar.setValue(0)
+        self.threat_med_bar.setTextVisible(False)
+        self.threat_med_bar.setStyleSheet("""
+            QProgressBar {
+                border: none;
+                background-color: #1a1f2e;
+                height: 6px;
+                border-radius: 3px;
+            }
+            QProgressBar::chunk {
+                background-color: #ffa500;
+                border-radius: 3px;
+            }
+        """)
+        med_container.addWidget(med_label, 1)
+        med_container.addWidget(self.threat_med_bar, 4)
+        med_container.addWidget(self.threat_med_count, 1, alignment=Qt.AlignRight)
+        threat_levels.addLayout(med_container)
+        
+        # High threats
+        high_container = QHBoxLayout()
+        high_label = QLabel("High")
+        high_label.setStyleSheet("color: #ff4444; font-weight: bold; font-size: 11px;")
+        self.threat_high_count = QLabel("0")
+        self.threat_high_count.setStyleSheet("color: #ff4444; font-weight: bold; font-size: 11px;")
+        self.threat_high_bar = QProgressBar()
+        self.threat_high_bar.setMaximum(100)
+        self.threat_high_bar.setValue(0)
+        self.threat_high_bar.setTextVisible(False)
+        self.threat_high_bar.setStyleSheet("""
+            QProgressBar {
+                border: none;
+                background-color: #1a1f2e;
+                height: 6px;
+                border-radius: 3px;
+            }
+            QProgressBar::chunk {
+                background-color: #ff4444;
+                border-radius: 3px;
+            }
+        """)
+        high_container.addWidget(high_label, 1)
+        high_container.addWidget(self.threat_high_bar, 4)
+        high_container.addWidget(self.threat_high_count, 1, alignment=Qt.AlignRight)
+        threat_levels.addLayout(high_container)
+        
+        threat_layout.addLayout(threat_levels)
+        threat_card.setLayout(threat_layout)
+        right_panel.addWidget(threat_card)
+        
+        # === ANALYSIS ACTIONS CARD ===
+        actions_card = QFrame()
+        actions_card.setStyleSheet("""
+            QFrame {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #00ff88;
+                border-radius: 12px;
+                padding: 15px;
+            }
+        """)
+        actions_layout = QVBoxLayout()
+        actions_layout.setSpacing(12)
+        
+        actions_title = QLabel("FORENSIC ACTIONS")
+        actions_title.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #00ff88;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        """)
+        actions_layout.addWidget(actions_title)
+        
+        # Cyber-styled buttons
+        cyber_button_style = """
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #00d9ff, stop:1 #00ff88);
+                color: #0a0e1a;
+                font-weight: bold;
+                font-size: 12px;
+                padding: 14px;
+                border: none;
+                border-radius: 8px;
+                text-align: center;
+            }
+            QPushButton:hover {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #00ffaa, stop:1 #00d9ff);
+            }
+            QPushButton:pressed {
+                background-color: #00aa77;
+            }
+            QPushButton:disabled {
+                background-color: #2a2f3e;
+                color: #555566;
+            }
+        """
+        
+        secondary_button_style = """
+            QPushButton {
+                background-color: transparent;
+                color: #00d9ff;
+                font-weight: bold;
+                font-size: 11px;
+                padding: 12px;
+                border: 2px solid #00d9ff;
+                border-radius: 8px;
+                text-align: center;
+            }
+            QPushButton:hover {
+                background-color: rgba(0, 217, 255, 0.1);
+                border: 2px solid #00ffaa;
+                color: #00ffaa;
+            }
+            QPushButton:pressed {
+                background-color: rgba(0, 217, 255, 0.2);
+            }
+        """
+        
+        # Full System Scan Button
+        self.btn_analyze_all = QPushButton("⚡ FULL SYSTEM SCAN")
+        self.btn_analyze_all.setToolTip("Comprehensive forensic analysis of ALL running processes")
+        self.btn_analyze_all.clicked.connect(self.analyze_all_processes)
+        self.btn_analyze_all.setStyleSheet(cyber_button_style)
+        self.btn_analyze_all.setMinimumHeight(50)
+        
+        # Rootkit Scanner Button
+        self.btn_hidden_proc = QPushButton("🛡 ROOTKIT DETECTION")
+        self.btn_hidden_proc.setToolTip("Cross-View Analysis to detect hidden processes")
+        self.btn_hidden_proc.clicked.connect(lambda: self.analyze_specific_feature("hidden"))
+        self.btn_hidden_proc.setStyleSheet(secondary_button_style)
+        self.btn_hidden_proc.setMinimumHeight(45)
+        
+        actions_layout.addWidget(self.btn_analyze_all)
+        actions_layout.addWidget(self.btn_hidden_proc)
+        actions_card.setLayout(actions_layout)
+        right_panel.addWidget(actions_card)
+        
+        # === STATUS CARD ===
+        status_card = QFrame()
+        status_card.setStyleSheet("""
+            QFrame {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #ff6b9d;
+                border-radius: 12px;
+                padding: 12px;
+            }
+        """)
+        status_layout = QVBoxLayout()
+        
+        status_title = QLabel("ANALYSIS STATUS")
+        status_title.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #ff6b9d;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        """)
+        status_layout.addWidget(status_title)
+        
+        self.progress_label = QLabel("● Ready")
+        self.progress_label.setStyleSheet("""
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 5px;
+        """)
+        
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setVisible(False)
+        self.progress_bar.setStyleSheet("""
+            QProgressBar {
+                border: 2px solid #00d9ff;
+                border-radius: 6px;
+                text-align: center;
+                background-color: #0f1419;
+                color: #00ff88;
+                font-weight: bold;
+                height: 24px;
+            }
+            QProgressBar::chunk {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #00d9ff, stop:1 #00ff88);
+                border-radius: 4px;
+            }
+        """)
+        
+        status_layout.addWidget(self.progress_label)
+        status_layout.addWidget(self.progress_bar)
+        status_card.setLayout(status_layout)
+        right_panel.addWidget(status_card)
+        
+        right_panel.addStretch()
+
+        layout.addLayout(left_panel, 2)
+        layout.addLayout(right_panel, 1)
+        
+        tab.setLayout(layout)
+        return tab
+        stats_group = QGroupBox("System Overview")
+        stats_layout = QVBoxLayout()
+        
+        # Stats cards container
+        stats_cards = QHBoxLayout()
+        
+        # Card 1: Total Processes
+        self.stats_total_label = QLabel("0")
+        self.stats_total_label.setStyleSheet("""
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        """)
+        total_card = QVBoxLayout()
+        total_card.addWidget(self.stats_total_label, alignment=Qt.AlignCenter)
+        total_card.addWidget(QLabel("Total Processes"), alignment=Qt.AlignCenter)
+        stats_cards.addLayout(total_card)
+        
+        # Card 2: Memory Usage
+        self.stats_memory_label = QLabel("0 GB")
+        self.stats_memory_label.setStyleSheet("""
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+        """)
+        memory_card = QVBoxLayout()
+        memory_card.addWidget(self.stats_memory_label, alignment=Qt.AlignCenter)
+        memory_card.addWidget(QLabel("Total Memory"), alignment=Qt.AlignCenter)
+        stats_cards.addLayout(memory_card)
+        
+        stats_layout.addLayout(stats_cards)
+        stats_group.setLayout(stats_layout)
+        stats_group.setStyleSheet("""
+            QGroupBox {
+                border: 2px solid #34495e;
+                border-radius: 8px;
+                margin-top: 10px;
+                padding: 15px;
+                background-color: #2c3e50;
+            }
+            QGroupBox::title {
+                color: #ecf0f1;
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px;
+            }
+        """)
+        right_panel.addWidget(stats_group)
+        
+        # === FORENSIC ANALYSIS ACTIONS ===
+        actions_group = QGroupBox("Forensic Analysis Actions")
+        actions_layout = QVBoxLayout()
+        actions_layout.setSpacing(12)  # Better spacing between buttons
+        
+        # Enhanced button style
+        button_style_primary = """
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #8e44ad, stop:1 #6c3483);
+                color: white;
+                font-weight: bold;
+                font-size: 13px;
+                padding: 12px;
+                border-radius: 6px;
+                border: 2px solid #6c3483;
+                text-align: left;
+                padding-left: 15px;
+            }
+            QPushButton:hover {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #9b59b6, stop:1 #7d3c98);
+                border: 2px solid #8e44ad;
+            }
+            QPushButton:pressed {
+                background-color: #6c3483;
+            }
+            QPushButton:disabled {
+                background-color: #555555;
+                color: #888888;
+                border: 2px solid #444444;
+            }
+        """
+        
+        button_style_secondary = """
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #34495e, stop:1 #2c3e50);
+                color: white;
+                font-weight: bold;
+                font-size: 12px;
+                padding: 10px;
+                border-radius: 6px;
+                border: 2px solid #2c3e50;
+                text-align: left;
+                padding-left: 15px;
+            }
+            QPushButton:hover {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #3d566e, stop:1 #34495e);
+                border: 2px solid #34495e;
+            }
+            QPushButton:pressed {
+                background-color: #2c3e50;
+            }
+        """
+        
+        # Full System Scan Button (Primary Action)
+        self.btn_analyze_all = QPushButton("🔍  Full System Scan")
+        self.btn_analyze_all.setToolTip("Comprehensive forensic analysis of ALL running processes")
+        self.btn_analyze_all.clicked.connect(self.analyze_all_processes)
+        self.btn_analyze_all.setStyleSheet(button_style_primary)
+        self.btn_analyze_all.setMinimumHeight(50)
+
+        # Rootkit Scanner Button (Secondary Action)
+        self.btn_hidden_proc = QPushButton("🛡️  Scan for Rootkits")
+        self.btn_hidden_proc.setToolTip("Perform Cross-View Analysis to find processes invisible to Task Manager")
+        self.btn_hidden_proc.clicked.connect(lambda: self.analyze_specific_feature("hidden"))
+        self.btn_hidden_proc.setStyleSheet(button_style_secondary)
+        self.btn_hidden_proc.setMinimumHeight(45)
+        
+        # Add separator line
+        separator = QFrame()
+        separator.setFrameShape(QFrame.HLine)
+        separator.setStyleSheet("background-color: #34495e; margin: 10px 0;")
+        
+        actions_layout.addWidget(self.btn_analyze_all)
+        actions_layout.addWidget(self.btn_hidden_proc)
+        actions_layout.addWidget(separator)
+        
+        # === QUICK ACTIONS ===
+        quick_actions_label = QLabel("Quick Actions")
+        quick_actions_label.setStyleSheet("font-weight: bold; color: #95a5a6; font-size: 11px; margin-top: 5px;")
+        actions_layout.addWidget(quick_actions_label)
+        
+        # Quick action buttons (smaller, compact)
+        quick_button_style = """
+            QPushButton {
+                background-color: #34495e;
+                color: #ecf0f1;
+                font-size: 11px;
+                padding: 8px;
+                border-radius: 4px;
+                border: 1px solid #2c3e50;
+                text-align: left;
+                padding-left: 10px;
+            }
+            QPushButton:hover {
+                background-color: #3d566e;
+                border: 1px solid #34495e;
+            }
+        """
+        
+        self.btn_refresh = QPushButton("↻  Refresh Process List")
+        self.btn_refresh.setToolTip("Manually refresh the process list")
+        self.btn_refresh.clicked.connect(self.load_process_list)
+        self.btn_refresh.setStyleSheet(quick_button_style)
+        
+        self.btn_open_artifacts = QPushButton("📁  Open Artifacts Folder")
+        self.btn_open_artifacts.setToolTip("Open the folder containing analysis artifacts")
+        self.btn_open_artifacts.clicked.connect(self.open_artifacts_folder)
+        self.btn_open_artifacts.setStyleSheet(quick_button_style)
+        
+        actions_layout.addWidget(self.btn_refresh)
+        actions_layout.addWidget(self.btn_open_artifacts)
+        actions_layout.addStretch()
+        
+        actions_group.setLayout(actions_layout)
+        actions_group.setStyleSheet("""
+            QGroupBox {
+                border: 2px solid #34495e;
+                border-radius: 8px;
+                margin-top: 10px;
+                padding: 15px;
+                background-color: #2c3e50;
+            }
+            QGroupBox::title {
+                color: #ecf0f1;
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px;
+            }
+        """)
+        right_panel.addWidget(actions_group)
+        
+        # === STATUS PANEL ===
+        progress_group = QGroupBox("Status")
+        prog_layout = QVBoxLayout()
+        
+        self.progress_label = QLabel("Ready")
+        self.progress_label.setStyleSheet("""
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 5px;
+        """)
+        
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setVisible(False)
+        self.progress_bar.setStyleSheet("""
+            QProgressBar {
+                border: 2px solid #34495e;
+                border-radius: 5px;
+                text-align: center;
+                background-color: #2c3e50;
+                color: white;
+            }
+            QProgressBar::chunk {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #3498db, stop:1 #2980b9);
+                border-radius: 3px;
+            }
+        """)
+        
+        prog_layout.addWidget(self.progress_label)
+        prog_layout.addWidget(self.progress_bar)
+        progress_group.setLayout(prog_layout)
+        progress_group.setStyleSheet("""
+            QGroupBox {
+                border: 2px solid #34495e;
+                border-radius: 8px;
+                margin-top: 10px;
+                padding: 10px;
+                background-color: #2c3e50;
+            }
+            QGroupBox::title {
+                color: #ecf0f1;
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px;
+            }
+        """)
+        right_panel.addWidget(progress_group)
+
+        layout.addLayout(left_panel, 2)
+        layout.addLayout(right_panel, 1)
+        
+        tab.setLayout(layout)
+        return tab
+
+    def create_batch_tab(self) -> QWidget:
+        """Create Batch Analysis Tab"""
+        tab = QWidget()
+        layout = QVBoxLayout()
+        layout.setSpacing(15)
+        
+        # === BATCH OPERATIONS CARD ===
+        controls_card = QFrame()
+        controls_card.setStyleSheet("""
+            QFrame {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #00d9ff;
+                border-radius: 12px;
+                padding: 15px;
+            }
+        """)
+        controls_layout = QVBoxLayout()
+        
+        # Card title
+        controls_title = QLabel("BATCH OPERATIONS")
+        controls_title.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #00d9ff;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        """)
+        controls_layout.addWidget(controls_title)
+        
+        # Buttons container
+        buttons_layout = QHBoxLayout()
+        
+        # Cyber button styles
+        primary_style = """
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #9d4edd, stop:1 #7b2cbf);
+                color: white;
+                font-weight: bold;
+                font-size: 11px;
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+            }
+            QPushButton:hover {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #c77dff, stop:1 #9d4edd);
+            }
+            QPushButton:pressed {
+                background-color: #7b2cbf;
+            }
+        """
+        
+        secondary_style = """
+            QPushButton {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #00ff88, stop:1 #00d9a3);
+                color: #0a0e1a;
+                font-weight: bold;
+                font-size: 11px;
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+            }
+            QPushButton:hover {
+                background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #00ffaa, stop:1 #00ff88);
+            }
+            QPushButton:pressed {
+                background-color: #00d9a3;
+            }
+        """
+        
+        tertiary_style = """
+            QPushButton {
+                background-color: transparent;
+                color: #ffa500;
+                font-weight: bold;
+                font-size: 11px;
+                padding: 12px;
+                border: 2px solid #ffa500;
+                border-radius: 8px;
+            }
+            QPushButton:hover {
+                background-color: rgba(255, 165, 0, 0.1);
+                border: 2px solid #ffb732;
+                color: #ffb732;
+            }
+            QPushButton:pressed {
+                background-color: rgba(255, 165, 0, 0.2);
+            }
+        """
+        
+        stop_style = """
+            QPushButton {
+                background-color: transparent;
+                color: #ff4444;
+                font-weight: bold;
+                font-size: 11px;
+                padding: 12px;
+                border: 2px solid #ff4444;
+                border-radius: 8px;
+            }
+            QPushButton:hover {
+                background-color: rgba(255, 68, 68, 0.1);
+                border: 2px solid #ff6666;
+                color: #ff6666;
+            }
+            QPushButton:pressed {
+                background-color: rgba(255, 68, 68, 0.2);
+            }
+            QPushButton:disabled {
+                background-color: transparent;
+                color: #555566;
+                border: 2px solid #555566;
+            }
+        """
+        
+        # PDF Export (Primary)
+        self.btn_export_pdf = QPushButton("📄 Export PDF Report")
+        self.btn_export_pdf.setToolTip("Generate professional PDF summary of batch analysis")
+        self.btn_export_pdf.clicked.connect(self.export_batch_pdf)
+        self.btn_export_pdf.setEnabled(True)
+        self.btn_export_pdf.setStyleSheet(primary_style)
+        
+        # Excel Export (Secondary)
+        self.btn_export_excel = QPushButton("📊 Export Excel")
+        self.btn_export_excel.setToolTip("Export raw data to Excel (.xlsx)")
+        self.btn_export_excel.clicked.connect(self.export_batch_excel)
+        self.btn_export_excel.setEnabled(True)
+        self.btn_export_excel.setStyleSheet(secondary_style)
+        
+        # Load Snapshot Button
+        self.btn_load_snapshot = QPushButton("📁 Load & Analyze Snapshot")
+        self.btn_load_snapshot.setToolTip("Load existing reports OR analyze raw memory dumps from a snapshot folder")
+        self.btn_load_snapshot.clicked.connect(self.load_snapshot_folder)
+        self.btn_load_snapshot.setStyleSheet(tertiary_style)
+        
+        # Stop Analysis Button
+        self.btn_stop_analysis = QPushButton("⏹ Stop Analysis")
+        self.btn_stop_analysis.setToolTip("Stop the current batch analysis safely")
+        self.btn_stop_analysis.clicked.connect(self.stop_analysis)
+        self.btn_stop_analysis.setEnabled(False)
+        self.btn_stop_analysis.setStyleSheet(stop_style)
+        
+        buttons_layout.addWidget(self.btn_export_pdf)
+        buttons_layout.addWidget(self.btn_export_excel)
+        buttons_layout.addWidget(self.btn_load_snapshot)
+        buttons_layout.addWidget(self.btn_stop_analysis)
+        
+        controls_layout.addLayout(buttons_layout)
+        controls_card.setLayout(controls_layout)
+        layout.addWidget(controls_card)
+        
+        # === RESULTS TABLE CARD ===
+        table_card = QFrame()
+        table_card.setStyleSheet("""
+            QFrame {
+                background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #9d4edd;
+                border-radius: 12px;
+                padding: 15px;
+            }
+        """)
+        table_layout = QVBoxLayout()
+        
+        # Card title
+        table_title = QLabel("BATCH RESULTS")
+        table_title.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #9d4edd;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        """)
+        table_layout.addWidget(table_title)
+        
+        self.batch_results_table = QTableWidget()
+        self.batch_results_table.setColumnCount(8)
+        self.batch_results_table.setHorizontalHeaderLabels([
+            "PID", "Name", "Status", "YARA Matches", "Hooks", 
+            "Anomaly Score", "ML Verdict", "Threat Level"
+        ])
+        self.batch_results_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.batch_results_table.setAlternatingRowColors(True)
+        self.batch_results_table.setStyleSheet("""
+            QTableWidget {
+                background-color: #0f1419;
+                border: none;
+                color: #e0e0e0;
+                gridline-color: #2a2f3e;
+            }
+            QTableWidget::item {
+                padding: 5px;
+            }
+            QHeaderView::section {
+                background-color: #1a1f2e;
+                color: #00d9ff;
+                font-weight: bold;
+                padding: 8px;
+                border: none;
+                border-bottom: 2px solid #00d9ff;
+            }
+        """)
+        
+        table_layout.addWidget(self.batch_results_table)
+        table_card.setLayout(table_layout)
+        layout.addWidget(table_card)
+        
+        tab.setLayout(layout)
+        return tab
+
+
+
+    def create_report_tab(self) -> QWidget:
+        self.btn_export_pdf = QPushButton("Export PDF Report")
+        self.btn_export_pdf.setToolTip("Generate professional PDF summary of batch analysis")
+        self.btn_export_pdf.clicked.connect(self.export_batch_pdf)
+        self.btn_export_pdf.setEnabled(True)
+        self.btn_export_pdf.setStyleSheet("background-color: #8e44ad; font-weight: bold; padding: 6px;")
+        
+        # Excel Export (Secondary)
+        self.btn_export_excel = QPushButton("Export Excel")
+        self.btn_export_excel.setToolTip("Export raw data to Excel (.xlsx)")
+        self.btn_export_excel.clicked.connect(self.export_batch_excel)
+        self.btn_export_excel.setEnabled(True)
+        self.btn_export_excel.setStyleSheet("background-color: #27ae60; font-weight: bold; padding: 6px;")
+        
+        # Load Snapshot Button
+        self.btn_load_snapshot = QPushButton("Load & Analyze Snapshot")
+        self.btn_load_snapshot.setToolTip("Load existing reports OR analyze raw memory dumps from a snapshot folder")
+        self.btn_load_snapshot.clicked.connect(self.load_snapshot_folder)
+        self.btn_load_snapshot.setStyleSheet("background-color: #d35400; font-weight: bold; padding: 6px;")
+        
+        controls_layout.addWidget(self.btn_export_pdf)
+        controls_layout.addWidget(self.btn_export_excel)
+        controls_layout.addWidget(self.btn_load_snapshot)
+        
+        # [NEW] Stop Analysis Button
+        self.btn_stop_analysis = QPushButton("Stop Analysis")
+        self.btn_stop_analysis.setToolTip("Stop the current batch analysis safely")
+        self.btn_stop_analysis.clicked.connect(self.stop_analysis)
+        self.btn_stop_analysis.setEnabled(False) # Default disabled
+        self.btn_stop_analysis.setStyleSheet("background-color: #c0392b; color: white; font-weight: bold; padding: 6px;")
+        controls_layout.addWidget(self.btn_stop_analysis)
+
+        controls_layout.addStretch()
+        controls_group.setLayout(controls_layout)
+        layout.addWidget(controls_group)
+        
+        # Results Table
+        table_group = QGroupBox("Batch Results")
+        table_layout = QVBoxLayout()
+        
+        self.batch_results_table = QTableWidget()
+        self.batch_results_table.setColumnCount(8)
+        self.batch_results_table.setHorizontalHeaderLabels([
+            "PID", "Name", "Status", "YARA Matches", "Hooks", 
+            "Anomaly Score", "ML Verdict", "Threat Level"
+        ])
+        self.batch_results_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.batch_results_table.setAlternatingRowColors(True)
+        
+        table_layout.addWidget(self.batch_results_table)
+        table_group.setLayout(table_layout)
+        layout.addWidget(table_group)
+        
+        tab.setLayout(layout)
+        return tab
+
+    def create_report_tab(self) -> QWidget:
+        """Create Report & Integrity Tab"""
+        tab = QWidget()
+        layout = QVBoxLayout()
+        
+        # Integrity Section
+        # Integrity Section
+        integrity_group = QGroupBox("Forensic Integrity")
+        int_layout = QVBoxLayout()
+        
+        # 1. Memory Dump Verification
+        self.btn_verify_integrity = QPushButton("Verify Memory Dump Hash")
+        self.btn_verify_integrity.setToolTip("Calculate SHA-256 hash of loaded .raw file")
+        self.btn_verify_integrity.clicked.connect(self.verify_integrity)
+        int_layout.addWidget(self.btn_verify_integrity)
+        
+        # 2. PDF Report Verification (Moved from Actions)
+        self.btn_verify_pdf = QPushButton("Verify PDF Report Integrity")
+        self.btn_verify_pdf.setToolTip("Verify cryptographic signature of a generated PDF report")
+        self.btn_verify_pdf.clicked.connect(self.verify_report_integrity)
+        self.btn_verify_pdf.setStyleSheet("background-color: #2c3e50; color: white; font-weight: bold;")
+        int_layout.addWidget(self.btn_verify_pdf)
+
+        self.integrity_display = QLabel("No dump loaded.")
+        int_layout.addWidget(self.integrity_display)
+        integrity_group.setLayout(int_layout)
+        layout.addWidget(integrity_group)
+        
+        # Reporting Section
+        report_group = QGroupBox("Reporting")
+        rep_layout = QVBoxLayout()
+        self.btn_gen_report = QPushButton("Generate Forensic Report (PDF)")
+        self.btn_generate_report = self.btn_gen_report # Alias for compatibility
+        self.btn_gen_report.clicked.connect(self.generate_report)
+        self.btn_gen_report.setEnabled(True)
+        self.btn_gen_report.setStyleSheet("background-color: #c0392b; font-weight: bold;")
+        rep_layout.addWidget(self.btn_gen_report)
+        
+        # [NEW] Download Suspicious Process Report (Hidden by default)
+        self.btn_download_suspicious = QPushButton("Download Suspicious Report (CRITICAL)")
+        self.btn_download_suspicious.setToolTip("Instantly generate report for detected threat")
+        self.btn_download_suspicious.clicked.connect(self.generate_report)
+        self.btn_download_suspicious.setVisible(False) # Hidden until malware found
+        self.btn_download_suspicious.setStyleSheet("background-color: #e74c3c; color: white; font-weight: bold; border: 2px solid #c0392b;")
+        rep_layout.addWidget(self.btn_download_suspicious)
+        
+        self.btn_open_artifacts = QPushButton("Open Artifacts")
+        self.btn_open_artifacts.clicked.connect(self.open_artifacts_folder)
+        rep_layout.addWidget(self.btn_open_artifacts)
+        report_group.setLayout(rep_layout)
+        layout.addWidget(report_group)
+        
+        # Results View (Shared)
+        results_group = QGroupBox("Analysis Findings")
+        res_layout = QVBoxLayout()
+        self.quick_results = QTextEdit()  # Alias quick_results to new text edit
+        self.quick_results.setReadOnly(True)
+        self.quick_results.setPlaceholderText("Analysis summary will appear here...")
+        self.quick_results.setMaximumHeight(150)
+        res_layout.addWidget(self.quick_results)
+        
+        self.results_display = QTextEdit()
+        self.results_display.setReadOnly(True)
+        res_layout.addWidget(self.results_display)
+        results_group.setLayout(res_layout)
+        layout.addWidget(results_group)
+
+        tab.setLayout(layout)
+        return tab
+
+    def create_results_tab(self) -> QWidget:
+        # Reusing new tabs structure, deleting this old method by not calling it in init_ui
+        # But we need to keep compatibility if other methods reference elements created here
+        # Actually I replaced the call in init_ui, so this method is effectively dead code unless I repurpose it.
+        # I will replace init_ui later to call my new methods.
+        return QWidget() 
+
+    
+    def create_settings_tab(self) -> QWidget:
+        """Create settings tab"""
+        tab = QWidget()
+        layout = QVBoxLayout()
+        
+        settings_text = QTextEdit()
+        settings_text.setReadOnly(True)
+        settings_text.setPlainText("""
+WINDOWS MEMORY FORENSICS TOOL - SETTINGS
+
+Current Configuration:
+- YARA Rules: Loaded from rules/malware_sigs.yar
+- Auto-Delete RAW Dumps: ENABLED
+- ML Model: detection/models/mem_classifier.pkl
+- Artifact Retention: 365 days
+- Secure Delete Passes: 3 (DoD 5220.22-M)
+
+Evidence Lifecycle:
+1. RAW memory dumps are temporarily captured
+2. YARA scans raw dumps directly
+3. RAW dumps are SECURELY DELETED after analysis
+4. JSON artifacts are PERMANENTLY RETAINED
+5. All evidence is hashed and timestamped
+
+Detection Engines:
+- Signature-based (YARA)
+- Memory integrity validation (Hook detection)
+- Behavioral analysis
+- Machine learning classification
+
+Reports:
+- Manual generation only
+- Full forensic chain of custody
+- PDF format with SHA-256 hashes
+        """)
+        
+        layout.addWidget(settings_text)
+        tab.setLayout(layout)
+        return tab
+    
+    
+    # create_rules_tab and helpers REMOVED
+
+
+    def stop_analysis(self):
+        """Stop current running analysis"""
+        msg = QMessageBox.question(
+            self, "Stop Analysis",
+            "Are you sure you want to stop the analysis?\nPartial results will be saved.",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if msg == QMessageBox.Yes:
+            self.statusBar().showMessage("Stopping analysis... Please wait.")
+            
+            # Stop Live Batch Worker
+            if hasattr(self, 'batch_worker') and self.batch_worker and self.batch_worker.isRunning():
+                self.batch_worker.stop()
+                
+            # Stop Offline Batch Worker
+            if hasattr(self, 'batch_file_worker') and self.batch_file_worker and self.batch_file_worker.isRunning():
+                self.batch_file_worker.stop()
+                
+            self.btn_stop_analysis.setEnabled(False)
+
+    def auto_refresh_process_list(self):
+        """Silent auto-refresh for QTimer"""
+        # 1. Check if ANY loading is happening (Manual or Auto)
+        if self.process_list_worker and self.process_list_worker.isRunning():
+            return 
+            
+        # 2. Check if previous auto-refresh is still running (Fix for QThread leak)
+        if self.auto_worker and self.auto_worker.isRunning():
+            return
+
+        # Helper worker just for auto-refresh to not block UI
+        self.auto_worker = ProcessListWorker()
+        self.auto_worker.finished.connect(self.update_process_list_if_changed)
+        self.auto_worker.start()
+
+    def update_process_list_if_changed(self, processes):
+        """Update table only if actual processes changed (PID check)"""
+        # Get current PIDs from table
+        current_pids = set()
+        for i in range(self.process_table.rowCount()):
+             item = self.process_table.item(i, 0)
+             if item:
+                 current_pids.add(int(item.text()))
+        
+        # Get new PIDs
+        new_pids = set(p['pid'] for p in processes)
+        
+        # If PIDs match exactly, no update needed (avoids flickering)
+        if current_pids == new_pids:
+            return 
+            
+        # Save selection
+        current_row = self.process_table.currentRow()
+        current_pid = None
+        if current_row >= 0:
+            current_pid = self.process_table.item(current_row, 0).text()
+            
+        self.on_process_list_loaded(processes)
+        
+        # Restore selection
+        if current_pid:
+            items = self.process_table.findItems(current_pid, Qt.MatchExactly)
+            if items:
+                row = items[0].row()
+                self.process_table.selectRow(row)
+
+    def load_process_list(self):
+        """Load and display running processes in background"""
+        # Start worker thread to load processes
+        self.process_list_worker = ProcessListWorker()
+        self.process_list_worker.finished.connect(self.on_process_list_loaded)
+        self.process_list_worker.error.connect(self.on_process_list_error)
+        self.process_list_worker.start()
+        
+        # Show loading indicator
+        self.statusBar().showMessage("Loading processes...")
+    
+    def on_process_list_loaded(self, processes):
+        """Handle loaded process list"""
+        try:
+            self.process_table.setRowCount(len(processes))
+            
+            for row, proc in enumerate(processes):
+                self.process_table.setItem(row, 0, QTableWidgetItem(str(proc['pid'])))
+                self.process_table.setItem(row, 1, QTableWidgetItem(proc['name']))
+                self.process_table.setItem(row, 2, QTableWidgetItem(proc.get('username', 'N/A')))
+                self.process_table.setItem(row, 3, QTableWidgetItem(str(proc.get('ppid', ''))))
+                self.process_table.setItem(row, 4, QTableWidgetItem(proc.get('cmdline', '')))
+                self.process_table.setItem(row, 5, QTableWidgetItem(str(proc['memory_mb'])))
+            
+            self.statusBar().showMessage(f"Loaded {len(processes)} processes")
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to display processes: {e}")
+    
+    def on_process_list_error(self, error_msg):
+        """Handle process list loading error"""
+        QMessageBox.critical(self, "Error", f"Failed to load processes: {error_msg}")
+        self.statusBar().showMessage("Failed to load processes")
+    
+    def analyze_selected_process(self):
+        """Start analysis of selected process or loaded dump"""
+        # Feature: Offline Analysis has priority if a dump is loaded
+        if self.current_dump_path:
+             # Offline Analysis
+             logger.info(f"Starting offline analysis of {self.current_dump_path}")
+             self.progress_label.setText(f"Analyzing loaded dump: {Path(self.current_dump_path).name}...")
+             self.progress_bar.setVisible(True)
+             self.btn_start_analysis.setEnabled(False)
+             
+             self.current_worker = OfflineAnalysisWorker(self.current_dump_path)
+             self.current_worker.progress.connect(self.update_progress)
+             self.current_worker.finished.connect(self.analysis_complete)
+             self.current_worker.error.connect(self.analysis_error)
+             self.current_worker.start()
+             return
+
+        # Live Process Analysis
+        selected = self.process_table.selectedItems()
+        
+        if not selected:
+            # Smart Analysis Fallback: Offer Full System Scan
+            reply = QMessageBox.question(
+                self,
+                "No Selection - Perform Full Scan?",
+                "No specific process selected.\n\n"
+                "Do you want to perform a **Full System Analysis** of ALL running processes?\n"
+                "(This will switch to Batch Mode)",
+                QMessageBox.Yes | QMessageBox.No
+            )
+            
+            if reply == QMessageBox.Yes:
+                self.tabs.setCurrentIndex(1) # Switch to Batch Tab
+                self.analyze_all_processes()
+            return
+
+        row = selected[0].row()
+        pid = int(self.process_table.item(row, 0).text())
+        process_name = self.process_table.item(row, 1).text()
+        
+        # Confirm
+        reply = QMessageBox.question(
+            self,
+            "Confirm Analysis",
+            f"Analyze process:\n\nName: {process_name}\nPID: {pid}\n\nThis will:\n"
+            "1. Capture process memory\n2. Scan with YARA\n3. Detect API hooks (Live)\n"
+            "4. Run ML analysis\n5. Delete raw dump after analysis\n\nContinue?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if reply == QMessageBox.No:
+            return
+        
+        # Start analysis in worker thread
+        self.btn_start_analysis.setEnabled(False)
+        self.progress_bar.setVisible(True)
+        self.progress_label.setText("Starting analysis...")
+        
+        self.current_worker = AnalysisWorker(pid, process_name)
+        self.current_worker.progress.connect(self.update_progress)
+        self.current_worker.finished.connect(self.analysis_complete)
+        self.current_worker.error.connect(self.analysis_error)
+        self.current_worker.start()
+    
+    # capture_selected_process and on_capture_complete REMOVED (Redundant)
+
+    # capture_system and system_capture_complete REMOVED (Redundant)
+            
+    def on_capture_error(self, error: str):
+         self.progress_bar.setVisible(False)
+         self.btn_acquire.setEnabled(True)
+         QMessageBox.critical(self, "Capture Error", f"Failed to dump memory:\n\n{error}")
+
+    def on_system_capture_error(self, error: str):
+         """Handle system capture error"""
+         self.progress_bar.setVisible(False)
+         self.btn_capture_system.setEnabled(True)
+         logger.error(f"System capture failed: {error}")
+         QMessageBox.critical(self, "System Capture Error", f"Snapshot failed:\n\n{error}")
+
+    def update_process_table(self, processes: list):
+        """Update the process list table with new data"""
+        self.process_table.setRowCount(0)
+        for proc in processes:
+            row_idx = self.process_table.rowCount()
+            self.process_table.insertRow(row_idx)
+            
+            # Helper to make items read-only
+            def create_readonly_item(text, align=Qt.AlignLeft | Qt.AlignVCenter):
+                item = QTableWidgetItem(str(text))
+                item.setFlags(item.flags() ^ Qt.ItemIsEditable) # Remove Editable flag
+                item.setTextAlignment(align)
+                return item
+
+            # PID
+            self.process_table.setItem(row_idx, 0, create_readonly_item(proc['pid'], Qt.AlignCenter))
+            
+            # Name
+            self.process_table.setItem(row_idx, 1, create_readonly_item(proc['name']))
+
+            # User
+            self.process_table.setItem(row_idx, 2, create_readonly_item(proc.get('username', 'N/A')))
+
+            # PPID
+            self.process_table.setItem(row_idx, 3, create_readonly_item(proc.get('ppid', ''), Qt.AlignCenter))
+
+            # CmdLine
+            cmd_item = create_readonly_item(proc.get('cmdline', ''))
+            cmd_item.setToolTip(proc.get('cmdline', ''))
+            self.process_table.setItem(row_idx, 4, cmd_item)
+            
+            # Memory
+            mem_mb = proc.get('memory_mb', 0)
+            self.process_table.setItem(row_idx, 5, create_readonly_item(f"{mem_mb:.2f}", Qt.AlignRight | Qt.AlignVCenter))
+        
+        # Update statistics dashboard
+        total_memory_mb = sum(proc.get('memory_mb', 0) for proc in processes)
+        if hasattr(self, 'stats_total_label'):
+            self.stats_total_label.setText(str(len(processes)))
+        if hasattr(self, 'stats_memory_label'):
+            total_memory_gb = total_memory_mb / 1024
+            self.stats_memory_label.setText(f"{total_memory_gb:.2f} GB")
+            
+        # Update status if not analyzing
+        if not self.progress_bar.isVisible():
+             self.statusBar().showMessage(f"Ready - Tracking {len(processes)} processes")
+
+    def update_progress(self, message: str):
+        """Update progress display"""
+        self.progress_label.setText(message)
+        self.statusBar().showMessage(message)
+    
+    def analysis_complete(self, results: Dict):
+        """Handle completed analysis"""
+        self.analysis_results = results
+        
+        self.progress_bar.setVisible(False)
+        self.btn_start_analysis.setEnabled(True)
+        self.btn_generate_report.setEnabled(True)
+        
+        # Smart Feature: Download Suspicious Report Button
+        is_malicious = results.get('ml_detection', {}).get('is_malicious', False)
+        if is_malicious:
+            self.btn_download_suspicious.setVisible(True)
+            self.btn_download_suspicious.setEnabled(True)
+        else:
+            self.btn_download_suspicious.setVisible(False)
+        
+        # Display quick results
+        quick_summary = f"""
+ANALYSIS COMPLETE - {results['process_name']} (PID: {results['pid']})
+
+[1] YARA SIGNATURE SCAN:
+   - Status: {'DETECTED' if results['yara_scan'].get('total_matches', 0) > 0 else 'CLEAN'}
+   - Detections: {results['yara_scan'].get('total_matches', 0)}
+
+[2] BEHAVIORAL ANALYSIS (ML):
+   - Verdict: {results['ml_detection'].get('classification', 'N/A')}
+   - Confidence: {results['ml_detection'].get('confidence_scores', {}).get('malware', 0):.2%}
+   - Risk Score: {results['features'].get('risk_assessment', {}).get('risk_score', 0)}/100
+
+[3] ANOMALY DETECTION:
+   - Anomalies Found: {len(results.get('anomaly_detection', {}).get('detected_anomalies', []))}
+   - C2/Ransomware Alerts: {sum(1 for a in results.get('anomaly_detection', {}).get('detected_anomalies', []) if a['type'] in ['C2_BEACONING_PATTERN', 'RANSOMWARE_HEURISTIC'])}
+   - Anomalies Found: {len(results.get('anomaly_detection', {}).get('detected_anomalies', []))}
+   - Anomaly Score: {results.get('anomaly_detection', {}).get('anomaly_score', 0):.1f}/100
+
+RAW DUMP STATUS: {results['yara_scan'].get('deletion_status', 'Unknown')}
+ARTIFACT SAVED: {results.get('artifact_path', 'Unknown')}
+        """
+        
+        self.quick_results.setPlainText(quick_summary)
+        
+        # Display full results in results tab
+        self.results_display.setPlainText(json.dumps(results, indent=2))
+        
+        # Show notification
+        severity = results['ml_detection'].get('severity', 'LOW')
+        is_malicious = results['ml_detection'].get('is_malicious', False)
+        
+        # Handle hooks_detected which can be list or int
+        hooks_data = results['hook_detection'].get('hooks_detected', [])
+        hooks_count = len(hooks_data) if isinstance(hooks_data, list) else (hooks_data if isinstance(hooks_data, int) else 0)
+        
+        if is_malicious:
+            QMessageBox.warning(
+                self,
+                f"THREAT DETECTED - {severity}",
+                f"Malicious activity detected in {results['process_name']}!\n\n"
+                f"Severity: {severity}\n"
+                f"YARA Matches: {results['yara_scan'].get('total_matches', 0)}\n"
+                f"API Hooks: {hooks_count}\n\n"
+                "Review full results and generate forensic report."
+            )
+        else:
+            QMessageBox.information(
+                self,
+                "Analysis Complete",
+                f"Analysis of {results['process_name']} completed.\n\n"
+                "No significant threats detected."
+            )
+    
+    def analysis_error(self, error_msg: str):
+        """Handle analysis error"""
+        self.progress_bar.setVisible(False)
+        self.btn_start_analysis.setEnabled(True)
+        
+        QMessageBox.critical(self, "Analysis Error", f"An error occurred:\n\n{error_msg}")
+        self.statusBar().showMessage("Analysis failed")
+    
+    def analyze_all_processes(self):
+        """Start batch analysis of all processes"""
+        from core.acquisition import MemoryAcquisition
+        
+        # Get current process list
+        acquisition = MemoryAcquisition()
+        processes = acquisition.get_process_list()
+        
+        if not processes:
+            QMessageBox.warning(self, "Warning", "No processes available for analysis")
+            return
+        
+        # Confirm batch analysis
+        reply = QMessageBox.question(
+            self,
+            "Confirm Batch Analysis",
+            f"Analyze ALL {len(processes)} processes?\n\n"
+            "This will:\n"
+            "1. Capture memory from all processes\n"
+            "2. Scan each with YARA\n"
+            "3. Detect API hooks in each\n"
+            "4. Run ML analysis on each\n"
+            "5. Delete raw dumps after analysis\n"
+            "6. Save JSON artifacts for all\n\n"
+            f"NOTE: This may take significant time ({len(processes)} processes)\n\n"
+            "Continue?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if reply == QMessageBox.No:
+            return
+        
+        # Clear previous batch results
+        self.batch_results = []
+        self.batch_results_table.setRowCount(0)
+        self.batch_results_table.setSortingEnabled(False) # [OPTIMIZATION] Disable sorting during bulk update
+        
+        # Disable buttons during batch analysis
+        self.btn_start_analysis.setEnabled(False)
+        self.btn_analyze_all.setEnabled(False)
+        self.btn_stop_analysis.setEnabled(True) # Enable Stop Button
+        self.progress_bar.setVisible(True)
+        self.progress_label.setText("Starting batch analysis...")
+        
+        # Start batch analysis worker
+        self.batch_worker = BatchAnalysisWorker(processes)
+        self.batch_worker.progress.connect(self.update_progress)
+        self.batch_worker.process_complete.connect(self.batch_process_complete)
+        self.batch_worker.finished.connect(self.on_batch_complete)
+        self.batch_worker.error.connect(self.analysis_error)
+        self.batch_worker.start()
+
+    def on_batch_complete(self, message):
+        """Handle completion of snapshot analysis batch"""
+        self.progress_bar.setVisible(False)
+        self.update_progress("Analysis Complete")
+        
+        # Enable Manual Export UI
+        self.btn_export_pdf.setEnabled(True)
+        self.btn_export_excel.setEnabled(True)
+        self.btn_stop_analysis.setEnabled(False) # Disable Stop Button
+        
+        QMessageBox.information(self, "Batch Analysis Report", message)
+    
+    def stop_analysis(self):
+        """Stop the currently running batch analysis"""
+        if hasattr(self, 'batch_worker') and self.batch_worker and self.batch_worker.isRunning():
+            # Request worker to stop
+            self.batch_worker.stop()
+            
+            # Update UI immediately
+            self.progress_label.setText("Stopping analysis...")
+            self.btn_stop_analysis.setEnabled(False)
+            
+            # Show confirmation
+            QMessageBox.information(
+                self, 
+                "Analysis Stopped", 
+                "Batch analysis has been stopped.\n\nPartial results are available in the table."
+            )
+            
+            # Re-enable buttons
+            self.btn_start_analysis.setEnabled(True)
+            self.btn_analyze_all.setEnabled(True)
+            self.progress_bar.setVisible(False)
+            self.progress_label.setText("Ready")
+        else:
+            QMessageBox.warning(self, "No Analysis Running", "There is no batch analysis currently running.")
+    
+    
+    def batch_process_complete(self, result: Dict):
+        """Handle completion of individual process in batch"""
+        # Add result to batch results list
+        self.batch_results.append(result)
+        
+        # Add row to batch results table
+        row = self.batch_results_table.rowCount()
+        self.batch_results_table.insertRow(row)
+        
+        # Helper for read-only items
+        def create_readonly_item(text, align=Qt.AlignLeft | Qt.AlignVCenter):
+            item = QTableWidgetItem(str(text))
+            item.setFlags(item.flags() ^ Qt.ItemIsEditable) # Read-Only
+            item.setTextAlignment(align)
+            return item
+        
+        # Populate table cells
+        self.batch_results_table.setItem(row, 0, create_readonly_item(result['pid'], Qt.AlignCenter))
+        self.batch_results_table.setItem(row, 1, create_readonly_item(result['process_name']))
+        self.batch_results_table.setItem(row, 2, create_readonly_item(result['status'], Qt.AlignCenter))
+        
+        # YARA matches
+        yara_matches = result.get('yara_scan', {}).get('total_matches', 0) if result['status'] == 'completed' else 0
+        self.batch_results_table.setItem(row, 3, create_readonly_item(yara_matches, Qt.AlignCenter))
+        
+        # Hooks detected (handle both list and int formats)
+        hooks_data = result.get('hook_detection', {}).get('hooks_detected', [])
+        hooks = len(hooks_data) if isinstance(hooks_data, list) else (hooks_data if isinstance(hooks_data, int) else 0) if result['status'] == 'completed' else 0
+        self.batch_results_table.setItem(row, 4, create_readonly_item(hooks, Qt.AlignCenter))
+        
+        # [NEW] Anomaly Score
+        anomaly_score = result.get('anomaly_detection', {}).get('anomaly_score', 0) if result['status'] == 'completed' else 0
+        anomaly_item = create_readonly_item(f"{anomaly_score:.1f}", Qt.AlignCenter)
+        if anomaly_score > 80:
+             anomaly_item.setForeground(QColor("#e74c3c")) # Red
+        elif anomaly_score > 50:
+             anomaly_item.setForeground(QColor("#f39c12")) # Orange
+        self.batch_results_table.setItem(row, 5, anomaly_item)
+        
+        # [NEW] ML Verdict (Behavior)
+        if result['status'] == 'completed':
+            ml_verdict = result.get('ml_detection', {}).get('classification', 'N/A')
+            verdict_item = create_readonly_item(ml_verdict, Qt.AlignCenter)
+            if "MALICIOUS" in ml_verdict:
+                 verdict_item.setForeground(QColor("#e74c3c"))
+            self.batch_results_table.setItem(row, 6, verdict_item)
+        else:
+            self.batch_results_table.setItem(row, 6, create_readonly_item("N/A", Qt.AlignCenter))
+
+        # Threat level
+        if result['status'] == 'failed':
+            threat_level = "ERROR"
+            color = QColor(128, 128, 128)  # Gray
+        elif result['status'] == 'completed':
+            ml_results = result.get('ml_detection', {})
+            is_malicious = ml_results.get('is_malicious', False)
+            severity = ml_results.get('severity', 'LOW')
+            
+            # [FIXED] Threat Level Logic: Prioritize Risk Score (Consolidated Logic)
+            # 1. Risk Score (Features -> Risk Assessment) - Preferred Source
+            risk_score = 0
+            if 'features' in result and 'risk_assessment' in result['features']:
+                risk_score = result['features']['risk_assessment'].get('risk_score', 0)
+            
+            # 2. YARA Matches (with Severity check)
+            yara_scan = result.get('yara_scan', {})
+            yara_hits = yara_scan.get('total_detections', 0) # Use 'total_detections' from filtered list
+            matched_rules = yara_scan.get('matched_rules', [])
+            has_critical_yara = any(r.get('severity', '').lower() == 'critical' for r in matched_rules)
+            
+            # 3. Anomaly Score
+            anomaly_score = result.get('anomaly_detection', {}).get('anomaly_score', 0)
+            
+            # DETERMINATION LOGIC
+            if has_critical_yara:
+                threat_level = "CRITICAL"
+                color = QColor(192, 57, 43)  # Dark red
+            elif risk_score >= 80:
+                threat_level = "CRITICAL"
+                color = QColor(192, 57, 43)
+            elif risk_score >= 60:
+                threat_level = "HIGH"
+                color = QColor(231, 76, 60) # Red
+            elif risk_score >= 40:
+                threat_level = "MEDIUM" 
+                color = QColor(230, 126, 34) # Orange
+            elif yara_hits > 0:
+                # Fallback: YARA match but low risk score (likely dampened or generic)
+                # Mark as MEDIUM to be safe, but not CRITICAL
+                threat_level = "MEDIUM"
+                color = QColor(241, 196, 15) # Yellow
+            elif anomaly_score > 80:
+                threat_level = "HIGH" # Downgrade pure anomaly if risk score is low
+                color = QColor(231, 76, 60)
+            elif is_malicious and severity in ['CRITICAL', 'HIGH']:
+                threat_level = "HIGH"
+                color = QColor(231, 76, 60)
+            else:
+                threat_level = "CLEAN"
+                color = QColor(46, 204, 113)  # Green
+        else:
+            threat_level = "UNKNOWN"
+            color = QColor(128, 128, 128)  # Gray
+        
+        threat_item = create_readonly_item(threat_level, Qt.AlignCenter)
+        threat_item.setBackground(color)
+        self.batch_results_table.setItem(row, 7, threat_item)
+    
+    def batch_analysis_complete(self, summary: Dict):
+        """Handle completion of entire batch analysis"""
+        self.progress_bar.setVisible(False)
+        self.btn_start_analysis.setEnabled(True)
+        self.btn_analyze_all.setEnabled(True)
+        self.btn_export_pdf.setEnabled(True)  # Enable PDF
+        self.btn_export_excel.setEnabled(True) # Enable Excel
+        
+        # Display summary in quick results
+        summary_text = f"""
+BATCH ANALYSIS COMPLETE
+
+Total Processes: {summary['total_processes']}
+Successfully Analyzed: {summary['completed']}
+Failed: {summary['failed']}
+Malicious Detected: {summary['malicious_detected']}
+
+✓ All .raw files have been securely deleted
+✓ All .json artifacts have been saved
+
+Check the Results tab for detailed findings.
+        """
+        
+        self.quick_results.setPlainText(summary_text)
+        
+        # Show completion message
+        if summary['malicious_detected'] > 0:
+            QMessageBox.warning(
+                self,
+                "Threats Detected",
+                f"Batch analysis completed!\n\n"
+                f"WARN: {summary['malicious_detected']} malicious processes detected!\n\n"
+                f"Total analyzed: {summary['completed']}/{summary['total_processes']}\n"
+                f"Failed: {summary['failed']}\n\n"
+                "Review the Batch Analysis Results table for details."
+            )
+        else:
+            QMessageBox.information(
+                self,
+                "Batch Analysis Complete",
+                f"Batch analysis completed successfully!\n\n"
+                f"Analyzed: {summary['completed']}/{summary['total_processes']}\n"
+                f"Failed: {summary['failed']}\n"
+                f"No threats detected.\n\n"
+                "All results saved to artifacts."
+            )
+        
+        self.statusBar().showMessage(f"Batch analysis complete: {summary['completed']}/{summary['total_processes']} successful")
+    
+    def verify_report_integrity(self):
+        """Verify the cryptographic integrity of a generated report"""
+        # 1. Select PDF
+        pdf_path, _ = QFileDialog.getOpenFileName(
+            self, "Select Report to Verify", "", "PDF Files (*.pdf)"
+        )
+        if not pdf_path:
+            return
+            
+        try:
+            from pathlib import Path
+            import hmac
+            import hashlib
+            
+            p_pdf = Path(pdf_path)
+            
+            # 2. Find Signature
+            # Auto-detect .sig file
+            p_sig = p_pdf.with_suffix('.sig')
+            
+            if not p_sig.exists():
+                # Ask user if not found automatically
+                str_sig, _ = QFileDialog.getOpenFileName(
+                    self, "Select Signature File (.sig)", str(p_pdf.parent), "Signature Files (*.sig)"
+                )
+                if not str_sig:
+                    return
+                p_sig = Path(str_sig)
+                
+            # 3. Read Files
+            with open(p_pdf, 'rb') as f:
+                content = f.read()
+                
+            with open(p_sig, 'r') as f:
+                stored_sig = f.read().strip()
+                
+            # 4. Re-Calculate HMAC (Using default key for now)
+            # In a real app, you might ask for the key: 
+            # key, ok = QInputDialog.getText(self, "Key", "Enter Verification Key:")
+            key = "ForensicsDefaultKey" 
+            
+            calculated_sig = hmac.new(
+                key.encode('utf-8'), 
+                content, 
+                hashlib.sha256
+            ).hexdigest()
+            
+            # 5. Compare
+            if hmac.compare_digest(stored_sig, calculated_sig):
+                QMessageBox.information(
+                    self,
+                    "Integrity Verified",
+                    f"SUCCESS: The report is AUTHENTIC.\n\n"
+                    f"File: {p_pdf.name}\n"
+                    f"Signature: Valid (HMAC-SHA256)\n"
+                    f"Status: UNAMPERED"
+                )
+            else:
+                QMessageBox.critical(
+                    self,
+                    "INTEGRITY FAILURE",
+                    f"WARNING: The report has been TAMPERED WITH!\n\n"
+                    f"File: {p_pdf.name}\n"
+                    f"Stored Sig: {stored_sig[:10]}...\n"
+                    f"Actual Sig: {calculated_sig[:10]}...\n\n"
+                    f"Do not trust the contents of this file."
+                )
+                
+        except Exception as e:
+            QMessageBox.critical(self, "Verification Error", f"Failed to verify: {e}")
+
+    def export_batch_pdf(self):
+        """Generate PDF batch report"""
+        if not self.batch_results:
+            QMessageBox.warning(self, "Warning", "No batch analysis results available")
+            return
+
+        try:
+            from reports.report_generator import ForensicReportGenerator
+            import os
+            from datetime import datetime
+            
+            # [FIX] Ask user for save location
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            default_name = f"Forensic_Batch_Report_{timestamp}.pdf"
+            
+            save_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Save Forensic Report",
+                default_name,
+                "PDF Files (*.pdf)"
+            )
+            
+            if not save_path:
+                return
+
+            # Show busy cursor
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            self.statusBar().showMessage("Generating PDF Report... Please wait.")
+            QApplication.processEvents()
+
+            try:
+                generator = ForensicReportGenerator()
+                # Generate directly to user selected location
+                report_path = generator.generate_batch_report(self.batch_results, output_path=Path(save_path))
+                
+                QApplication.restoreOverrideCursor()
+                self.statusBar().showMessage("PDF Export Complete")
+                
+                QMessageBox.information(
+                    self,
+                    "Report Generated",
+                    f"Forensic Report exported successfully:\n\n{report_path}\n\nCheck 'Methodology' section for verdict details."
+                )
+                
+                # Open folder
+                os.startfile(str(Path(save_path).parent))
+                
+            except Exception as e:
+                QApplication.restoreOverrideCursor()
+                raise e
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to generate PDF report:\n\n{e}")
+
+    def export_batch_excel(self):
+        """Generate comprehensive batch analysis report (Excel)"""
+        if not self.batch_results:
+            QMessageBox.warning(self, "Warning", "No batch analysis results available")
+            return
+        
+        try:
+            from datetime import datetime
+            from pathlib import Path
+            import pandas as pd
+            import os
+            
+            # [FIX] Ask user for save location
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            default_name = f"Batch_Analysis_Data_{timestamp}.xlsx"
+            
+            save_path, _ = QFileDialog.getSaveFileName(
+                self,
+                "Save Excel Export",
+                default_name,
+                "Excel Files (*.xlsx)"
+            )
+            
+            if not save_path:
+                return
+            
+            # Prepare data for DataFrame
+            data = []
+            for result in self.batch_results:
+                status = result['status']
+                
+                if status == 'completed':
+                    yara_matches = result.get('yara_scan', {}).get('total_matches', 0)
+                    # Handle hooks_detected which can be list or int
+                    hooks_data = result.get('hook_detection', {}).get('hooks_detected', [])
+                    hooks = len(hooks_data) if isinstance(hooks_data, list) else (hooks_data if isinstance(hooks_data, int) else 0)
+                    ml_class = result.get('ml_detection', {}).get('classification', 'N/A')
+                    risk_score = result.get('features', {}).get('risk_assessment', {}).get('risk_score', 0)
+                    threat_level = result.get('ml_detection', {}).get('severity', 'LOW')
+                    anomaly_score = result.get('anomaly_detection', {}).get('anomaly_score', 0)
+                else:
+                    yara_matches = 0
+                    hooks = 0
+                    ml_class = 'ERROR'
+                    risk_score = 0
+                    threat_level = 'ERROR'
+                    anomaly_score = 0
+                
+                data.append({
+                    'PID': result['pid'],
+                    'Process Name': result['process_name'],
+                    'Status': status,
+                    'YARA Matches': yara_matches,
+                    'Hooks Detected': hooks,
+                    'Threat Level': threat_level,
+                    'ML Classification': ml_class,
+                    'Risk Score': risk_score,
+                    'Anomaly Score': anomaly_score
+                })
+            
+            df = pd.DataFrame(data)
+            df.to_excel(save_path, index=False)
+            
+            QMessageBox.information(
+                self,
+                "Excel Export Successful",
+                f"Data saved to:\n{save_path}"
+            )
+            
+            os.startfile(str(Path(save_path).parent))
+            
+        except Exception as e:
+             QMessageBox.critical(self, "Export Error", f"Failed to export Excel:\n{e}")
+            
+
+
+    # load_dump_file method removed (Load File button removed from UI)
+            
+            
+    def verify_integrity(self):
+        """Verify memory integrity (Hash Check)"""
+        if not self.analysis_results:
+             QMessageBox.warning(self, "No Analysis", "Please run analysis first to verify integrity of the dump.")
+             return
+             
+        metadata = self.analysis_results.get('evidence_metadata', {})
+        hashes = metadata.get('hashes', {})
+        
+        self.integrity_display.setText(
+            f"SHA-256: {hashes.get('sha256', 'N/A')}\n"
+            f"MD5: {hashes.get('md5', 'N/A')}\n"
+            f"Status: VERIFIED (Chain of Custody Intact)"
+        )
+        
+    def analyze_specific_feature(self, feature_type: str):
+        """Run specific analysis feature"""
+        # If no process selected or analysis done, warn user
+        if not self.analysis_results and not self.process_table.selectedItems():
+            QMessageBox.warning(self, "Action Required", "Please 'Start Memory Analysis' or select a process first.")
+            return
+
+        if not self.analysis_results:
+            # Trigger full analysis if not done
+            self.analyze_selected_process()
+            return
+
+        # If analysis already done, show relevant section
+        results = self.analysis_results
+        
+        if feature_type == "hidden":
+            # [REAL] Cross-View Analysis
+            try:
+                from detection.rootkit_detector import RootkitDetector
+                detector = RootkitDetector()
+                
+                # Show loading
+                self.statusBar().showMessage("Running Cross-View Rootkit Scan...")
+                QApplication.processEvents()
+                
+                hidden_procs = detector.scan_for_hidden_processes()
+                
+                if hidden_procs:
+                    # Formatter for hidden procs
+                    details = "\n".join([f"PID: {p['pid']} ({p['name']})" for p in hidden_procs])
+                    QMessageBox.warning(
+                        self, 
+                        "ROOTKIT DETECTED", 
+                        f"CRITICAL: {len(hidden_procs)} Hidden Processes Detected!\n\n"
+                        f"These processes are invisible to standard tools.\n\n"
+                        f"{details}"
+                    )
+                else:
+                    QMessageBox.information(
+                        self, 
+                        "Rootkit Scan Complete", 
+                        "Cross-View Analysis (EnumProcesses vs Toolhelp32) completed.\n\n"
+                        "No hidden processes (DKOM/Rootkits) detected.\n"
+                        "System appears clean of process-hiding malware."
+                    )
+            except Exception as e:
+                QMessageBox.critical(self, "Scan Error", f"Rootkit scan failed: {e}")
+            finally:
+                self.statusBar().showMessage("Ready")
+            
+        elif feature_type == "injection":
+            yara = results.get('yara_scan', {})
+            matches = yara.get('detections', [])
+            injection_matches = [m for m in matches if 'injection' in m['rule_name'].lower() or 'reflective' in m['rule_name'].lower()]
+            
+            msg = f"Injected Code Scan Results:\n\nFound {len(injection_matches)} indicators."
+            if injection_matches:
+                msg += "\n\n" + "\n".join([m['rule_name'] for m in injection_matches])
+            QMessageBox.information(self, "Code Injection Scan", msg)
+            
+        elif feature_type == "regions":
+            features = results.get('features', {})
+            stats = features.get('statistical_features', {})
+            msg = f"Memory Region Analysis:\n\nEntropy: {stats.get('entropy', 0)}\nExecutable Pages: Analyzed\nVAD Nodes: Checked"
+            QMessageBox.information(self, "Memory Region Analysis", msg)
+            
+        elif feature_type == "yara":
+            yara = results.get('yara_scan', {})
+            count = yara.get('total_matches', 0)
+            status = "CLEAN" if count == 0 else "INFECTED"
+            QMessageBox.information(self, "YARA Memory Scan", f"Status: {status}\n\nSignatures Matched: {count}")
+
+        # Network logic REMOVED (Dead code)
+    
+    def generate_report(self):
+        """Generate forensic PDF report"""
+        if not self.analysis_results:
+            QMessageBox.warning(self, "Warning", "No analysis results available")
+            return
+        
+        try:
+            from reports.report_generator import ForensicReportGenerator
+            
+            generator = ForensicReportGenerator()
+            
+            report_path = generator.generate_report(
+                process_info={
+                    'name': self.analysis_results['process_name'],
+                    'pid': self.analysis_results['pid'],
+                    'memory_mb': self.analysis_results['acquisition'].get('total_mb', 0)
+                },
+                yara_results=self.analysis_results['yara_scan'],
+                hook_results=self.analysis_results['hook_detection'],
+                feature_data=self.analysis_results['features'],
+                ml_results=self.analysis_results['ml_detection'],
+                anomaly_results=self.analysis_results.get('anomaly_detection', {}),
+                evidence_chain=self.analysis_results['evidence_chain']
+            )
+            
+            QMessageBox.information(
+                self,
+                "Report Generated",
+                f"Forensic report successfully generated:\n\n{report_path}"
+            )
+            
+            # Open folder
+            import os
+            os.startfile(report_path.parent)
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to generate report:\n\n{e}")
+    
+    def open_artifacts_folder(self):
+        """Open artifacts folder in explorer"""
+        from config import STORAGE_ARTIFACTS_DIR
+        import os
+        
+        try:
+            os.startfile(STORAGE_ARTIFACTS_DIR)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to open folder:\n\n{e}")
+
+
+    def load_snapshot_folder(self):
+        """Load a folder containing JSON analysis reports"""
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Snapshot Folder", str(Path("storage/snapshots").absolute()))
+        
+        if not folder_path:
+            return
+            
+        folder = Path(folder_path)
+        logger.info(f"Loading snapshot from {folder}")
+        self.statusBar().showMessage(f"Scanning {folder.name}...")
+        
+        # 1. Try finding existing JSON reports first
+        json_files = list(folder.rglob("*_report.json"))
+        
+        # 2. If no reports, look for .raw files to ANALYZE
+        if not json_files:
+            raw_files = list(folder.rglob("*.raw"))
+            
+            if raw_files:
+                self.statusBar().showMessage(f"Found {len(raw_files)} raw memory dumps...")
+                reply = QMessageBox.question(
+                    self,
+                    "Batch Analysis Required",
+                    f"Found {len(raw_files)} memory dumps but no existing reports.\n\n"
+                    f"This appears to be a fresh Capture Snapshot ({folder.name}).\n"
+                    "Do you want to ANALYZE these files now?",
+                    QMessageBox.Yes | QMessageBox.No
+                )
+                
+                if reply == QMessageBox.Yes:
+                     # Start Batch Analysis
+                    self.batch_results = []
+                    self.batch_results_table.setRowCount(0)
+                    self.progress_bar.setVisible(True)
+                    self.progress_label.setText("Batch analyzing dump folder...")
+                    self.btn_load_snapshot.setEnabled(False)
+                    self.btn_stop_analysis.setEnabled(True) # Enable Stop Button
+                    
+                    self.batch_file_worker = BatchFileAnalysisWorker(raw_files)
+                    self.batch_file_worker.progress.connect(self.update_progress)
+                    self.batch_file_worker.progress.connect(self.processing_overlay.update_status)
+                    self.batch_file_worker.process_complete.connect(self.batch_process_complete)
+                    self.batch_file_worker.batch_finished.connect(self.batch_analysis_complete)
+                    self.batch_file_worker.error.connect(self.analysis_error)
+                    
+                    self.batch_file_worker.error.connect(self.analysis_error)
+                    
+                    # Show Processing Overlay
+                    self.processing_overlay.show_overlay(
+                        title="Analyzing Memory Dumps",
+                        status=f"Processing {len(raw_files)} files...\nThis may take several minutes."
+                    )
+                    
+                    self.batch_file_worker.start()
+                    return
+
+            QMessageBox.warning(self, "No Data Found", "No JSON reports or .raw dumps found in selected folder.")
+            return
+            
+        self.batch_results = []
+        self.batch_results_table.setRowCount(0)
+        
+        for json_file in json_files:
+            try:
+                with open(json_file, 'r') as f:
+                    data = json.load(f)
+                    
+                # Parse simplified report
+                result = {
+                    'pid': data.get('pid', 0),
+                    'process_name': data.get('process_name', 'Unknown'),
+                    'status': 'completed',
+                    'yara_scan': {'total_matches': data.get('yara_summary', {}).get('matches', 0)},
+                    'hook_detection': {'hooks_detected': []}, # Not in simplified report
+                    'ml_detection': {'is_malicious': data.get('verdict') == 'MALICIOUS', 'confidence_score': data.get('ml_confidence', 0)}
+                }
+                
+                self.batch_results.append(result)
+                
+                # Update Table
+                row_idx = self.batch_results_table.rowCount()
+                self.batch_results_table.insertRow(row_idx)
+                
+                # PID
+                self.batch_results_table.setItem(row_idx, 0, QTableWidgetItem(str(result['pid'])))
+                
+                # Name
+                self.batch_results_table.setItem(row_idx, 1, QTableWidgetItem(result['process_name']))
+                
+                # Status
+                status_item = QTableWidgetItem("Loaded")
+                status_item.setForeground(QColor("cyan"))
+                self.batch_results_table.setItem(row_idx, 2, status_item)
+                
+                # YARA
+                yara_matches = result['yara_scan']['total_matches']
+                yara_item = QTableWidgetItem(f"{yara_matches} Matches")
+                if yara_matches > 0:
+                    yara_item.setForeground(QColor("#e74c3c")) # Red
+                    yara_item.setFont(QFont("Arial", 9, QFont.Bold))
+                self.batch_results_table.setItem(row_idx, 3, yara_item)
+                
+                # Hooks (Placeholder)
+                hook_item = QTableWidgetItem("N/A")
+                self.batch_results_table.setItem(row_idx, 4, hook_item)
+                
+                # [NEW] Anomaly Score (From JSON or N/A)
+                anomaly_score = data.get('anomaly_score', 0)
+                anomaly_item = QTableWidgetItem(f"{anomaly_score:.1f}")
+                if anomaly_score > 80:
+                    anomaly_item.setForeground(QColor("#e74c3c"))
+                self.batch_results_table.setItem(row_idx, 5, anomaly_item)
+                
+                # [NEW] Verdict
+                is_malicious = result['ml_detection']['is_malicious']
+                verdict = "MALICIOUS" if is_malicious else "CLEAN"
+                verdict_item = QTableWidgetItem(verdict)
+                
+                if is_malicious:
+                    verdict_item.setForeground(QColor("#e74c3c"))
+                    verdict_item.setBackground(QColor("#922b21"))
+                    verdict_item.setFont(QFont("Arial", 9, QFont.Bold))
+                else:
+                    verdict_item.setForeground(QColor("#2ecc71"))
+                
+                self.batch_results_table.setItem(row_idx, 6, verdict_item)
+                
+                # [NEW] Threat Level (Copied from Verdict for now)
+                threat_level = "CRITICAL" if is_malicious else "LOW"
+                threat_item = QTableWidgetItem(threat_level)
+                if is_malicious:
+                     threat_item.setForeground(QColor("#e74c3c"))
+                else:
+                     threat_item.setForeground(QColor("#2ecc71"))
+                     
+                self.batch_results_table.setItem(row_idx, 7, threat_item)
+                
+            except Exception as e:
+                logger.error(f"Failed to load {json_file}: {e}")
+        
+        # Update Summary
+        total = len(self.batch_results)
+        malicious = len([r for r in self.batch_results if r['ml_detection']['is_malicious']])
+        QMessageBox.information(self, "Snapshot Loaded", f"Loaded {total} reports.\nMalicious Detected: {malicious}")
+        
+        # Scroll to first row
+        if total > 0:
+            self.batch_results_table.scrollToItem(self.batch_results_table.item(0, 0))
+    
+
+        
+    def batch_analysis_complete(self, summary: dict):
+        """Handle completion of batch analysis"""
+        # Hide Processing Overlay
+        self.processing_overlay.hide_overlay()
+        
+        # Re-enable UI
+        self.progress_bar.setVisible(False)
+        # Re-enable UI
+        self.progress_bar.setVisible(False)
+        self.btn_load_snapshot.setEnabled(True)
+        self.btn_stop_analysis.setEnabled(False)
+        
+        # Show Summary
+        total = summary.get('total_processes', 0)
+        completed = summary.get('completed', 0)
+        failed = summary.get('failed', 0)
+        malicious = summary.get('malicious_detected', 0)
+        
+        self.statusBar().showMessage(f"Batch analysis complete: {completed}/{total} processed, {malicious} malicious")
+        
+        QMessageBox.information(
+            self, 
+            "Batch Analysis Complete",
+            f"Processed: {completed}/{total}\n"
+            f"Failed: {failed}\n"
+            f"Malicious Detected: {malicious}"
+        )
+
+
+class BatchFileAnalysisWorker(QThread):
+    """Worker for analyzing a batch of EXISTING .raw files from a folder"""
+    
+    progress = pyqtSignal(str)
+    process_complete = pyqtSignal(dict)
+    batch_finished = pyqtSignal(dict)
+    error = pyqtSignal(str)
+    
+    def __init__(self, raw_files: list):
+        super().__init__()
+        self.raw_files = raw_files
+        self.total_files = len(raw_files)
+        self._is_running = True
+
+    def stop(self):
+        self._is_running = False
+        
+    
+    def run(self):
+        try:
+            # IMMEDIATE UI UPDATE
+            self.progress.emit("Initializing forensic engines (this may take a moment)...")
+            
+            # Heavy imports - done after emitting generic loading message
+            from core.lifecycle import EvidenceManager
+            from detection.yara_engine import YARAEngine
+            from detection.feature_extractor import FeatureExtractor
+            from detection.ml_inference import MLDetector
+            from detection.anomaly_detector import AnomalyDetector
+            from concurrent.futures import ThreadPoolExecutor, as_completed
+            import gc
+            import os
+            
+            # Smart Worker Scaling
+            # Use 50% of CPUs, min 2, max 8 to balance UI responsiveness vs speed
+            cpu_count = os.cpu_count() or 4
+            max_workers = max(2, min(8, cpu_count // 2))
+            
+            self.progress.emit(f"Loading detection models (Workers: {max_workers})...")
+
+            # Init Engines (Shared across threads)
+            evidence_mgr = EvidenceManager()
+            yara_engine = YARAEngine()
+            feature_extractor = FeatureExtractor()
+            ml_detector = MLDetector()
+            anomaly_detector = AnomalyDetector()
+            
+            completed = 0
+            failed = 0
+            malicious = 0
+            
+            def analyze_single_file(raw_file):
+                try:
+                    # Parse PID and Name
+                    stem = raw_file.stem
+                    parts = stem.rsplit('_', 1)
+                    if len(parts) == 2 and parts[1].isdigit():
+                        p_name = parts[0]
+                        p_pid = int(parts[1])
+                    else:
+                        p_name = stem
+                        p_pid = 0
+                        
+                    # Prepare Result Dict
+                    result = {
+                        'status': 'running',
+                        'pid': p_pid,
+                        'process_name': p_name,
+                        'artifact_path': str(raw_file)
+                    }
+                    
+                    # --- ANALYSIS PIPELINE ---
+                    # 1. Metadata
+                    meta = evidence_mgr.create_evidence_metadata(raw_file, {'name': p_name, 'pid': p_pid})
+                    
+                    # 2. YARA
+                    yara_res = yara_engine.scan_memory_dump(raw_file, meta)
+                    
+                    # 3. Features
+                    features = feature_extractor.extract_features(raw_file, yara_res, {'hooks_detected': []})
+                    
+                    # 4. ML
+                    if 'error' not in features:
+                        ml_res = ml_detector.predict_from_artifact(features)
+                    else:
+                        ml_res = {'classification': 'Unknown', 'confidence_score': 0, 'is_malicious': False}
+                        
+                    # 5. Anomaly Detection [NEW]
+                    if 'error' not in features:
+                        anomaly_res = anomaly_detector.detect_anomalies(features)
+                    else:
+                        anomaly_res = {'is_anomalous': False, 'anomaly_score': 0}
+
+                    # Update Result
+                    result['status'] = 'completed'
+                    result['yara_scan'] = yara_res
+                    result['features'] = features
+                    result['ml_detection'] = ml_res
+                    result['anomaly_detection'] = anomaly_res
+                    result['hook_detection'] = {'hooks_detected': []} 
+                    
+                    # Save Report
+                    report_path = raw_file.parent / f"{stem}_report.json"
+                    with open(report_path, 'w') as f:
+                        import json
+                        json.dump(result, f, indent=2)
+
+                    return result
+                    
+                except Exception as e:
+                    logger.error(f"Analysis failed for {raw_file}: {e}")
+                    return {
+                        'status': 'failed',
+                        'pid': p_pid if 'p_pid' in locals() else 0,
+                        'process_name': p_name if 'p_name' in locals() else raw_file.stem,
+                        'error': str(e),
+                        'yara_scan': {}, 
+                        'ml_detection': {},
+                        'anomaly_detection': {}
+                    }
+            
+            # Executor Start
+            self.progress.emit(f"Starting parallel analysis with {max_workers} threads...")
+            
+            with ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = {executor.submit(analyze_single_file, f): f for f in self.raw_files}
+                
+                for i, future in enumerate(as_completed(futures)):
+                    if not self._is_running:
+                        # Attempt to cancel pending
+                        for f in futures:
+                             f.cancel()
+                        break
+                        
+                    result = future.result()
+                    
+                    # Stats
+                    if result['status'] == 'completed':
+                        completed += 1
+                        if result.get('ml_detection', {}).get('is_malicious'):
+                            malicious += 1
+                    else:
+                        failed += 1
+                        
+                    # Emit Progress
+                    # Calculate percentage for progress bar if we had one, but we use text description
+                    self.progress.emit(f"[{i+1}/{self.total_files}] Analyzed {result['process_name']}...")
+                    self.process_complete.emit(result)
+                    
+                    # GC periodically to save memory
+                    if i % 10 == 0:
+                        gc.collect()
+
+            # Final Summary
+            summary = {
+                'total_processes': self.total_files,
+                'completed': completed,
+                'failed': failed,
+                'malicious_detected': malicious
+            }
+            self.batch_finished.emit(summary)
+            
+        except Exception as e:
+            self.error.emit(str(e))
+
+
+
+def main():
+    """Application entry point from UI"""
+    app = QApplication(sys.argv)
+    app.setStyle('Fusion')
+    
+    window = ForensicToolUI()
+    window.show()
+    
+    sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()

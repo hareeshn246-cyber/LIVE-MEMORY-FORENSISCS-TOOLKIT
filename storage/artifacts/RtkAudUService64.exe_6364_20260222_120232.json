@@ -1,0 +1,289 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\RtkAudUService64.exe_6364.raw",
+    "dump_sha256": "548affb0eaed9532ac10593c93b1b0994cdcebfc9e055aed4682162456e766c7",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              4131832
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 11,
+            "offsets": [
+              4354268,
+              54232118,
+              54902660,
+              62007656,
+              62638476,
+              65151056,
+              75524166,
+              79701788,
+              84617614,
+              93978624
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T12:02:17.469396Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.4791,
+      "malware": 0.5209
+    },
+    "is_malicious": true,
+    "risk_score": 33.2,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 18.2315
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\RtkAudUService64.exe_6364.raw",
+      "dump_size_mb": 92.13
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 328,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 4,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 11,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 18,
+          "CryptDecrypt": 18,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 3,
+          "ShellExecute": 33,
+          "CreateProcess": 90,
+          "AdjustTokenPrivileges": 11,
+          "OpenProcess": 80,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 8,
+          "SetThreadContext": 10,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 25,
+        "patterns": {
+          "http://": 16,
+          "https://": 2,
+          "GET": 7
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://ocsp.digicert.c",
+        "http://www.microsoft.com/pki/certs/MicrosoftCodeVerifRoot.crt0",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "http://ns.adobe.com/xap/1.0/sType/ResourceEvent#",
+        "http://ns.adobe.com/xap/1.0/",
+        "http://www.w3.org/2001/XMLSchema",
+        "https://web.skype.com",
+        "http://ns.adobe.com/xmp/1.0/DynamicMedia/",
+        "http://schemas.microsoft.com/Search/2013/ApplicationContent",
+        "http://purl.org/dc/elements/1.1/",
+        "http://crl.microsoft.com/pki/crl/products/MicrosoftCodeVerifRoot.crl0",
+        "http://ns.adobe.com/xap/1.0/mm/",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://ns.adobe.com/xap/1.0/sType/ResourceRef#",
+        "https://www.youtube.com/watch"
+      ],
+      "ip_addresses": [
+        "1.12.1.2",
+        "1.9.16.3",
+        "2.5.29.21",
+        "4.1.311.67",
+        "2.5.4.38",
+        "2.5.4.11",
+        "5.5.7.1",
+        "2.5.29.32",
+        "2.5.4.10",
+        "2.5.4.30",
+        "5.5.7.6",
+        "4.1.311.61",
+        "2.5.4.15",
+        "2.5.4.25",
+        "2.5.4.31",
+        "2.5.29.3",
+        "5.1.0.0",
+        "2.5.29.35",
+        "2.5.29.10",
+        "2.5.29.1",
+        "1.3.132.1",
+        "2.5.4.20",
+        "4.1.311.25",
+        "2.23.133.8",
+        "2.5.29.54",
+        "2.5.4.19",
+        "1.1.2.1",
+        "4.1.311.2",
+        "2.5.4.26",
+        "2.5.4.28",
+        "4.1.311.72",
+        "4.1.311.76",
+        "2.5.29.2",
+        "2.5.4.37",
+        "1.3.6.1",
+        "1.7.1.1",
+        "2.5.4.24",
+        "840.63.0.2",
+        "4.1.311.12",
+        "4.1.311.21",
+        "5.5.8.2",
+        "2.5.4.29",
+        "2.5.29.4",
+        "2.5.4.35",
+        "2.5.29.8",
+        "1.311.10.3",
+        "2.5.4.9",
+        "2.5.4.16",
+        "2.5.4.52",
+        "1.12.1.1"
+      ],
+      "file_paths": [
+        "C:\\Program Files\\Common Files",
+        "C:\\Windows\\System32\\Wbem",
+        "r:\\rtk\\sensation.aj00\\src\\dtsurrsen\\dtsheadphonemain.cpp",
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\w\\trt\\",
+        "j:\\wN",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Wi(",
+        "C:\\Windows\\TEMP",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Users\\Public",
+        "r:\\rtk\\sensation.aj00\\src\\dtsurrsen\\dtsspeakermain.cpp",
+        "r:\\rtk\\sensation.aj00\\src\\dtsurrsen\\dtsbassenhancementmain.cpp",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Roaming",
+        "C:\\Program Files",
+        "C:\\Program Files\\dotnet\\",
+        "D:\\proj\\proj_20240425_RtkAudUService_Chunyung\\RtkAudUService\\Release\\x64\\RtkAudUService64.pdb",
+        "C:\\Temp\\",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Windows",
+        "C:\\Program Files (x86)",
+        "c:\\_Binary\\_APO\\_rtkuapo2api\\RtkUApo2Api_1.0.0.294\\x64\\Release\\RtkUApo2Api.pdb",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "r:\\rtk\\sensation.aj00\\src\\dtsurrsen\\dtsdialogclaritymain.cpp",
+        "C:\\ProgramData",
+        "C:\\Users\\Chunyung\\Desktop\\RTPolicyConfigClient.17\\RTPolicyConfigClient.17\\x64\\Release Universal\\RtkCfg64.pdb",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Users\\",
+        "C:\\Program Files\\Eclipse Adopti",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\realtekservice.inf_amd64_9366beb5d0043df3\\RtkAudUService64.exe",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Windows\\system32\\cmd.exe",
+        "C:\\Program Files\\Git\\cmd",
+        "c:\\ [",
+        "C:\\_Binary\\_APO\\_sysfx_1195\\APO\\x64\\Release2\\RltkAPOU642.pdb",
+        "c:\\crypt32\\",
+        "C:\\Windows\\system32",
+        "C:\\Program Files\\WindowsPowerShell\\Modules",
+        "C:\\_Binary\\_APO\\_sysfx_1195\\APO\\x64\\Release_RTINT2\\RtkIntU642.pdb",
+        "C:\\Program Fil"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.3236,
+      "null_byte_ratio": 0.3918,
+      "printable_ratio": 0.2494,
+      "unique_bytes": 256,
+      "total_size": 96608256
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T12:02:32.113820Z",
+    "process_name": "RtkAudUService64.exe",
+    "pid": 6364,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

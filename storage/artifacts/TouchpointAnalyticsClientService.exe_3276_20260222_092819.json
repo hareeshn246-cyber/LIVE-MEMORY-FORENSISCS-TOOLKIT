@@ -1,0 +1,142 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\TouchpointAnalyticsClientService.exe_3276.raw",
+    "dump_sha256": "b69e74460db7b7775edd006348f97733f4aa7362e63d21510945624c686e0091",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 4,
+            "offsets": [
+              718636,
+              161674805,
+              163279984,
+              187313842
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 2,
+            "offsets": [
+              187094328,
+              187313249
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 18,
+            "offsets": [
+              26950333,
+              124772004,
+              124890056,
+              140947056,
+              160309076,
+              161769532,
+              175367776,
+              185111089,
+              194514762,
+              218808196
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:28:17.562542Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 0.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\TouchpointAnalyticsClientService.exe_3276.raw",
+      "dump_size_mb": 253.14
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {},
+    "pe_features": {},
+    "statistical_features": {},
+    "error": "Analysis failed",
+    "warnings": [
+      ""
+    ],
+    "risk_assessment": {
+      "risk_score": 50.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:28:19.342487Z",
+    "process_name": "TouchpointAnalyticsClientService.exe",
+    "pid": 3276,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

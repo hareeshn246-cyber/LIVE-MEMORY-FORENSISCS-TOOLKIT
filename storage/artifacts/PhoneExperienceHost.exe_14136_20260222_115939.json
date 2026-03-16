@@ -1,0 +1,326 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\PhoneExperienceHost.exe_14136.raw",
+    "dump_sha256": "a21b475dfcb45f98fad6f0c296e801cea386be17ec1d2e21f398cc28a0bea973",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              432866320
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 21,
+            "offsets": [
+              99962671,
+              100068450,
+              262655342,
+              359878542,
+              421611806,
+              433091452,
+              489975826,
+              505640399,
+              508452948,
+              513376534
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:59:08.909512Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7747,
+      "malware": 0.2253
+    },
+    "is_malicious": true,
+    "risk_score": 22.9,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 7.8855
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\PhoneExperienceHost.exe_14136.raw",
+      "dump_size_mb": 540.91
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 608,
+        "api_details": {
+          "VirtualAllocEx": 12,
+          "WriteProcessMemory": 7,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 18,
+          "GetAsyncKeyState": 13,
+          "CryptEncrypt": 40,
+          "CryptDecrypt": 38,
+          "InternetReadFile": 7,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 68,
+          "CreateProcess": 111,
+          "AdjustTokenPrivileges": 21,
+          "OpenProcess": 206,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 16,
+          "SetThreadContext": 15,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 1053,
+        "patterns": {
+          "http://": 134,
+          "https://": 249,
+          "POST": 19,
+          "GET": 646,
+          "User-Agent:": 1,
+          "Content-Type:": 1,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://www.microsoft.com/pki/certs/MicrosoftRootCert.crt0!",
+        "http://crl.microsoft.com/pki/crl/products/MicRooCerAut_2010-06-23.crl0Z",
+        "https://aka.ms/binaryformatter",
+        "http://crl.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl0]",
+        "http://www.microsoft.com/pki/certs/MicCerTruLisPCA_2009-04-02.crt0",
+        "http://www.microsoft.com/pkiops/crl/Microsoft",
+        "http://adaptivecards.io/schemas/adaptive-card.json",
+        "http://buildweb.nvidia.com/CertEnroll/buildweb.nvidia.com_NVIDIACorp.crt0V",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm0",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "http://oneocsp.microsoft.com/ocsp0",
+        "https://www.newtonsoft.com/jsonschema",
+        "http://c",
+        "http://ocsp.digicert.com0@",
+        "http://microsoft.com0",
+        "http://cac",
+        "https://github.com/dotnet/linker/issues/2715.",
+        "https://go.microsoft.com/fwlink/?linkid=2233907",
+        "https://github.com/dotnet/dotnet/tree/fad253f51b461736dfd3cd9c15977bb7493becef",
+        "http://crl.microsoft.com/pki/crl/products/microsoftrootcert.crl0T",
+        "http://www.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl",
+        "http://ocsp.digicert.com0C",
+        "https://github.com/Azure/azure-sdk-for-net",
+        "http://crl3.digicert.com/DigiCertGlobalRootG2.crl0",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "https://www.nuget.org/packages/Newtonsoft.Json.Bson",
+        "https://github.com/App-vNext/Polly",
+        "http://schemas.microsoft.com/SMI/2016/WindowsSettings",
+        "https://github.com/JamesNK/Newtonsoft.Json",
+        "https://github.com/dotnet/extensions",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "https://microsoft.visualstudio.com/OS/_git/Shell.MMX",
+        "https://github.com/dotnet/runtime/issues/50821",
+        "https://aka.ms/dotnet-extensions-warnings/",
+        "https://aka.ms/dotnet-warnings/",
+        "https://github.com/microsoft/kiota-dotnet",
+        "http://cacerts.digicert.com/DigiCertGlobalRootG2.crt0B",
+        "http://dmd-ca-beta2/CertEnroll/dmd-ca-beta2_Microsoft",
+        "https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonnumberhandling).",
+        "https://github.com/dotnet/dotnet",
+        "https://github.com/dotnet/runtime/issues/97737g"
+      ],
+      "ip_addresses": [
+        "4.1.311.67",
+        "10.0.0.0",
+        "2.5.29.14",
+        "2.5.4.11",
+        "5.5.7.1",
+        "2.5.29.32",
+        "2.5.4.10",
+        "5.5.7.2",
+        "2.23.140.1",
+        "2.5.29.15",
+        "2.5.4.7",
+        "13.0.0.0",
+        "4.0.0.0",
+        "2.5.29.35",
+        "2.5.29.10",
+        "1.3.132.0",
+        "1.1.2.1",
+        "4.1.311.2",
+        "1.9.16.1",
+        "2.16.840.1",
+        "4.1.311.64",
+        "2.5.29.31",
+        "4.1.311.76",
+        "0.0.0.0",
+        "2.5.29.37",
+        "1.20.1.0",
+        "9.0.0.0",
+        "6.0.0.0",
+        "1.3.6.1",
+        "16.0.0.0",
+        "4.1.311.80",
+        "1.3.14.3",
+        "8.14.0.0",
+        "4.1.311.60",
+        "15.0.0.0",
+        "127.0.0.1",
+        "2.5.29.19",
+        "1.12.1.3",
+        "2.3.0.0",
+        "1.3.17.166",
+        "2.5.4.8",
+        "4.1.311.21",
+        "3.0.0.0",
+        "2.3.23.0",
+        "17.0.8.101",
+        "4.2.2.0",
+        "3.2.8.1",
+        "5.5.7.3",
+        "2.1.0.0",
+        "1.0.0.0"
+      ],
+      "file_paths": [
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\Microsoft.Windows.Storage.Pickers.FolderPicker.g.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d8105614bf.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d8eca78583.nvph",
+        "C:\\__w\\1\\s\\dev\\DynamicDependency\\API\\MsixDynamicDependency.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d80c407918.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d802ec9fd8.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\0002a9d89a3bc531.nvph",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d89d982193.nvph",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.AppCore.WinRT.Utilities.Lib\\g\\winrt\\Windows.Globalization.PhoneNumberFormatting.h",
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\Microsoft.Windows.Management.Deployment.PackageRuntimeManager.g.h",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.Help\\net10.0-windows10.0.26100.0\\win-x64\\YourPhone.Help.pdb",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d89d982192.nvph",
+        "C:\\Users\\Public",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.AppCore.WinRT.Lib\\g\\Utilities.FeatureSession.g.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8786b653f.nvph",
+        "C:\\__w\\1\\s\\dev\\EnvironmentManager\\ChangeTracker\\PathExtChangeTracker.cpp",
+        "C:\\Program Files",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\LibNanoAPI\\g\\Helpers.WindowsLoggingFactory.g.h",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.Contracts.SharedContent\\net10.0-windows10.0.26100.0\\win-x64\\YourPhone.Contracts.SharedContent.pdb",
+        "C:\\__w\\1\\s\\obj\\Release\\x64\\WindowsAppRuntime_DLL\\Generated Files\\winrt\\Windows.Web.Http.Headers.h",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.Audio\\net10.0-windows10.0.26100.0\\win-x64\\YourPhone.Audio.pdb",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\clientlib\\client\\channelclassnamecontract.cpp",
+        "C:\\__w\\1\\s\\dev\\Common\\ExportLoader.h",
+        "C:\\__w\\1\\s\\dev\\AppLifecycle\\SharedProcessList.h",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.AppCore.Managed\\net10.0-windows10.0.26100.0\\win-x64\\YourPhone.AppCore.Managed.pdb",
+        "C:\\__w\\1\\s\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.240803.1\\include\\wil\\win32_helpers.h",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libbasix-network\\dct\\icecore.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d864ef8c69.nvph",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libnano\\streaming\\softwarevideosink.cpp",
+        "D:\\a\\_work\\1\\s\\apps\\yourphone\\uap\\YourPhone\\YourPhone.AppCore.WinRT.Lib\\Strings\\StringResources.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\4aefa9d8414b340b.nvph",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libbasix-network\\dct\\ratecontrol\\udpratecontrollerinbound.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\0002a9d8b40abf15.nvph",
+        "C:\\vcpkg\\buildtrees\\opus\\src\\v1.5.2-0e66c71300.clean\\celt\\celt_decoder.c",
+        "F:\\08",
+        "C:\\__w\\1\\s\\dev\\DynamicDependency\\API\\WinRTInprocModule.h",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.AppCore.WinRT.Devices.Lib\\g\\winrt\\Windows.Storage.h",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d80dc786f1.nvph",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\LibNanoAPI\\g\\Interop.DCompositionHelper.g.h",
+        "D:\\a\\_work\\1\\s\\artifacts\\obj\\Microsoft.Rest.ClientRuntime\\Release\\netstandard2.0\\Microsoft.Rest.ClientRuntime.pdb",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d8651e5439.nvph",
+        "C:\\__w\\1\\s\\dev\\DynamicDependency\\API\\MddLifetimeManagement.cpp",
+        "C:\\Users\\Admin\\appdata\\local\\NVIDIA\\DXCache\\00d0a9d82ac6783f.nvph",
+        "C:\\__w\\1\\s\\dev\\RuntimeCompatibilityOptions\\RuntimeCompatibilityOptions.cpp",
+        "D:\\a\\_work\\1\\i\\Release\\x64\\YourPhone.AppCore.WinRT.Lib\\g\\winrt\\YourPhone.AppCore.WinRT.Connectivity.h",
+        "C:\\vcpkg\\buildtrees\\opus\\src\\v1.5.2-0e66c71300.clean\\celt\\rate.c",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\libbasix-network\\dct\\ice\\stun.cpp",
+        "D:\\a\\_work\\1\\s\\shared\\nano\\src\\LibNanoAPI\\Channel\\InputSourceChannel.cpp",
+        "C:\\__w\\1\\s\\dev\\PackageManager\\API\\M.W.M.D.PackageVolume.cpp"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.4586,
+      "null_byte_ratio": 0.2118,
+      "printable_ratio": 0.3085,
+      "unique_bytes": 256,
+      "total_size": 567181312
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:59:39.978709Z",
+    "process_name": "PhoneExperienceHost.exe",
+    "pid": 14136,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

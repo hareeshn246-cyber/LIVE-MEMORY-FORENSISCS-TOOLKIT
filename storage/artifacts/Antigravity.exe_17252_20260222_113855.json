@@ -1,0 +1,344 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\Antigravity.exe_17252.raw",
+    "dump_sha256": "eb8b08922f1b3d42ee2b4e9c129a5dcd7deed033fce2b831dc3b3147407292e1",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 34,
+            "offsets": [
+              175188402,
+              175431341,
+              266524631,
+              266525959,
+              299829076,
+              299830344,
+              304381012,
+              304382280,
+              352082687,
+              352084418
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 41,
+            "offsets": [
+              175179785,
+              175285424,
+              175431217,
+              266525594,
+              266525852,
+              266527313,
+              299829994,
+              299830244,
+              299831635,
+              304381930
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:38:18.131288Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7187,
+      "malware": 0.2813
+    },
+    "is_malicious": true,
+    "risk_score": 15.0,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)",
+      "Score reduced from 24.8 (Trusted Process)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 9.8455
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\Antigravity.exe_17252.raw",
+      "dump_size_mb": 746.97
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 505,
+        "api_details": {
+          "VirtualAllocEx": 10,
+          "WriteProcessMemory": 12,
+          "CreateRemoteThread": 24,
+          "NtCreateThreadEx": 8,
+          "SetWindowsHookEx": 17,
+          "GetAsyncKeyState": 9,
+          "CryptEncrypt": 14,
+          "CryptDecrypt": 16,
+          "InternetReadFile": 6,
+          "URLDownloadToFile": 4,
+          "WinExec": 4,
+          "ShellExecute": 42,
+          "CreateProcess": 99,
+          "AdjustTokenPrivileges": 41,
+          "OpenProcess": 150,
+          "NtMapViewOfSection": 11,
+          "NtUnmapViewOfSection": 10,
+          "QueueUserAPC": 12,
+          "SetThreadContext": 13,
+          "RtlCreateUserThread": 3
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 5654,
+        "patterns": {
+          "http://": 1068,
+          "https://": 3910,
+          "ftp://": 3,
+          "POST": 174,
+          "GET": 478,
+          "User-Agent:": 2,
+          "Content-Type:": 16,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://github.com/moby/moby/commit/c2029cb2574647e4bc28ed58486b8e85883eedb9",
+        "http://www.w3.org/2000/svg",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.resolvers.d.ts",
+        "https://code.visualstudio.com/docs/terminal/shell-integration)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.terminalSelection.d.ts",
+        "https://yaml.org/spec/1.2.2/#91-documents",
+        "https://*.google",
+        "https://github.com/atom/language-xml/commit/507de2ee7daca60cf02e9e21fbeb92bbae73e280",
+        "https://inference.codeium.com",
+        "https://open-vsx.org/vscode/item",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.chatReferenceBinaryData.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookCellExecution.d.ts",
+        "https://yaml.org/spec/1.0/#c-ns-tag-property",
+        "http://jetski-server.corp.goog",
+        "http://192.168.0.*:",
+        "https://github.com/atom/language-clojure/commit/45bdb881501d0b8f8b707ca1d3fcc8b4b99fca03",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.quickPickItemTooltip.d.tsU",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.treeViewMarkdownMessage.d.ts",
+        "https://antigravity.google/blog/gemini-3-1-pro-in-google-antigravity(",
+        "https://img.shields.io/badge/platform-MacOS",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.notebookMessaging.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.findTextInFiles.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.fileSearchProvider.d.ts",
+        "https://twitter.com/php4vs",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.mcpToolDefinitions.d.ts",
+        "https://code.visualstudio.com/docs/setup/enterprise#_configure-allowed-extensions",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.chatParticipantPrivate.d.ts",
+        "https://github.com/features/codespaces)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityEditorCommandPopup.d.ts",
+        "https://yaml.org/spec/1.2.2/#rule-ns-flow-map-entry",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.interactive.d.ts",
+        "https://github.com/Microsoft/vscode-maven/",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.mappedEditsProvider.d.ts",
+        "https://raw.githubusercontent.com/clangd/vscode-clangd/master/",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.extensionsAny.d.ts",
+        "https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand),",
+        "https://vscode.dev/redirect",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.taskExecutionTerminal.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.antigravityStatusBar.d.tsU",
+        "http://_chatagent_",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribViewsRemote.d.ts",
+        "https://yaml.org/spec/1.2.2/#rule-c-ns-flow-map-separate-value",
+        "http://localhost:3001/mcp",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.shareProvider.d.ts",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribMultiDiffEditorMenus.d.ts",
+        "https://code.visualstudio.com/docs/setup/enterprise#_configure-allowed-extensions)",
+        "https://raw.githubusercontent.com/microsoft/vscode/main/src/vscode-dts/vscode.proposed.contribNotebookStaticPreloads.d.ts",
+        "https://github.com/fadeevab/make.tmbundle/blob/master/Syntaxes/Makefile.plist",
+        "https://code.visualstudio.com/docs/copilot/security)",
+        "http://_vscodedecoration_"
+      ],
+      "ip_addresses": [
+        "138.112.25.25",
+        "154.30.99.146",
+        "95.217.72.181",
+        "438.12.54.662",
+        "5.253.185.239",
+        "136.227.190.22",
+        "223.264.47.556",
+        "134.199.80.223",
+        "2.3.4.5",
+        "45.139.193.125",
+        "138.201.82.55",
+        "112.17.241.235",
+        "123.101.197.18",
+        "199.245.101.143",
+        "204.217.149.135",
+        "192.168.0.1",
+        "161.0.12.208",
+        "134.199.75.67",
+        "178.171.117.81",
+        "45.143.175.113",
+        "134.199.78.221",
+        "1.2.3.4",
+        "43.134.17.224",
+        "10.10.10.10",
+        "136.227.170.191",
+        "43.134.12.154",
+        "0.0.0.0",
+        "85.194.243.117",
+        "119.28.119.172",
+        "43.134.14.148",
+        "91.103.121.31",
+        "45.134.107.27",
+        "195.133.209.198",
+        "198.56.7.117",
+        "167.234.222.222",
+        "141.14.22.331",
+        "1.3.14.3",
+        "186.179.19.20",
+        "4.5.6.7",
+        "127.0.0.1",
+        "95.216.45.233",
+        "88.214.3.213",
+        "194.187.37.144",
+        "88.99.29.146",
+        "194.113.81.217",
+        "17.0.8.101",
+        "43.153.195.56",
+        "194.36.171.49",
+        "136.227.183.162",
+        "161.0.8.31"
+      ],
+      "file_paths": [
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\output_logging_20260222T165349\\2-Pyrefly language server.log",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.resolved.2",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.resolved.8",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\output_logging_20260222T165349\\1-Remote - Dev Containers (Antigravity).log",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\implementation_plan.md.resolved.1",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\requirements.txt",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.resolved",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\core\\acquisition.py",
+        "C:\\Users\\Admin\\Downloads\\FOREN - Copy",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOPROJECT\\\\MBMD",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\Forensic_Report.pdf",
+        "c:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOZIANT",
+        "C:\\Users\\Public",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\Professional_Sample_Report.pdf",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\media__1771758196216.png",
+        "C:\\Us",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\verify_fix_applied.py",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\storage\\snapshots\\System_Snapshot_20260222_164319\\BridgeCommunication.exe_10568.raw",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\auth.log",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.resolved.10",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\.vscode\\extensions.json",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\cloudcode.log",
+        "C:\\Windows",
+        "C:\\msys64\\mingw64\\bin",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.metadata.json",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\win32\\lib\\",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\detection\\ml_inference.py",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\logs\\20260222T165339\\window1\\exthost\\vscode.github-authentication\\GitHub Authentication.log",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\.vscode\\tasks.json)a",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app",
+        "C:\\Users\\Admin\\AppData\\Lo",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\verify_batch_parallel.py",
+        "C:\\\\Users\\\\Admin\\\\OneDrive\\\\Desktop\\\\INFOPROJECT\\\\MBMD\\\\src\\\\mbmd\\\\gui\\\\launcher_debug.py",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\task.md.resolved.13",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\implementation_plan.md.resolved.2",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\reports\\report_generator.py",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\implementation_plan.md.resolved.4",
+        "c:\\Users\\Admin\\.gemini\\antigravity\\brain\\3f30d4f7-e39a-422c-b00c-13413b5daf5e\\walkthrough.md.resolved.3",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\verify_scoring_logic.py",
+        "c:\\Users\\Admin\\OneDrive\\Desktop\\INFOZIANT\\test_sanitation.py9"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.4889,
+      "null_byte_ratio": 0.381,
+      "printable_ratio": 0.292,
+      "unique_bytes": 256,
+      "total_size": 783253504
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:38:55.127015Z",
+    "process_name": "Antigravity.exe",
+    "pid": 17252,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

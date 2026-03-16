@@ -1,0 +1,144 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\powershell.exe_19768.raw",
+    "dump_sha256": "213ca7b3f3f433036cd7c221a98d86bf621b67805d034a128cde40a07ec3ef6a",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 4,
+            "offsets": [
+              13406652,
+              140867125,
+              142472304,
+              165924530
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 4,
+            "offsets": [
+              70352443,
+              70352625,
+              165705016,
+              165923937
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 21,
+            "offsets": [
+              49858280,
+              49916421,
+              51055371,
+              52745102,
+              67503909,
+              67880557,
+              84136880,
+              110087112,
+              139501396,
+              140961852
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:27:40.014895Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 0.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\powershell.exe_19768.raw",
+      "dump_size_mb": 228.54
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {},
+    "pe_features": {},
+    "statistical_features": {},
+    "error": "Analysis failed",
+    "warnings": [
+      ""
+    ],
+    "risk_assessment": {
+      "risk_score": 50.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:27:50.230371Z",
+    "process_name": "powershell.exe",
+    "pid": 19768,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

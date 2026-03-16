@@ -1,0 +1,133 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\Antigravity.exe_19388.raw",
+    "dump_sha256": "d000ed53db590e86dd61d885af6e8189da218f44f8c3d49be6ee756fb1c52dd1",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 3,
+            "offsets": [
+              214658287,
+              260761250,
+              260764026
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 12,
+            "offsets": [
+              664439144,
+              708464724,
+              709817398,
+              710119300,
+              711782480,
+              717556072,
+              718186892,
+              728932352,
+              728964434,
+              729655694
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:21:20.930241Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 0.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\Antigravity.exe_19388.raw",
+      "dump_size_mb": 710.32
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {},
+    "pe_features": {},
+    "statistical_features": {},
+    "error": "Analysis failed",
+    "warnings": [
+      ""
+    ],
+    "risk_assessment": {
+      "risk_score": 50.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:21:25.778700Z",
+    "process_name": "Antigravity.exe",
+    "pid": 19388,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

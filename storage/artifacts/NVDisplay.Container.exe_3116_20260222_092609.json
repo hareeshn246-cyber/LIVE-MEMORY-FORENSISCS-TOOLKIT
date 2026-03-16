@@ -1,0 +1,335 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\NVDisplay.Container.exe_3116.raw",
+    "dump_sha256": "85b6e7e1776ab7d970d321dfd299002077a1d5449542bbe6234571e040af390e",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              40509104
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 18,
+            "offsets": [
+              31452784,
+              31938144,
+              40852598,
+              75408034,
+              77750550,
+              79454292,
+              81386934,
+              81933366,
+              82603908,
+              84615248
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:25:45.637903Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\NVDisplay.Container.exe_3116.raw",
+      "dump_size_mb": 127.79
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 451,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 6,
+          "CreateRemoteThread": 12,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 11,
+          "GetAsyncKeyState": 6,
+          "CryptEncrypt": 17,
+          "CryptDecrypt": 18,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 69,
+          "CreateProcess": 115,
+          "AdjustTokenPrivileges": 18,
+          "OpenProcess": 122,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 7,
+          "QueueUserAPC": 11,
+          "SetThreadContext": 13,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 625,
+        "patterns": {
+          "http://": 188,
+          "https://": 9,
+          "POST": 3,
+          "GET": 420,
+          "Content-Type:": 5
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://ocsp.entrust.net02",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm",
+        "http://cacerts.digicert.com/d",
+        "http://aP",
+        "http://www.microsoft.com/windows",
+        "http://www.miS!",
+        "http://ocsp.digicert.com0A",
+        "https://www.verisign.com/CPS04",
+        "http://cacerts.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA3842021CA1.crt0",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl0",
+        "http://www.digicert.com/CPS0",
+        "http://www.microsoft.com/pkiops/crl/MicWinProPCA2011_2011-10-19.crl",
+        "http://ocsp.digicert.com0C",
+        "http://www.microsoft.com0",
+        "http://www.w3.org/2001/XMLSchema",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "http://crl.microsoft.com/pki/crl/products/MicrosoftCodeVerifRoot.crl0",
+        "http://crl.comodo.net/AAACertificateServices.crl0",
+        "http://crl.entrus",
+        "http://aia.entrust.net/ts1-chain256.cer01",
+        "http://crl4.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA3842021CA1.crl0U!",
+        "http://ocsp.digicert.com0",
+        "http://crl.entrust.net/ts1ca.crl0",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "https://www.microsoft.com/en-us/windows",
+        "https://www.entrust.net/rpa0",
+        "http://ocsp.digicert.com0]",
+        "http://crl.comodoca.com/AAACertificateServices.crl06",
+        "http://j",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt0",
+        "http://www.entrust.net/rpa03",
+        "http://www.microsoft.com/windows0",
+        "http://crl.entrust.net/2048ca.crl0",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "http://crl.entrust.n",
+        "http://o",
+        "http://a",
+        "http://crl4.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA3842021CA1.crl0",
+        "http://crl3.digicert.com/DigiCertTrustedRootG4.crl0",
+        "http://www.microsoft.com/pkiops/Docs",
+        "http://crl3.digicert.com/DigiCertTrustedG4TimeStampingRSA4096SHA2562025CA1.crl0",
+        "http://crl.verisign.com/pca3.crl0",
+        "http://cacerts.digicert.com/DigiCertTrustedRootG4.crt0C",
+        "http://www.mic.",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm0",
+        "http://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt0E",
+        "http://logo.verisign.com/vslogo.gif0",
+        "http://c"
+      ],
+      "ip_addresses": [
+        "4.1.311.17",
+        "1.3.6.1",
+        "4.1.311.10",
+        "2.5.4.17",
+        "2.5.4.4",
+        "3.2.8.1",
+        "2.5.4.26",
+        "101.3.4.1",
+        "2.5.4.52",
+        "2.5.4.29",
+        "2.5.4.21",
+        "2.5.4.40",
+        "2.5.4.6",
+        "5.5.7.7",
+        "4.1.311.3",
+        "2.5.29.9",
+        "4.1.311.60",
+        "1.1.2.1",
+        "2.5.29.54",
+        "840.63.0.2",
+        "2.5.29.36",
+        "2.5.4.18",
+        "2.5.4.38",
+        "5.1.0.0",
+        "5.5.7.12",
+        "2.5.4.37",
+        "4.1.311.21",
+        "101.3.4.4",
+        "2.5.4.39",
+        "5.5.7.2",
+        "2.5.4.9",
+        "2.5.4.22",
+        "1.7.1.1",
+        "1.311.10.11",
+        "2.5.4.15",
+        "2.5.4.14",
+        "2.5.4.7",
+        "2.5.4.11",
+        "5.5.7.6",
+        "2.5.4.36",
+        "101.3.4.3",
+        "1.9.15.1",
+        "2.5.29.8",
+        "4.1.311.73",
+        "4.1.311.96",
+        "2.5.29.32",
+        "6.0.0.0",
+        "3.6.1.4",
+        "1.9.25.4",
+        "2.5.4.23"
+      ],
+      "file_paths": [
+        "C:\\ProgramData\\NVIDIA Corporation\\nvtopps\\nvtopps.db3",
+        "C:\\src\\p4\\smahadevan_windows_tools\\sw\\tools\\cryptopp\\8.6.0\\gf2n_simd.cpp",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\framework\\uxdbase\\GenericData.h",
+        "C:\\Program Files\\Common Files",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\framework\\uxdbase\\GenericVector.h",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Windows",
+        "C:\\Windows\\TEMP",
+        "C:\\Wi",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\common\\nvtelemetryclients\\DisplayDriverGA\\NvTelemetryEvents.cpp",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\logging\\logging.lib\\RegistryKey.h",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\Framework\\UxdBase\\StateDataPassThrough.h",
+        "C:\\dvs\\p4\\build\\sw\\gcomp\\rel\\src\\NvContainer\\_out\\x86_64\\release\\container\\NvContainer.pdb",
+        "C:\\dvs\\p4\\build\\sw\\gcomp\\dev\\src\\MessageBus\\_build\\X64\\Release\\broadcaster\\NvMessageBusBroadcast.pdb",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\nvtopps.db3",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\plugins\\LocalSystem -r -p 30000 -cfg NVDisplay.ContainerLocalSystem\\LocalSystem ",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\ProgramData\\NVIDIA Corporation\\nvtopps\\nvtopps.log",
+        "C:\\Program Files\\WindowsPowerShell\\Modules",
+        "C:\\Program Files\\HONOR",
+        "C:\\ProgramData\\NVIDIA\\NVDisplay.ContainerLocalSystem.log",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\NVDisplay.Container.exe",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\amd_dpfc_sdk.dll",
+        "C:\\ProgramDatu",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\framework\\uxdbase\\StateEvents.h",
+        "C:\\Windows\\system32",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\common\\nvtelemetryclients\\_out\\x86_64\\release\\DisplayDriverRAS\\DisplayDriverRAS.pdb",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\NVDisplay.Container.exe -s NVDisplay.ContainerLocalSystem -f C",
+        "C:\\dvs\\p4\\build\\sw\\tools\\boost\\boost-1.62.0\\boost",
+        "C:\\ProgramData\\NVIDIA Corporation\\nvtopps\\nvtopps.db3-journal",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\ProgramDatp",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\plugins\\Session",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\bin\\x64\\Release\\NVXDBat.pdb",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "c:\\crypt32\\",
+        "C:\\Windows\\Minidump\\021626-11890-01.dmp",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\WINDOWS",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\plugins\\LocalSystem",
+        "C:\\dvs\\p4\\build\\sw\\gcomp\\dev\\src\\LocalServices\\_tmp\\protobuf-3.21.9\\src\\google",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\common\\nvtopps\\_out\\wddm2_amd64_release\\nvtopps.pdb",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_",
+        "C:\\dvs\\p4\\build\\sw\\gcomp\\rel\\src\\NvContainer\\_out\\x86_64\\release\\plugins\\watchdog\\NvPluginWatchdog.pdb",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\plugins\\Session -r -l 3 -p 30000 -cfg NVDisplay.ContainerLocalSystem\\Session ",
+        "C:\\ProgramData\\NVIDIA Corporation\\nvtopps\\"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.7088,
+      "null_byte_ratio": 0.3142,
+      "printable_ratio": 0.2873,
+      "unique_bytes": 256,
+      "total_size": 133996544
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:26:09.632356Z",
+    "process_name": "NVDisplay.Container.exe",
+    "pid": 3116,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

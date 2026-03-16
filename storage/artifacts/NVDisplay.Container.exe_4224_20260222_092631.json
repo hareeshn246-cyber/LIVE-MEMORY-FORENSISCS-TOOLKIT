@@ -1,0 +1,336 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_144838\\NVDisplay.Container.exe_4224.raw",
+    "dump_sha256": "483dfb908774b70c31483f208be6d55ade08b2320fecaf65cfb8aeab63457a74",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              89476784
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 17,
+            "offsets": [
+              6293898,
+              17455450,
+              89820278,
+              92664086,
+              98717780,
+              103128502,
+              104137782,
+              104849284,
+              106860624,
+              112634216
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T09:26:09.635849Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_144838\\NVDisplay.Container.exe_4224.raw",
+      "dump_size_mb": 150.61
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 493,
+        "api_details": {
+          "VirtualAllocEx": 9,
+          "WriteProcessMemory": 6,
+          "CreateRemoteThread": 13,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 15,
+          "GetAsyncKeyState": 12,
+          "CryptEncrypt": 23,
+          "CryptDecrypt": 24,
+          "InternetReadFile": 5,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 73,
+          "CreateProcess": 118,
+          "AdjustTokenPrivileges": 17,
+          "OpenProcess": 129,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 12,
+          "SetThreadContext": 11,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 686,
+        "patterns": {
+          "http://": 478,
+          "https://": 46,
+          "POST": 8,
+          "GET": 147,
+          "Content-Type:": 6,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://ns.adobe.com/xap/1.0/mm/",
+        "http://purl.org/rss/1.0/",
+        "http://www.microsoft.com/",
+        "https://www.e",
+        "https://c.urs.microsoft.com/l1.dat",
+        "http://cacerts.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA3842021CA1.crt0",
+        "https://ieonline.microsoft.com/ieflipahead/ie10/rules.xml",
+        "http://www.mi",
+        "http://www.d",
+        "http://ocsp.digicert.c'xV",
+        "http://www.microsoft.com/pki/certs/MicCerLisCA2011_2011-03-29.crt0",
+        "https://www.bing.com/images/detail/search",
+        "https://go.microsoft.com/fwlink/?LinkId=129219",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue",
+        "https://go.microsoft.com/fwlink/p/?LinkId=620947",
+        "http://schemas.microsoft.com/windows/2005/02/color/WcsCommonProfileTypes",
+        "http://schemas.microsoft.com/windows/2007/11/color/Calibration",
+        "http://test.com",
+        "https://www.micros",
+        "http://www.digicert.com/CPS0",
+        "http://www.w3.org/2001/XMLSchema",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "http://cac",
+        "http://schemas.microsoft.com/windows/2005/02/color/GamutMapModel",
+        "http://aia.entrust.net/ts1-chain256.cer01",
+        "https://services.gfe.nvidia.com/GFE/v1.0/profiles/DRS?",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "http://schemas.microsoft.com/windows/2005/02/color/ColorAppearanceModel",
+        "http://crl4.digicert.com/DigiCertGlobalG3TLSECCSHA3842020CA1-2.crl0",
+        "http://www.micros",
+        "http://crl.entrust.net/ts1ca.crl0",
+        "http://crl.microsoft.com/pki/crl/products/MicCerLisCA2011_2011-03-29.crl0]",
+        "http://ocsp.digicert.com0]",
+        "http://crl.comodoca.com/AAACertificateServices.crl06",
+        "http://www.w3.org/XML/1998/namespace",
+        "https://go.microsoft.com/fwlink/?LinkId=129223&rptmode=2&url1=",
+        "http://go.microsoft.com/fwlink/?LinkId=76126.",
+        "http://crl.microsoft.com/pki/crl/products/MicCerTruLisPCA_2009-04-02.crl0]",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "http://www.bing.com/bingbot.htm)",
+        "https://go.microsoft.com/fwlink/p/?LinkId=255141&pc=EPHPC",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "https://www.msn.cn/spartan/ientp?locale",
+        "https://go.microsoft.com/fwlink/?LinkId=528085",
+        "http://logo.verisign.com/vslogo.gif0",
+        "http://schemas.microsoft.com/windows/2005/02/color/ColorDeviceModel",
+        "http://crl",
+        "http://www.microsoft.com/pkiops/crl/Microsoft",
+        "http://ocsp.digicert.com0@",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-"
+      ],
+      "ip_addresses": [
+        "4.1.311.17",
+        "2.5.29.9",
+        "1.3.6.1",
+        "4.1.311.10",
+        "2.5.4.17",
+        "2.5.4.4",
+        "3.2.8.1",
+        "2.5.4.26",
+        "101.3.4.1",
+        "2.5.4.52",
+        "2.5.4.29",
+        "2.5.4.21",
+        "169.254.169.249",
+        "2.5.4.40",
+        "5.5.7.7",
+        "2.5.4.6",
+        "4.1.311.3",
+        "12.0.742.112",
+        "2.5.4.18",
+        "4.1.311.44",
+        "2.5.4.38",
+        "5.1.0.0",
+        "5.5.7.12",
+        "2.5.4.37",
+        "4.1.311.21",
+        "101.3.4.4",
+        "2.5.4.39",
+        "5.5.7.2",
+        "2.5.4.9",
+        "2.5.4.22",
+        "1.7.1.1",
+        "1.311.10.11",
+        "2.5.4.15",
+        "2.5.4.14",
+        "2.5.4.7",
+        "2.5.4.11",
+        "5.5.7.6",
+        "2.5.4.36",
+        "4.1.311.47",
+        "4.1.311.42",
+        "101.3.4.3",
+        "1.9.15.1",
+        "2.5.29.8",
+        "4.1.311.73",
+        "4.1.311.96",
+        "2.5.29.32",
+        "6.0.0.0",
+        "3.6.1.4",
+        "1.9.25.4",
+        "2.5.4.23"
+      ],
+      "file_paths": [
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\framework\\uxdbase\\GenericData.h",
+        "C:\\Program Files\\Common Files",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\io\\strtod.cc",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\features\\apiwrappers\\StartupFeatures.h",
+        "C:\\Program Files\\Git\\cmd",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\framework\\uxdbase\\GenericVector.h",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\stubs\\common.h",
+        "C:\\Windows\\TEMP",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\generated_message_reflection.cc",
+        "C:\\Windows\\s",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\logging\\logging.lib\\RegistryKey.h",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\descriptor_database.cc",
+        "C:\\dvs\\p4\\build\\sw\\gcomp\\rel\\src\\NvContainer\\_out\\x86_64\\release\\container\\NvContainer.pdb",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Program Files\\HONOR",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\Utility\\Persistence.h",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\stubs\\strutil.cc",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\NVDisplay.Container.exe",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\framework\\uxdbase\\StateEvents.h",
+        "C:\\Windows\\system32",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\message.cc",
+        "s:\\windows\\system32",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\features\\apiwrappers\\ResolutionSupportWrapper.h",
+        "C:\\Pro",
+        "C:\\srext\\",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\io\\coded_stream.cc",
+        "C:\\dvs\\p4\\build\\sw\\tools\\boost\\boost-1.62.0\\boost",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\dynamic_message.cc",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Windows\\system3",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvhm.inf_amd64_3cb6b4743249e01c\\Display.NvContainer\\plugins\\Session",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\bin\\x64\\Release\\NVXDBat.pdb",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\bin\\x64\\Release\\NvXDSyncPlugin.pdb",
+        "C:\\Program Files\\Eclipse Adopti",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "c:\\crypt32\\",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\WINDOWS",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\stubs\\common.cc",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\extension_set_heavy.cc",
+        "c:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\features\\apiwrappers\\DisplayConfigUtil.h",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\reflection_ops.cc",
+        "C:\\dvs\\p4\\build\\sw\\gcomp\\dev\\src\\LocalServices\\_tmp\\protobuf-3.21.9\\src\\google",
+        "C:\\Program F",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\nvsvcVista\\x64\\ReleaseWin7\\bin\\nvsvcr.pdb",
+        "C:\\dvs\\p4\\build\\sw\\rel\\gpu_drv\\r580\\r580_00\\drivers\\ui\\uxd\\bin\\x64\\Release\\NvUIR.pdb",
+        "C:\\]x",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\descriptor.pb.cc",
+        "C:\\Projects\\sw\\tools\\protobuf\\protobuf-2.6.1\\src\\google\\protobuf\\message_lite.cc"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.5641,
+      "null_byte_ratio": 0.3464,
+      "printable_ratio": 0.271,
+      "unique_bytes": 256,
+      "total_size": 157921280
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T09:26:31.571927Z",
+    "process_name": "NVDisplay.Container.exe",
+    "pid": 4224,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

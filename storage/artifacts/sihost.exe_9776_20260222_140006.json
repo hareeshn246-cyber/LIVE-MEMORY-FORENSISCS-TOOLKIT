@@ -1,0 +1,332 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_184703\\sihost.exe_9776.raw",
+    "dump_sha256": "e2e4bd3608fc79612195e2a6edf95467a4298fb30f901250098cf550fdcfc367",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              22527864
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 17,
+            "offsets": [
+              14715414,
+              22898688,
+              46612600,
+              51738134,
+              87167546,
+              89743856,
+              90624018,
+              92661199,
+              96023606,
+              99876944
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T13:59:47.928296Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7713,
+      "malware": 0.2287
+    },
+    "is_malicious": true,
+    "risk_score": 85.0,
+    "decision_rationale": [
+      "Score reduced from 23.0 (Trusted Process)",
+      "Forensic Override: Critical YARA match detected (Score Boosted).",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 8.0045
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_184703\\sihost.exe_9776.raw",
+      "dump_size_mb": 135.42
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 555,
+        "api_details": {
+          "VirtualAllocEx": 11,
+          "WriteProcessMemory": 6,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 17,
+          "GetAsyncKeyState": 12,
+          "CryptEncrypt": 21,
+          "CryptDecrypt": 22,
+          "InternetReadFile": 6,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 69,
+          "CreateProcess": 107,
+          "AdjustTokenPrivileges": 17,
+          "OpenProcess": 209,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 7,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 12,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 73,
+        "patterns": {
+          "http://": 30,
+          "https://": 36,
+          "POST": 2,
+          "GET": 4,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://go.microsoft.com/fwlink/?LinkId=54896",
+        "https://www.modern.ie/umbraco/api/readingviewissues/postreadingviewissue",
+        "https://go.microsoft.com/fwlink/p/?LinkId=255141",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue?version=2",
+        "http://go.microsoft.com/fwlink/?LinkId=838604",
+        "https://go.microsoft.com/fwlink/?LinkId=129221&check=Check&hide_type=all&summary=on&uri=",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "http://www.bing.com/bingbot.htm)",
+        "http://www.w3.org/2001/XMLSchema-instance",
+        "http://test.com",
+        "https://www.bing.com/images/detail/search",
+        "https://www.msn.com/spartan/ientp?locale",
+        "http://go.microsoft.com/fwlink/?LinkId=159651",
+        "https://www.bing.com/search?q=",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "https://www.bing.com/widget/edge/search",
+        "https://go.microsoft.com/fwlink/?LinkId=129223&rptmode=2&url1=",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "https://go.microsoft.com/fwlink/p/?LinkId=619797&pc=UE01&ocid=UE01DHP",
+        "https://go.microsoft.com/fwlink/?LinkId=129222&rptmode=-1&url1=",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "http://schemas.microsoft.com/Search/2013/ApplicationContent",
+        "https://go.microsoft.com/fwlink/?LinkId=129218",
+        "https://go.microsoft.com/fwlink/?LinkId=129219",
+        "https://www.modern.ie/Umbraco/Api/CompatIssueApi/PostCompatIssue",
+        "http://www.w3.org/2000/09/xmldsig#",
+        "https://go.microsoft.com/fwlink/p/?LinkId=619797&pc=UE03&ocid=UE03DHP",
+        "https://iecvlist.microsoft.com/edge/phone/1499812172/edgecompatviewlist.xml",
+        "http://schemas.microsoft.com/appx/2016/sccd",
+        "http://www.w3.org/2001/XMLSchema",
+        "https://iecvlist.microsoft.com/edge/desktop/1499812172/edgecompatviewlist.xml",
+        "https://go.microsoft.com/fwlink/?LinkId=251136",
+        "https://go.microsoft.com/fwlink/p/?LinkId=620947",
+        "https://go.microsoft.com/fwlink/p/?LinkId=255141&pc=EPHPC",
+        "https://go.microsoft.com/fwlink/?LinkId=129220&url=",
+        "https://go.microsoft.com/fwlink/?LinkId=392206",
+        "https://go.microsoft.com/fwlink/?LinkID=129216&verbose=1&uri=",
+        "http://schemas.microsoft.com/appx/2018/sccd",
+        "http://www.w3.org/2000/xmlns/",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "https://ieonline.microsoft.com/ieflipahead/ie10/rules.xml",
+        "http://appmap.trafficmanager.net/api/v1/parse?url=",
+        "https://go.microsoft.com/fwlink/?LinkId=129217&profile=css3&warning=2&uri=",
+        "https://www.msn.cn/spartan/ientp?locale",
+        "https://ieonline.microsoft.com/ieflipahead/ie11mobile/rules.xml",
+        "https://c.urs.microsoft.com/l1.dat",
+        "http://www.w3.org/2001/10/xml-exc-c14n#",
+        "https://ieonline.microsoft.com/iedomainsuggestions/ie11/suggestions.",
+        "https://www.bing.com/widget/insights/lookup",
+        "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
+      ],
+      "ip_addresses": [
+        "72.1.0.4",
+        "1.3.132.0",
+        "2.5.29.5",
+        "4.1.311.67",
+        "1.3.133.16",
+        "2.5.29.16",
+        "2.5.29.17",
+        "1.12.1.2",
+        "4.1.311.2",
+        "2.5.4.35",
+        "4.1.311.13",
+        "1.3.6.1",
+        "4.1.311.61",
+        "4.1.311.66",
+        "2.23.43.1",
+        "4.1.311.21",
+        "2.5.29.27",
+        "2.5.4.52",
+        "1.3.14.7",
+        "1.7.1.1",
+        "2.5.29.35",
+        "5.1.0.0",
+        "2.5.4.28",
+        "2.5.4.23",
+        "1.12.1.3",
+        "4.1.311.42",
+        "4.1.311.64",
+        "1.3.132.1",
+        "5.5.7.6",
+        "2.5.29.19",
+        "2.5.29.36",
+        "2.5.4.32",
+        "2.5.4.36",
+        "2.5.29.2",
+        "101.2.1.1",
+        "2.5.4.4",
+        "2.5.29.4",
+        "2.5.29.30",
+        "101.3.4.1",
+        "4.1.311.65",
+        "2.5.4.26",
+        "1.2.3.2",
+        "5.5.7.3",
+        "2.23.133.8",
+        "1.12.5.1",
+        "2.5.4.6",
+        "5.5.8.2",
+        "1.12.1.6",
+        "4.1.311.17",
+        "2.5.4.46"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Pror",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\",
+        "C:\\Users\\Admin\\OneDrive",
+        "C:\\Users\\Admin",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Windows\\system32\\cmd.exe",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "C:\\MinGW\\bin",
+        "C:\\Users\\Admin\\AppData\\Roaming",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoStub.inl",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Public",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "C:\\Users\\Admin\\AppData\\Local\\Micro",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "C:\\Program Files\\dotnet\\",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\Windows\\system32",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoBufferingMessageCallHost.inl",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Program Files",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "C:\\Users\\Admin\\AppD",
+        "C:\\Users\\Admin\\.dotnet\\tools",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "c:\\crypt32\\",
+        "C:\\Program Files\\qemu",
+        "C:\\Use",
+        "c:\\ [",
+        "C:\\Users\\Admin\\AppData\\Local\\Python\\bin",
+        "g:\\os\\tools\\BamoCodegen\\Inc\\BamoPeer.inl",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files (x86)\\Nmap",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "C:\\ProgramData",
+        "C:\\Users\\Ad",
+        "C:\\Users\\Admin\\AppData\\Local\\Temp",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoVariablySizedResult.inl",
+        "C:\\jdk-24_windows-x64_bin\\jdk-24.0.2\\bin",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Windows"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.3776,
+      "null_byte_ratio": 0.183,
+      "printable_ratio": 0.3393,
+      "unique_bytes": 256,
+      "total_size": 142000128
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T14:00:06.227805Z",
+    "process_name": "sihost.exe",
+    "pid": 9776,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

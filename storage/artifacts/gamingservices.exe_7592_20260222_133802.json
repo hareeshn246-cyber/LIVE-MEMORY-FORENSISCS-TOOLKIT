@@ -1,0 +1,338 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_184703\\gamingservices.exe_7592.raw",
+    "dump_sha256": "77d8315ea78864a222e269aaa2b50233c5928703672f69bba17d9ec7bbdf2ac8",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1,
+            "offsets": [
+              48204520
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 2,
+            "offsets": [
+              35367384,
+              48204048
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 23,
+            "offsets": [
+              35555776,
+              38166702,
+              48561608,
+              48896968,
+              57015778,
+              65909014,
+              72598074,
+              72831830,
+              76308498,
+              77133263
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T13:37:47.506378Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.7187,
+      "malware": 0.2813
+    },
+    "is_malicious": true,
+    "risk_score": 85.0,
+    "decision_rationale": [
+      "Score reduced from 24.8 (Trusted Process)",
+      "Forensic Override: Critical YARA match detected (Score Boosted).",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 9.8455
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_184703\\gamingservices.exe_7592.raw",
+      "dump_size_mb": 129.66
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 505,
+        "api_details": {
+          "VirtualAllocEx": 9,
+          "WriteProcessMemory": 6,
+          "CreateRemoteThread": 11,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 15,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 26,
+          "CryptDecrypt": 29,
+          "InternetReadFile": 4,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 57,
+          "CreateProcess": 108,
+          "AdjustTokenPrivileges": 23,
+          "OpenProcess": 161,
+          "NtMapViewOfSection": 10,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 12,
+          "SetThreadContext": 12,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 1943,
+        "patterns": {
+          "http://": 1806,
+          "https://": 105,
+          "POST": 4,
+          "GET": 27,
+          "Content-Type:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://auth.xboxlive.com",
+        "http://schemas.microsoft.com/ws/06/2004/policy/http",
+        "https://login.windows.local",
+        "http://www.w3.org/2001/XMLSchema-instance",
+        "http://schemas.xmlsoap.org/soap/http",
+        "https://userpresence.xboxlive.com",
+        "https://login.live.com",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "http://www.microsoft.com/pkiops/certs/Microsoft",
+        "https://reader.sucu.xboxlive.com/GameProfiles/platform",
+        "http://www.w3.org/2004/11/xmlmime",
+        "https://instance.mgt.xboxlive.com",
+        "http://www.microsoft.com/pki/certs/MicMarPCA2011_2011-03-28.crt0",
+        "http://schemas.microsoft.com/appx/manifest/systemai/windows10",
+        "http://www.microsoft.com/pki/certs/MicCerTruLisPCA_2009-04-02.crt0",
+        "http://schemas.xmlsoap.org/ws/2005/02/trust/Issue",
+        "http://schemas.microsoft.com/appx/manifest/foundation/windows10/2",
+        "http://schemas.xmlsoap.org/ws/2005/02/trust/Cancel",
+        "http://schemas.microsoft.com/appx/manifest/printsupport/windows10",
+        "http://xboxlive.com",
+        "https://device.auth.xboxlive.com",
+        "http://www.w3.org/2000/09/xmldsig#",
+        "http://schemas.xmlsoap.org/ws/2005/02/trust/Renew",
+        "http://schemas.microsoft.com/appx/publisherbridging/2021",
+        "https://login.live.com/oauth20_desktop.srf",
+        "http://docs.oasis-open.org/ws-sx/ws-trust/200512/SymmetricKey",
+        "https://notify.xboxlive.com/system/notifications/endpoints",
+        "http://schemas.microsoft.com/appx/manifest/desktop/windows10/11",
+        "https://reader.sucu.xboxlive.com/content/shaders",
+        "http://docs.oasis-open.org/ws-sx/ws-trust/200512/Bearer",
+        "http://schemas.microsoft.com/appx/2013/manifest",
+        "http://www.w3.org/2000/xmlns/",
+        "http://docs.oasis-open.org/ws-sx/ws-trust/200512/RSTR/SCT",
+        "http://schemas.microsoft.com/appx/manifest/iot/thresholdpreview",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut_2010-06-23.crt07",
+        "http://schemas.microsoft.com/appx/manifest/deployment/windows10/3",
+        "http://schemas.microsoft.com/appx/manifest/preview/windows10/msixappcompatsupport",
+        "http://schemas.microsoft.com/appx/manifest/cloudfiles/windows10",
+        "http://oneocsp.microsoft.com/ocsp0",
+        "http://schemas.xmlsoap.org/ws/2004/09/transfer/GetResponse",
+        "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd",
+        "http://schemas.microsoft.com/appx/manifest/deployment/windows10",
+        "http://schemas.xmlsoap.org/ws/2004/09/transfer/Get",
+        "https://title.mgt.xboxlive.com/titles/default/endpoints?type=1",
+        "http://schemas.microsoft.com/appx/manifest/com/windows10",
+        "http://schemas.microsoft.com/appx/manifest/virtualization/windows10",
+        "http://schemas.microsoft.com/appx/manifest/uap/windows10/15a",
+        "https://xboxlive.com",
+        "http://schemas.microsoft.com/appx/manifest/desktop/windows10/7",
+        "http://crl3.digicert.com/DigiCertGlobalRootG3.crl0"
+      ],
+      "ip_addresses": [
+        "1.8.5.1",
+        "14.42.10.379",
+        "1.3.132.0",
+        "2.5.29.5",
+        "4.1.311.67",
+        "1.0.820.0",
+        "1.3.133.16",
+        "2.5.29.16",
+        "4.1.311.2",
+        "1.12.1.2",
+        "2.5.29.17",
+        "2.5.4.35",
+        "4.1.311.13",
+        "1.3.6.1",
+        "4.1.311.61",
+        "1.9.25.4",
+        "1.4.4.7",
+        "4.1.311.21",
+        "2.23.43.1",
+        "2.5.29.27",
+        "1.3.14.7",
+        "2.5.4.52",
+        "10.0.1.38",
+        "1.7.1.1",
+        "2.5.29.35",
+        "5.1.0.0",
+        "2.5.4.28",
+        "2.5.4.23",
+        "1.12.1.3",
+        "4.1.311.42",
+        "4.1.311.64",
+        "1.3.132.1",
+        "2.6.5.0",
+        "2.5.29.2",
+        "2.5.4.4",
+        "2.5.29.4",
+        "2.5.29.30",
+        "101.3.4.1",
+        "4.1.311.65",
+        "2.5.4.26",
+        "1.2.3.2",
+        "2.23.133.8",
+        "1.12.5.1",
+        "2.5.4.6",
+        "5.5.8.2",
+        "1.12.1.6",
+        "1.311.10.3",
+        "5.30.14.0",
+        "4.1.311.17",
+        "2.5.4.46"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoProxy.inl",
+        "D:\\os\\obj\\amd64fre\\xbox\\base\\appmodel\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\protobuf\\src\\v3.21.12-fdb7676342.clean\\src\\google\\protobuf\\wire_format_lite.cc",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPeer.inl",
+        "C:\\Program Files\\Common Files",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "t:\\windows\\system32",
+        "D:\\os\\obj\\amd64fre\\xbox\\base\\appmodel\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\protobuf\\src\\v3.21.12-fdb7676342.clean\\src\\google\\protobuf\\arena.cc",
+        "s:\\windows\\system32",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\windows\\inf",
+        "C:\\Windows\\system32\\cmd.exe",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.h",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoStub.inl",
+        "C:\\Program Files\\WindowsApps\\Microsoft.GamingServices_33.108.12001.0_x64__8wekyb3d8bbwe\\GamingServices.exe",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Public",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Windows\\system32",
+        "C:\\Program Files\\dotnet\\",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoPrincipal.inl",
+        "C:\\Program Files\\CMake\\bin",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoAsyncOperationCoordinator.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoBufferingMessageCallHost.inl",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Program Files",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoConnection.inl",
+        "D:\\os\\obj\\amd64fre\\xbox\\base\\appmodel\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\protobuf\\src\\v3.21.12-fdb7676342.clean\\src\\google",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoImplObject.inl",
+        "c:\\crypt32\\",
+        "C:\\Windows\\TEMP",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "c:\\ [",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Roaming",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoUtil.h",
+        "C:\\ProgramData",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Program ",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local",
+        "D:\\os\\obj\\amd64fre\\xbox\\base\\appmodel\\vcpkg\\objfre\\amd64\\vcpkg_buildtrees\\protobuf\\src\\v3.21.12-fdb7676342.clean\\src\\google\\protobuf\\message_lite.cc",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoVariablySizedResult.inl",
+        "d:\\os\\tools\\BamoCodegen\\Inc\\BamoList.inl",
+        "C:\\Windows"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.9909,
+      "null_byte_ratio": 0.2661,
+      "printable_ratio": 0.3129,
+      "unique_bytes": 256,
+      "total_size": 135958528
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T13:38:02.261958Z",
+    "process_name": "gamingservices.exe",
+    "pid": 7592,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

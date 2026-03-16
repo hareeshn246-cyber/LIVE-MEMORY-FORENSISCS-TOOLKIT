@@ -1,0 +1,375 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\wslservice.exe_6472.raw",
+    "dump_sha256": "fc35498eab6ab677df8a3156333c4c2a2fadab62031c031ef845dca3c80c2816",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 2,
+            "offsets": [
+              5770096,
+              12323560
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 1,
+            "offsets": [
+              12323088
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 15,
+            "offsets": [
+              7050666,
+              12680648,
+              15764424,
+              22302320,
+              27747936,
+              30035552,
+              31039572,
+              37067112,
+              37697932,
+              44310608
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:47:37.732222Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\wslservice.exe_6472.raw",
+      "dump_size_mb": 76.19
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 389,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 11,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 13,
+          "CryptDecrypt": 15,
+          "InternetReadFile": 9,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 55,
+          "CreateProcess": 104,
+          "AdjustTokenPrivileges": 15,
+          "OpenProcess": 94,
+          "NtMapViewOfSection": 9,
+          "NtUnmapViewOfSection": 8,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 148,
+        "patterns": {
+          "http://": 78,
+          "https://": 45,
+          "POST": 9,
+          "GET": 12,
+          "User-Agent:": 1,
+          "Cookie:": 3
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "http://ator",
+        "http://w",
+        "https://was",
+        "http://www",
+        "http://schemas.microsoft.com/SMI/2005/WindowsSettings",
+        "https://www.bing.com/images/detail/search",
+        "http://staticsuggested",
+        "http://i",
+        "http://go.microsoft.com/fwlink/?LinkId=838604",
+        "http://www.w3.org/2001/XMLSchema",
+        "http://mathematicsmargin-top:eventually",
+        "https://go.microsoft.com/fwlink/?LinkId=528085",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "https://www.World",
+        "https://go.microsoft.com/fwlink/?LinkId=129217&profile=css3&warning=2&uri=",
+        "http://purl.org/rss/1.0/",
+        "http://www.hortcut",
+        "https://www.msn.com/spartan/ientp?locale",
+        "https://go.microsoft.com/fwlink/?LinkId=129219",
+        "https://go.microsoft.com/fwlink/p/?LinkId=619797&pc=UE03&ocid=UE03DHP",
+        "http://www./div",
+        "http://www.style=",
+        "https://iecvlist.microsoft.com/edge/desktop/1499812172/edgecompatviewlist.xml",
+        "https://c.urs.microsoft.com/",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "http://.jpg",
+        "http://option",
+        "http://go.microsoft.com/fwlink/?LinkId=159651",
+        "https://go.microsoft.com/fwlink/?LinkID=401135",
+        "http://px;",
+        "https://go.microsoft.com/fwlink/?LinkId=129223&rptmode=2&url1=",
+        "http://www.w3.org/shortcut",
+        "http://www.",
+        "http://www.a",
+        "https://go.microsoft.com/fwlink/?LinkId=129222&rptmode=-1&url1=",
+        "https://go.microsoft.com/fwlink/?LinkId=129220&url=",
+        "https://www.bing.com/widget/edge/search",
+        "https://ieonline.microsoft.com/ieflipahead/ie10/rules.xml",
+        "http://appmap.trafficmanager.net/api/v1/parse?url=",
+        "https://go.microsoft.com/fwlink/p/?LinkId=255141",
+        "http://www-//W3C//DTD",
+        "http://addEventListenerresponsible",
+        "http://);",
+        "http://imEnglish",
+        "http://encoding=",
+        "http://cript",
+        "http://.css",
+        "https://www.recent",
+        "https://iecvlist.microsoft.com/IE11/1478281996/iecompatviewlist.xml",
+        "https://go.microsoft.com/fwlink/?LinkId=392206"
+      ],
+      "ip_addresses": [
+        "2.5.29.28",
+        "5.5.7.1",
+        "2.5.29.2",
+        "101.3.4.4",
+        "12.0.742.112",
+        "4.1.311.73",
+        "1.3.132.0",
+        "840.63.0.2",
+        "2.5.4.20",
+        "5.5.7.48",
+        "2.23.133.2",
+        "2.5.4.21",
+        "4.1.311.64",
+        "5.2.3.5",
+        "4.1.311.21",
+        "1.12.1.2",
+        "2.5.29.54",
+        "2.5.29.32",
+        "2.5.4.27",
+        "1.3.6.1",
+        "4.1.311.17",
+        "2.5.4.16",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.5.4.3",
+        "2.16.840.1",
+        "101.2.1.1",
+        "1.3.14.7",
+        "2.5.4.39",
+        "2.5.4.18",
+        "6.0.0.0",
+        "2.5.29.14",
+        "1.12.1.6",
+        "1.12.1.1",
+        "5.5.7.7",
+        "1.1.2.1",
+        "2.5.29.1",
+        "2.5.4.23",
+        "2.5.4.17",
+        "2.5.4.8",
+        "4.1.311.15",
+        "4.1.311.3",
+        "2.5.4.6",
+        "2.5.4.7",
+        "2.5.4.24",
+        "4.1.311.72",
+        "1.12.1.3",
+        "2.5.4.10",
+        "3.6.1.4",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\LxssCreateProcess.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\hcs.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\relay.hpp",
+        "C:\\__w\\1\\s\\src\\shared\\inc\\socketshared.h",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\LxssInstance.cpp",
+        "C:\\__w\\1\\s\\src\\shared\\inc\\conncheckshared.h",
+        "C:\\__w\\1\\s\\src\\windows\\common\\helpers.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\WslCoreConfig.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\LxssMessagePort.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\ConsoleProgressBar.cpp",
+        "C:\\__w\\1\\s\\bin\\x64\\Release\\wslservice.pdb",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\__w\\1\\s\\src\\shared\\configfile\\configfile.h",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\DnsTunnelingChannel.cpp",
+        "C:\\Windows\\TEMP",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Roaming",
+        "C:\\__w\\1\\s\\src\\windows\\common\\Redirector.cpp",
+        "C:\\Program Files\\Eclipse AdoptinU",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\GnsRpcServer.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\string.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\Lifetime.cpp",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Program FilnU",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\__w\\1\\s\\src\\windows\\inc\\WmiService.h",
+        "C:\\Program Files",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\LxssUserCallback.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreVm.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreGuestNetworkService.cpp",
+        "C:\\Users\\Public",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreInstance.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\WslCoreNetworkingSupport.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\WslCoreNetworkEndpoint.h",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Program Files (x86)",
+        "C:\\__w\\1\\s\\src\\windows\\service\\exe\\BridgedNetworking.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\WslSecurity.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\WslSecurity.h",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\__w\\1\\s\\packages\\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\\include\\wil\\resource.h",
+        "C:\\__w\\1\\s\\src\\windows\\common\\registry.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\filesystem.cpp",
+        "C:\\__w\\1\\s\\src\\windows\\common\\relay.cpp",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\__w\\1\\s\\src\\windows\\common\\disk.cpp",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {
+      "Machine": 34404,
+      "SizeOfOptionalHeader": 240,
+      "Characteristics": 8226,
+      "MajorLinkerVersion": 10,
+      "MinorLinkerVersion": 0,
+      "SizeOfCode": 91136,
+      "SizeOfInitializedData": 34816,
+      "SizeOfUninitializedData": 0,
+      "AddressOfEntryPoint": 22596,
+      "BaseOfCode": 4096,
+      "ImageBase": 1840447488,
+      "SectionAlignment": 4096,
+      "FileAlignment": 512,
+      "MajorOperatingSystemVersion": 5,
+      "MinorOperatingSystemVersion": 2,
+      "MajorImageVersion": 0,
+      "MinorImageVersion": 0,
+      "MajorSubsystemVersion": 5,
+      "MinorSubsystemVersion": 2,
+      "SizeOfImage": 155648,
+      "SizeOfHeaders": 1024,
+      "CheckSum": 173593,
+      "Subsystem": 2,
+      "DllCharacteristics": 320,
+      "SectionsNb": 6,
+      "SectionsMeanEntropy": 0.0,
+      "SectionsMinEntropy": 0.0,
+      "SectionsMaxEntropy": 0.0,
+      "ResourcesNb": 0,
+      "ImportsNbDLL": 0
+    },
+    "statistical_features": {
+      "entropy": 6.1837,
+      "null_byte_ratio": 0.2265,
+      "printable_ratio": 0.3303,
+      "unique_bytes": 256,
+      "total_size": 79888384
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:47:52.947696Z",
+    "process_name": "wslservice.exe",
+    "pid": 6472,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

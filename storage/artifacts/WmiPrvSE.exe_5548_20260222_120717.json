@@ -1,0 +1,290 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\WmiPrvSE.exe_5548.raw",
+    "dump_sha256": "3f3d8a0745eaff2f8a8bd56ac04d9a2fe59fe4159a15fb08457cafbe7f15df9a",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 1328,
+            "offsets": [
+              1069107,
+              1069878,
+              1070089,
+              1079363,
+              1080134,
+              1080345,
+              1089619,
+              1090390,
+              1090601,
+              1099875
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 13,
+            "offsets": [
+              17127748,
+              18562672,
+              19129952,
+              20205580,
+              20590676,
+              24323126,
+              24993668,
+              31926632,
+              32557452,
+              35070032
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T12:07:08.521169Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.4391,
+      "malware": 0.5609
+    },
+    "is_malicious": true,
+    "risk_score": 15.0,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)",
+      "Score reduced from 34.6 (Trusted Process)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 19.6315
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\WmiPrvSE.exe_5548.raw",
+      "dump_size_mb": 46.95
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 276,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 3,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 7,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 17,
+          "CryptDecrypt": 17,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 11,
+          "CreateProcess": 79,
+          "AdjustTokenPrivileges": 13,
+          "OpenProcess": 67,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 9,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 10,
+        "patterns": {
+          "https://": 8,
+          "GET": 2
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://daily-cloudcode-pa.googleapis.com",
+        "https://crashstats-collector-2.opera.com/"
+      ],
+      "ip_addresses": [
+        "1.12.1.2",
+        "1.9.16.3",
+        "2.5.29.21",
+        "10.0.0.0",
+        "2.5.4.38",
+        "2.5.4.11",
+        "5.5.7.1",
+        "2.5.29.32",
+        "2.5.4.10",
+        "2.5.4.30",
+        "5.5.7.6",
+        "4.1.311.61",
+        "2.5.4.15",
+        "2.5.4.25",
+        "2.5.4.31",
+        "2.5.29.3",
+        "5.1.0.0",
+        "2.5.29.10",
+        "2.5.29.35",
+        "2.5.29.1",
+        "1.3.132.1",
+        "2.5.4.20",
+        "4.1.311.25",
+        "2.23.133.8",
+        "2.5.29.54",
+        "2.5.4.19",
+        "1.1.2.1",
+        "4.1.311.2",
+        "2.5.4.26",
+        "2.5.4.28",
+        "4.1.311.72",
+        "1.9.16.1",
+        "4.1.311.76",
+        "2.5.29.2",
+        "2.5.4.37",
+        "1.3.6.1",
+        "1.7.1.1",
+        "2.5.4.24",
+        "840.63.0.2",
+        "4.1.311.12",
+        "4.1.311.21",
+        "5.5.8.2",
+        "2.5.4.29",
+        "2.5.29.4",
+        "2.5.4.35",
+        "2.5.29.8",
+        "2.5.4.9",
+        "2.5.4.16",
+        "2.5.4.52",
+        "1.12.1.1"
+      ],
+      "file_paths": [
+        "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+        "C:\\Windows\\System32\\Wbem",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Antigravity",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\meta.pyrefly-0.51.1-win32-x64\\bin\\pyrefly.exe",
+        "C:\\Windows\\System32\\RuntimeBroker.exe",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Windows\\system32\\conhost.exe",
+        "C:\\Windows\\System32\\smartscreen.exe -Embedding",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\LocalState\\EBWebView --annotation",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\out\\vs\\workbench\\contrib\\terminal\\common\\scripts\\shellIntegration.ps1\\",
+        "C:\\Program Files\\WindowsApps\\MicrosoftWindows.Client.WebExperience_526.1202.40.0_x64__cw5n1h2txyewy\\Dashboard\\Widgets.exe",
+        "C:\\Users\\Admin\\AppData\\LocalLow\\uTorrent.WebView2\\EBWebView\\Crashpad --metrics-dir",
+        "C:\\Users\\Public",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "t:\\windows\\system32",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\antigravity\\bin\\language_server_windows_x64.exe",
+        "C:\\Windows\\system32\\sihost.exe",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "C:\\Windows\\system32\\backgroundTaskHost.exe",
+        "C:\\Windows",
+        "C:\\Windows\\System32\\Drivers\\DriverData",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\LocalState\\EBWebView ",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\crash_count.txt",
+        "C:\\ProgramData",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Antigravity ",
+        "C:\\Program Files\\WindowsApps\\Microsoft.WidgetsPlatformRuntime_1.6.14.0_x64__8wekyb3d8bbwe\\WidgetService\\WidgetService.exe",
+        "C:\\Windows\\System32\\RuntimeBroker.exe -Embedding",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\Edge\\User Data\\Crashpad",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy\\LocalState\\EBWebView --annotation",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local",
+        "C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TextInputHost.exe",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "C:\\Program Files\\Git\\cmd",
+        "c:\\ [",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy\\LocalState\\EBWebView ",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\meta.pyrefly-0.51.1-win32-x64\\bin\\pyrefly.exe lsp",
+        "C:\\Windows\\SystemApps\\ShellExperienceHost_cw5n1h2txyewy\\ShellExperienceHost.exe",
+        "C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup -s CDPUserSvc",
+        "C:\\Users\\Admin\\AppData\\LocalLow\\uTorrent.WebView2\\EBWebView",
+        "c:\\crypt32\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\LocalState\\EBWebView",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\Edge\\User Data",
+        "C:\\Windows\\System32\\DriverStore\\FileRepository\\seapo64.inf_amd64_7ab1ea12f6a5b2d0\\SECOCL64.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe --type",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\ou",
+        "C:\\Program Files\\WindowsApps\\Microsoft.YourPhone_1.26011.42.0_x64__8wekyb3d8bbwe\\PhoneExperienceHost.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.5437,
+      "null_byte_ratio": 0.3463,
+      "printable_ratio": 0.3038,
+      "unique_bytes": 256,
+      "total_size": 49229824
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T12:07:17.454784Z",
+    "process_name": "WmiPrvSE.exe",
+    "pid": 5548,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

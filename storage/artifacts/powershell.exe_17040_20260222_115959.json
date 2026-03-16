@@ -1,0 +1,345 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_165917\\powershell.exe_17040.raw",
+    "dump_sha256": "94e93de1c4e2d3fed41ddde6b2aaa7f28db7fbb026195d2ed384f96ab3367bf8",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 4,
+            "offsets": [
+              14401980,
+              140183093,
+              141788272,
+              165240498
+            ]
+          },
+          {
+            "identifier": "$token2",
+            "instances": 4,
+            "offsets": [
+              49946171,
+              49946353,
+              165020984,
+              165239905
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 21,
+            "offsets": [
+              47097637,
+              47474285,
+              63730608,
+              83916520,
+              83974661,
+              85113611,
+              86803342,
+              107711432,
+              138817364,
+              140277820
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T11:59:39.981287Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "MALICIOUS",
+    "severity": "CRITICAL",
+    "confidence_scores": {
+      "benign": 0.696,
+      "malware": 0.304
+    },
+    "is_malicious": true,
+    "risk_score": 25.6,
+    "decision_rationale": [
+      "Forensic Override: Critical YARA match.",
+      "Critical YARA Match (+15)"
+    ],
+    "components": {
+      "yara_score": 15.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "ml_weighted": 10.64
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_165917\\powershell.exe_17040.raw",
+      "dump_size_mb": 228.01
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 466,
+        "api_details": {
+          "VirtualAllocEx": 8,
+          "WriteProcessMemory": 5,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 12,
+          "GetAsyncKeyState": 7,
+          "CryptEncrypt": 26,
+          "CryptDecrypt": 27,
+          "InternetReadFile": 6,
+          "URLDownloadToFile": 4,
+          "WinExec": 2,
+          "ShellExecute": 83,
+          "CreateProcess": 118,
+          "AdjustTokenPrivileges": 21,
+          "OpenProcess": 100,
+          "NtMapViewOfSection": 8,
+          "NtUnmapViewOfSection": 7,
+          "QueueUserAPC": 10,
+          "SetThreadContext": 10,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 895,
+        "patterns": {
+          "http://": 362,
+          "https://": 324,
+          "POST": 24,
+          "GET": 183,
+          "Content-Type:": 1,
+          "Cookie:": 1
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://go.microsoft.com/fwlink/?LinkID=135234M",
+        "https://go.microsoft.com/fwlink/?LinkId=528807(",
+        "https://go.microsoft.com/fwlink/?LinkID=113376",
+        "https://go.microsoft.com/fwlink/?LinkID=113354",
+        "http://go.microsoft.com/fwlink/?LinkId=155570",
+        "https://go.microsoft.com/fwlink/?LinkID=113307",
+        "https://go.microsoft.com/fwlink/?LinkID=113297~",
+        "https://go.microsoft.com/fwlink/?LinkID=113377M",
+        "https://go.microsoft.com/fwlink/?LinkID=113296",
+        "https://go.microsoft.com/fwlink/?LinkID=113406",
+        "https://go.microsoft.com/fwlink/?LinkId=129221&check=Check&hide_type=all&summary=on&uri=",
+        "https://go.microsoft.com/fwlink/?LinkID=113407I",
+        "https://go.microsoft.com/fwlink/?LinkID=210614f",
+        "https://go.microsoft.com/fwlink/?LinkID=113347_",
+        "https://go.microsoft.com/fwlink/?LinkID=113329",
+        "https://go.microsoft.com/fwlink/?LinkID=113427TU",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm0",
+        "http://www.w3.org/2000/09/xmldsig#rsa-sha256",
+        "https://go.microsoft.com/fwlink/?LinkID=113294",
+        "http://www.microsoft.com/pkiops/Docs/Repository.htm",
+        "https://go.microsoft.com/fwlink/?LinkID=113353",
+        "https://go.microsoft.com/fwlink/?LinkID=113424TU",
+        "https://go.microsoft.com/fwlink/?LinkID=113291n",
+        "https://go.microsoft.com/fwlink/?linkid=2132227",
+        "http://crl.comodoca.com/AAACertificateServices.crl06",
+        "https://go.microsoft.com/fwlink/?LinkID=113290TU",
+        "http://www.microsoft.com/pki/certs/MicRooCerAut2011_2011_03_22.crt0",
+        "https://go.microsoft.com/fwlink/?LinkID=113417",
+        "https://go.microsoft.com/fwlink/?LinkID=135225TU/System.Management.Automation.RemotingCapability",
+        "https://go.microsoft.com/fwlink/?linkid=2233907",
+        "https://www.microsoft.com/isapi/redir.dll?prd=ie&ar=iesearch",
+        "https://go.microsoft.com/fwlink/?LinkId=394374T",
+        "https://go.microsoft.com/fwlink/?LinkID=113319",
+        "https://go.microsoft.com/fwlink/?LinkID=135199",
+        "https://go.microsoft.com/fwlink/?LinkID=113308",
+        "https://go.microsoft.com/fwlink/?LinkID=113386",
+        "https://go.microsoft.com/fwlink/?LinkID=113325",
+        "http://go.microsoft.com/fwlink/?LinkId=838604",
+        "https://go.microsoft.com/fwlink/?LinkID=135238",
+        "https://go.microsoft.com/fwlink/?LinkID=113320",
+        "https://go.microsoft.com/fwlink/?LinkId=394373T",
+        "http://'",
+        "http://go.microsoft.com/fwlink/?LinkID=513072",
+        "https://go.microsoft.com/fwlink/?LinkID=113366TU/System.Management.Automation.RemotingCapability",
+        "https://go.microsoft.com/fwlink/?LinkID=113301J",
+        "http://go.microsoft.com/fwlink/?linkid=14202=14202",
+        "https://go.microsoft.com/fwlink/?LinkID=113299l",
+        "https://go.microsoft.com/fwlink/?LinkID=113334M",
+        "https://go.microsoft.com/fwlink/?LinkID=113306",
+        "https://go.microsoft.com/fwlink/?LinkID=219990TU"
+      ],
+      "ip_addresses": [
+        "1.12.1.2",
+        "1.9.16.3",
+        "2.5.29.21",
+        "10.0.0.0",
+        "4.1.311.67",
+        "2.5.4.38",
+        "2.5.4.11",
+        "5.5.7.1",
+        "3.5.0.0",
+        "4.1.601.10",
+        "2.5.29.32",
+        "2.5.4.10",
+        "2.5.4.30",
+        "5.5.7.6",
+        "4.1.311.61",
+        "2.5.4.15",
+        "2.5.4.25",
+        "1.10.3.6",
+        "2.5.4.31",
+        "2.5.29.3",
+        "5.1.0.0",
+        "2.5.29.35",
+        "2.5.29.1",
+        "2.5.29.54",
+        "2.5.4.19",
+        "1.1.2.1",
+        "4.1.311.2",
+        "0.2.4.6",
+        "4.1.311.76",
+        "6.2.1.3",
+        "2.5.29.2",
+        "2.5.4.37",
+        "1.3.6.1",
+        "1.7.1.1",
+        "4.1.311.15",
+        "2.5.4.24",
+        "840.63.0.2",
+        "4.1.311.12",
+        "4.1.311.21",
+        "5.5.8.2",
+        "2.5.4.29",
+        "2.5.29.4",
+        "2.5.4.35",
+        "2.5.29.8",
+        "2.5.4.9",
+        "2.5.4.16",
+        "09.99.999.9",
+        "2.5.4.52",
+        "1.12.1.1",
+        "08.00.000.0"
+      ],
+      "file_paths": [
+        "C:\\Windows\\System32\\Wbem",
+        "f:\\dd\\ndp\\clr\\src\\jit\\CodeGenCommon.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_formatter.cpp",
+        "D:\\a\\_work\\1\\s\\\\binaries\\amd64ret\\bin\\amd64\\\\ucrtbase_clr0400.amd64.pdb",
+        "C:\\Users\\Admin\\OneDrive\\Documents\\WindowsPowerShell\\Modules",
+        "f:\\dd\\ndp\\fx\\src\\data\\native\\sni\\include\\open.hpp",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\bin",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\dsig_resolver.h",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "c:\\UsB",
+        "c:\\program files",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WindowsApps",
+        "f:\\dd\\ndp\\clr\\src\\jit\\LSRA.cpp",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_value.cpp",
+        "f:\\dd\\ndp\\clr\\src\\jit\\RegAlloc.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\win32\\crypto.cpp",
+        "f:\\dd\\ndp\\clr\\src\\jit\\rationalize.cpp",
+        "C:\\Users\\Public",
+        "C:\\Us",
+        "C:\\Users\\Admin\\AppData\\Local",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\win32\\win32_ldr.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\pcmc_pcmbuilder.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\dsig_bufferedstream.cpp",
+        "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\Wi",
+        "C:\\Program Files\\dotnet\\",
+        "C:\\Program Files",
+        "f:\\dd\\ndp\\clr\\src\\jit\\LclVars.cpp",
+        "C:\\Windows",
+        "C:\\msys64\\mingw64\\bin",
+        "c:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\User\\workspaceStorage\\a758a24e0016a231ed926ad4ff6a4b31\\ms-python.python\\pythonrc.py",
+        "f:\\dd\\ndp\\clr\\src\\jit\\valuenum.h",
+        "f:\\dd\\ndp\\clr\\src\\jit\\LoopCloning.cpp",
+        "C:\\UZ",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\tsh_tshandle.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\dsig_factory.h",
+        "f:\\dd\\ndp\\clr\\src\\jit\\ValueNum.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\pcm_guidtable.cpp",
+        "C:\\User",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Program Files\\steghide-0.5.1-win32\\steghide",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\dsig_wincrypt.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_keyform.cpp",
+        "c:\\crypt32\\",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\udom_builder.cpp",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\isolation\\id_identity.cpp",
+        "C:\\Users\\Admin\\Desktop\\fastboot",
+        "c:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\resources\\app\\extensions\\git\\dist\\askpass-main.js",
+        "f:\\dd\\ndp\\clr\\src\\isolation\\base\\ntos\\rtl\\lutf8_string.cpp",
+        "f:\\dd\\ndp\\fx\\src\\data\\native\\sni\\src\\sni_sspi.cpp"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 6.224,
+      "null_byte_ratio": 0.2378,
+      "printable_ratio": 0.3051,
+      "unique_bytes": 256,
+      "total_size": 239087616
+    },
+    "risk_assessment": {
+      "risk_score": 15.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 15.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "ml_weighted": 0.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+15)"
+      ],
+      "is_malicious": false
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T11:59:59.438071Z",
+    "process_name": "powershell.exe",
+    "pid": 17040,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}

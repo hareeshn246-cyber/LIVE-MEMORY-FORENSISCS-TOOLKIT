@@ -1,0 +1,293 @@
+{
+  "yara": {
+    "status": "completed",
+    "dump_path": "storage\\snapshots\\System_Snapshot_20260222_132938\\WmiPrvSE.exe_5460.raw",
+    "dump_sha256": "5e07a4be3a8d383c55ba5e5f975beba7f386f63fc2ea33d79fd7b590c8831828",
+    "total_matches": 1,
+    "matches_limit_reached": false,
+    "detections": [
+      {
+        "rule_name": "Privilege_Escalation",
+        "namespace": "default",
+        "tags": [],
+        "meta": {
+          "description": "Privilege escalation attempts",
+          "severity": "critical",
+          "author": "Memory Forensics Tool"
+        },
+        "strings": [
+          {
+            "identifier": "$token1",
+            "instances": 997,
+            "offsets": [
+              1285443,
+              1286214,
+              1286425,
+              1296723,
+              1297494,
+              1297705,
+              1305913,
+              1308003,
+              1308774,
+              1308985
+            ]
+          },
+          {
+            "identifier": "$api",
+            "instances": 14,
+            "offsets": [
+              12666282,
+              15432004,
+              16866928,
+              17434208,
+              18722828,
+              19107924,
+              22840374,
+              23510916,
+              27015528,
+              27646348
+            ]
+          }
+        ]
+      }
+    ],
+    "is_malicious": true,
+    "scan_timestamp": "2026-02-22T08:47:28.694259Z",
+    "raw_deleted": false
+  },
+  "ml": {
+    "status": "completed",
+    "prediction": 1,
+    "classification": "HIGH RISK",
+    "severity": "HIGH",
+    "confidence_scores": {
+      "benign": 0.25,
+      "malware": 0.75
+    },
+    "is_malicious": true,
+    "risk_score": 75.0,
+    "decision_rationale": [
+      "Forensic Override: Critical Indicators detected.",
+      "Critical YARA Match (+50)",
+      "Excessive Dangerous API Usage (+15)",
+      "Network Activity Detected (+10)"
+    ],
+    "components": {
+      "yara_score": 50.0,
+      "integrity_score": 0.0,
+      "anomaly_weighted": 0.0,
+      "behavior_weighted": 20.0
+    },
+    "threshold": 0.7
+  },
+  "anomaly": {
+    "is_anomalous": false,
+    "anomaly_score": 0.0,
+    "severity": "LOW",
+    "detected_anomalies": [],
+    "model_status": "bypassed (trusted)"
+  },
+  "features": {
+    "metadata": {
+      "source_dump": "storage\\snapshots\\System_Snapshot_20260222_132938\\WmiPrvSE.exe_5460.raw",
+      "dump_size_mb": 45.54
+    },
+    "signature_indicators": {
+      "total_detections": 1,
+      "suppressed_matches": 0,
+      "is_signature_match": true,
+      "matched_rules": [
+        {
+          "name": "Privilege_Escalation",
+          "severity": "critical",
+          "description": "Privilege escalation attempts"
+        }
+      ]
+    },
+    "integrity_indicators": {
+      "hooks_detected": 0,
+      "is_compromised": false,
+      "hooked_functions": [],
+      "clean_functions": 0
+    },
+    "behavioral_indicators": {
+      "suspicious_apis": {
+        "total_unique_apis": 20,
+        "total_references": 278,
+        "api_details": {
+          "VirtualAllocEx": 7,
+          "WriteProcessMemory": 3,
+          "CreateRemoteThread": 9,
+          "NtCreateThreadEx": 2,
+          "SetWindowsHookEx": 7,
+          "GetAsyncKeyState": 5,
+          "CryptEncrypt": 17,
+          "CryptDecrypt": 17,
+          "InternetReadFile": 3,
+          "URLDownloadToFile": 2,
+          "WinExec": 2,
+          "ShellExecute": 11,
+          "CreateProcess": 79,
+          "AdjustTokenPrivileges": 14,
+          "OpenProcess": 68,
+          "NtMapViewOfSection": 7,
+          "NtUnmapViewOfSection": 6,
+          "QueueUserAPC": 9,
+          "SetThreadContext": 9,
+          "RtlCreateUserThread": 1
+        }
+      },
+      "network_indicators": {
+        "has_network_activity": true,
+        "network_pattern_count": 12,
+        "patterns": {
+          "https://": 10,
+          "GET": 2
+        }
+      },
+      "crypto_constants": {
+        "has_md5_constants": false,
+        "has_sha1_constants": false
+      },
+      "urls": [
+        "https://daily-cloudcode-pa.googleapis.com",
+        "https://crashstats-collector-2.opera.com/"
+      ],
+      "ip_addresses": [
+        "2.5.29.28",
+        "5.5.7.1",
+        "2.5.29.2",
+        "101.3.4.4",
+        "4.1.311.73",
+        "1.3.132.0",
+        "840.63.0.2",
+        "5.5.7.48",
+        "2.23.133.2",
+        "2.5.4.21",
+        "4.1.311.64",
+        "5.2.3.5",
+        "4.1.311.21",
+        "1.12.1.2",
+        "2.5.29.54",
+        "2.5.29.32",
+        "10.0.0.0",
+        "1.3.6.1",
+        "4.1.311.17",
+        "2.5.4.27",
+        "1.9.16.1",
+        "2.5.4.16",
+        "101.3.4.2",
+        "2.5.29.17",
+        "4.1.311.25",
+        "2.5.4.11",
+        "2.16.840.1",
+        "2.5.4.3",
+        "101.2.1.1",
+        "1.3.14.7",
+        "2.5.4.39",
+        "2.5.4.18",
+        "2.5.29.14",
+        "1.12.1.6",
+        "1.12.1.1",
+        "5.5.7.7",
+        "1.1.2.1",
+        "2.5.4.23",
+        "2.5.29.1",
+        "2.5.4.17",
+        "2.5.4.8",
+        "2.5.4.6",
+        "2.5.4.7",
+        "4.1.311.3",
+        "2.5.4.10",
+        "2.5.4.24",
+        "4.1.311.72",
+        "1.12.1.3",
+        "2.5.4.20",
+        "4.1.311.2"
+      ],
+      "file_paths": [
+        "C:\\Users\\Admin\\AppData\\Roaming\\Antigravity",
+        "C:\\Program Files\\Oracle\\VirtualBox\\",
+        "C:\\Program Files\\Eclipse Adoptid",
+        "C:\\Program Files\\Git\\cmd",
+        "C:\\Windows\\system32\\BackgroundTransferHost.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe",
+        "C:\\Windows\\system32\\sihost.exe",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\LocalState\\EBWebView",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Opera Software\\Opera GX Stable",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Antigravity ",
+        "C:\\Program Files (x86)\\Common Files",
+        "C:\\Windows\\System32\\smartscreen.exe",
+        "C:\\Windows\\TEMP",
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Roaming",
+        "C:\\Windows\\system32\\svchost.exe -k LocalSystemNetworkRestricted -p -s webthreatdefusersvc",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Antigravity\\Crashpad --annotation",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\Default\\Crash Reports",
+        "C:\\Windows\\system32\\svchost.exe -k DevicesFlow -s DevicesFlowUserSvc",
+        "C:\\Windows\\System32\\RuntimeBroker.exe -Embedding",
+        "C:\\Windows\\System32\\ShellHost.exe",
+        "C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup -s WpnUserService",
+        "C:\\Program Files\\CMake\\bin",
+        "C:\\Users\\Admin\\Downloads\\yara-4.5.5\\yara-4.5.5",
+        "C:\\Program Files\\WindowsApps\\Microsoft.WidgetsPlatformRuntime_1.6.14.0_x64__8wekyb3d8bbwe\\WidgetService\\WidgetService.exe",
+        "C:\\Program Files\\Eclipse Adoptium\\jre-17.0.8.101-hotspot\\bin",
+        "C:\\Program Files",
+        "C:\\Users\\Public",
+        "C:\\Program Files\\WindowsApps\\AdvancedMicroDevicesInc-2.AMDRadeonSoftware_10.24.10035.0_x64__0a9344xs7nr4m\\radeonsoftware\\AMDRSServ.exe",
+        "C:\\Users\\Admin\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\Default",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps",
+        "C:\\Users\\Admin\\AppData\\LocalLow\\uTorrent.WebView2\\EBWebView --annotation",
+        "C:\\Program Files (x86)",
+        "C:\\Windows\\Explorer.EXE",
+        "C:\\Windows\\system32\\svchost.exe -k UdkSvcGroup -s UdkUserSvc",
+        "C:\\Users\\Admin\\AppData\\LocalLow\\uTorrent.WebView2\\EBWebView ",
+        "C:\\Windows\\System32\\OpenSSH\\",
+        "C:\\Users\\Admin\\AppData\\Local\\Packages\\MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy\\LocalState\\EBWebView",
+        "C:\\ProgramData",
+        "c:\\Users\\Admin\\.antigravity\\extensions\\meta.pyrefly-0.51.1-win32-x64\\bin\\pyrefly.exe",
+        "C:\\Windows\\system32\\config\\systemprofile\\AppData\\Local",
+        "C:\\Windows\\System32\\RuntimeBroker.exe",
+        "C:\\Windows\\SystemApps\\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\\StartMenuExperienceHost.exe",
+        "C:\\Windows\\system32\\wbem\\wmiprvse.exe",
+        "C:\\Program Files\\WindowsApps\\MicrosoftWindows.Client.WebExperience_526.1202.40.0_x64__cw5n1h2txyewy\\Dashboard\\Widgets.exe",
+        "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\144.0.3719.115\\ms",
+        "C:\\Program Fild",
+        "C:\\Windows\\system32\\config\\systemprofile",
+        "C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\144.0.3719.115\\msedgewebview2.exe",
+        "C:\\Windows\\system32\\cmd.exe"
+      ]
+    },
+    "pe_features": {},
+    "statistical_features": {
+      "entropy": 5.6022,
+      "null_byte_ratio": 0.339,
+      "printable_ratio": 0.3003,
+      "unique_bytes": 256,
+      "total_size": 47747072
+    },
+    "risk_assessment": {
+      "risk_score": 70.0,
+      "max_score": 100.0,
+      "components": {
+        "yara_score": 50.0,
+        "integrity_score": 0.0,
+        "anomaly_weighted": 0.0,
+        "behavior_weighted": 20.0
+      },
+      "risk_factors": [
+        "Critical YARA Match (+50)",
+        "Excessive Dangerous API Usage (+15)",
+        "Network Activity Detected (+10)"
+      ],
+      "is_malicious": true
+    }
+  },
+  "artifact_metadata": {
+    "created": "2026-02-22T08:47:37.730118Z",
+    "process_name": "WmiPrvSE.exe",
+    "pid": 5460,
+    "artifact_type": "behavioral_indicators",
+    "version": "1.0"
+  }
+}
